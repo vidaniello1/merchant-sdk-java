@@ -121,7 +121,7 @@ import urn.ebay.apis.eBLBaseComponents.AbstractRequestType;
 
 public class PayPalAPIInterfaceServiceService extends BaseService {
 
-	private static final String SERVICE_VERSION = "86.0";
+	private static final String SERVICE_VERSION = "87.0";
 	private static final String SERVICE_NAME = "PayPalAPIInterfaceService";
 
 	public PayPalAPIInterfaceServiceService(File configFile) throws IOException, FileNotFoundException {
@@ -138,11 +138,11 @@ public class PayPalAPIInterfaceServiceService extends BaseService {
 		
 	}
 
-private void setStandardParams(AbstractRequestType request) {
-	if (request.getVersion() == null) {
-	request.setVersion(SERVICE_VERSION);
-}
-}
+	private void setStandardParams(AbstractRequestType request) {
+		if (request.getVersion() == null) {
+			request.setVersion(SERVICE_VERSION);
+		}
+	}
 	/**
 	 * @throws SSLConfigurationException
 	 * @throws InvalidCredentialException

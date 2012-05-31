@@ -7,20 +7,20 @@ package urn.ebay.apis.eBLBaseComponents;
 
 public enum LandingPageType {
 
-NONE("None"),
-LOGIN("Login"),
-BILLING("Billing"),
-	;
-private String value;
-LandingPageType(String val){
-value=val;
-}public String getValue(){
-return value;
-}
-public static LandingPageType fromValue(String v) {
-		for (LandingPageType c : values())
-			if (c.value.equals(v))
-				return c;
-throw new IllegalArgumentException(v);
-}
+ 		NONE("None"),
+ 		LOGIN("Login"),
+ 		BILLING("Billing"),
+		;
+		private String value;
+		LandingPageType(String val){
+			value=val;
+		}		public String getValue(){
+			return value;
+		}
+		public static LandingPageType fromValue(String v) {
+			for (LandingPageType c : values())
+				if (c.value.equals(v))
+					return c;
+			throw new IllegalArgumentException(v);
+		}
 }

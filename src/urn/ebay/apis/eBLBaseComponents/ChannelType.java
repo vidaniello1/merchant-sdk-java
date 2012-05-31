@@ -7,19 +7,19 @@ package urn.ebay.apis.eBLBaseComponents;
 
 public enum ChannelType {
 
-MERCHANT("Merchant"),
-EBAYITEM("eBayItem"),
-	;
-private String value;
-ChannelType(String val){
-value=val;
-}public String getValue(){
-return value;
-}
-public static ChannelType fromValue(String v) {
-		for (ChannelType c : values())
-			if (c.value.equals(v))
-				return c;
-throw new IllegalArgumentException(v);
-}
+ 		MERCHANT("Merchant"),
+ 		EBAYITEM("eBayItem"),
+		;
+		private String value;
+		ChannelType(String val){
+			value=val;
+		}		public String getValue(){
+			return value;
+		}
+		public static ChannelType fromValue(String v) {
+			for (ChannelType c : values())
+				if (c.value.equals(v))
+					return c;
+			throw new IllegalArgumentException(v);
+		}
 }
