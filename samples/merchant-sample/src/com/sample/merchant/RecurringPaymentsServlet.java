@@ -79,7 +79,7 @@ import com.paypal.exception.InvalidResponseDataException;
 import com.paypal.exception.MissingCredentialException;
 import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
-import urn.ebay.apis.eBLBaseComponents.BillingPeriodDetailsType;
+
 
 /**
  * Servlet implementation class RecurringPaymentsServlet
