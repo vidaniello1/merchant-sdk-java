@@ -80,7 +80,6 @@ import com.paypal.exception.MissingCredentialException;
 import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
 
-
 /**
  * Servlet implementation class RecurringPaymentsServlet
  */
