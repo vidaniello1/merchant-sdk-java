@@ -4,7 +4,7 @@
 <%@ page language="java"%>
 
 <%
-	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'00:00:00Z");
 	Calendar startDate = Calendar.getInstance();
 	startDate.add(Calendar.DATE, -1);
 	Calendar endDate = Calendar.getInstance();
