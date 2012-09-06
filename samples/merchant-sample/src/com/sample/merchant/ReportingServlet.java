@@ -100,7 +100,9 @@ public class ReportingServlet extends HttpServlet {
 					type.setEndDate(request.getParameter("endDate"));
 				}
 
-				type.setTransactionID(request.getParameter("transactionID"));
+				if(request.getParameter("transactionID") !=""){
+					type.setTransactionID(request.getParameter("transactionID"));
+				}
 
 				txnreq.setTransactionSearchRequest(type);
 				TransactionSearchResponseType txnresponse = null;
@@ -122,10 +124,13 @@ public class ReportingServlet extends HttpServlet {
 										.next();
 								map.put("Transaction ID" + index,
 										result.getTransactionID());
-								map.put("Net Amount" + index, result
-										.getNetAmount().getValue()
-										+ " "
-										+ result.getNetAmount().getCurrencyID());
+								if(result.getNetAmount() !=null)
+								{
+									map.put("Net Amount" + index, result
+											.getNetAmount().getValue()
+											+ " "
+											+ result.getNetAmount().getCurrencyID());
+								}
 								map.put("Payer" + index, result.getPayer());
 								map.put("Status" + index, result.getStatus());
 								index++;
