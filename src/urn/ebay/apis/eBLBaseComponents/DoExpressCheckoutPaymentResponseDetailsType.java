@@ -201,6 +201,8 @@ public class DoExpressCheckoutPaymentResponseDetailsType{
 		if (n.getNodeType() == Node.TEXT_NODE) {
 			String val = n.getNodeValue();
 			return val.trim().length() == 0;
+		} else if (n.getNodeType() == Node.ELEMENT_NODE ) {
+			return (n.getChildNodes().getLength() == 0);
 		} else {
 			return false;
 		}
@@ -219,7 +221,7 @@ public class DoExpressCheckoutPaymentResponseDetailsType{
         nodeList = (NodeList) xpath.evaluate("PaymentInfo", node, XPathConstants.NODESET);
 		if (nodeList != null && nodeList.getLength() > 0) {
 			for(int i=0; i < nodeList.getLength(); i++) {
-			    Node subNode = nodeList.item(i);
+				Node subNode = nodeList.item(i);
 				this.PaymentInfo.add(new PaymentInfoType(subNode));
 			}
 		}
@@ -250,7 +252,7 @@ public class DoExpressCheckoutPaymentResponseDetailsType{
         nodeList = (NodeList) xpath.evaluate("CoupledPaymentInfo", node, XPathConstants.NODESET);
 		if (nodeList != null && nodeList.getLength() > 0) {
 			for(int i=0; i < nodeList.getLength(); i++) {
-			    Node subNode = nodeList.item(i);
+				Node subNode = nodeList.item(i);
 				this.CoupledPaymentInfo.add(new CoupledPaymentInfoType(subNode));
 			}
 		}

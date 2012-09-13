@@ -510,6 +510,8 @@ public class GetExpressCheckoutDetailsResponseDetailsType{
 		if (n.getNodeType() == Node.TEXT_NODE) {
 			String val = n.getNodeValue();
 			return val.trim().length() == 0;
+		} else if (n.getNodeType() == Node.ELEMENT_NODE ) {
+			return (n.getChildNodes().getLength() == 0);
 		} else {
 			return false;
 		}
@@ -575,7 +577,7 @@ public class GetExpressCheckoutDetailsResponseDetailsType{
         nodeList = (NodeList) xpath.evaluate("PaymentDetails", node, XPathConstants.NODESET);
 		if (nodeList != null && nodeList.getLength() > 0) {
 			for(int i=0; i < nodeList.getLength(); i++) {
-			    Node subNode = nodeList.item(i);
+				Node subNode = nodeList.item(i);
 				this.PaymentDetails.add(new PaymentDetailsType(subNode));
 			}
 		}
@@ -586,7 +588,7 @@ public class GetExpressCheckoutDetailsResponseDetailsType{
         nodeList = (NodeList) xpath.evaluate("IncentiveDetails", node, XPathConstants.NODESET);
 		if (nodeList != null && nodeList.getLength() > 0) {
 			for(int i=0; i < nodeList.getLength(); i++) {
-			    Node subNode = nodeList.item(i);
+				Node subNode = nodeList.item(i);
 				this.IncentiveDetails.add(new IncentiveDetailsType(subNode));
 			}
 		}
@@ -631,7 +633,7 @@ public class GetExpressCheckoutDetailsResponseDetailsType{
         nodeList = (NodeList) xpath.evaluate("PaymentRequestInfo", node, XPathConstants.NODESET);
 		if (nodeList != null && nodeList.getLength() > 0) {
 			for(int i=0; i < nodeList.getLength(); i++) {
-			    Node subNode = nodeList.item(i);
+				Node subNode = nodeList.item(i);
 				this.PaymentRequestInfo.add(new PaymentRequestInfoType(subNode));
 			}
 		}

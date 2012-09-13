@@ -59,6 +59,8 @@ public class TransactionSearchResponseType extends AbstractResponseType {
 		if (n.getNodeType() == Node.TEXT_NODE) {
 			String val = n.getNodeValue();
 			return val.trim().length() == 0;
+		} else if (n.getNodeType() == Node.ELEMENT_NODE ) {
+			return (n.getChildNodes().getLength() == 0);
 		} else {
 			return false;
 		}
@@ -73,7 +75,7 @@ public class TransactionSearchResponseType extends AbstractResponseType {
         nodeList = (NodeList) xpath.evaluate("PaymentTransactions", node, XPathConstants.NODESET);
 		if (nodeList != null && nodeList.getLength() > 0) {
 			for(int i=0; i < nodeList.getLength(); i++) {
-			    Node subNode = nodeList.item(i);
+				Node subNode = nodeList.item(i);
 				this.PaymentTransactions.add(new PaymentTransactionSearchResultType(subNode));
 			}
 		}

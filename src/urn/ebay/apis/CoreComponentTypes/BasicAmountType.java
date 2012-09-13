@@ -101,6 +101,8 @@ public class BasicAmountType{
 		if (n.getNodeType() == Node.TEXT_NODE) {
 			String val = n.getNodeValue();
 			return val.trim().length() == 0;
+		} else if (n.getNodeType() == Node.ELEMENT_NODE ) {
+			return (n.getChildNodes().getLength() == 0);
 		} else {
 			return false;
 		}
@@ -111,9 +113,9 @@ public class BasicAmountType{
 		XPath xpath = factory.newXPath();
 		Node childNode = null;
 		NodeList nodeList = null;
-		childNode = (Node) xpath.evaluate("currencyID", node, XPathConstants.NODE);
+		childNode = (Node) xpath.evaluate("@currencyID", node, XPathConstants.NODE);
 		if (childNode != null) {
-		    this.currencyID = CurrencyCodeType.fromValue(childNode.getAttributes().getNamedItem("currencyID").getNodeValue());
+		    this.currencyID = CurrencyCodeType.fromValue(childNode.getNodeValue());
 		}
 		this.value = node.getTextContent();
 	
