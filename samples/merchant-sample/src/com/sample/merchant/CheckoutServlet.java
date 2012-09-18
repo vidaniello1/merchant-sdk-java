@@ -286,9 +286,7 @@ public class CheckoutServlet extends HttpServlet {
 						map.put("Redirect URL",
 								"<a href=https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token="
 										+ setExpressCheckoutResponse.getToken()
-										+ ">https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token="
-										+ setExpressCheckoutResponse.getToken()
-										+ "</a>");
+										+ ">Redirect To PayPal</a>");
 						session.setAttribute("map", map);
 						response.sendRedirect("/merchant-sample/Response.jsp");
 					} else {

@@ -2,9 +2,19 @@ package urn.ebay.api.PayPalAPI;
 import java.io.*;
 import com.paypal.core.BaseService;
 import com.paypal.exception.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+import org.xml.sax.InputSource;
 import javax.xml.parsers.ParserConfigurationException;
 import urn.ebay.apis.eBLBaseComponents.AbstractRequestType;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import urn.ebay.api.PayPalAPI.RefundTransactionReq;
 import urn.ebay.api.PayPalAPI.RefundTransactionResponseType;
 import urn.ebay.api.PayPalAPI.InitiateRecoupReq;
@@ -109,7 +119,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 
 
 	// Service Version
-	public static final String SERVICE_VERSION = "92.0";
+	public static final String SERVICE_VERSION = "93.0";
 
 	// Service Name
 	public static final String SERVICE_NAME = "PayPalAPIInterfaceService";
@@ -152,10 +162,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public RefundTransactionResponseType refundTransaction(RefundTransactionReq refundTransactionReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public RefundTransactionResponseType refundTransaction(RefundTransactionReq refundTransactionReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(refundTransactionReq.getRefundTransactionRequest());
 	 	String response = call("RefundTransaction", refundTransactionReq.toXMLString(), apiUsername);
-		return new RefundTransactionResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/RefundTransactionResponse", document, XPathConstants.NODE);
+			return new RefundTransactionResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -171,7 +193,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public RefundTransactionResponseType refundTransaction(RefundTransactionReq refundTransactionReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public RefundTransactionResponseType refundTransaction(RefundTransactionReq refundTransactionReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return refundTransaction(refundTransactionReq, null);
 	 }
 		
@@ -188,10 +210,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public InitiateRecoupResponseType initiateRecoup(InitiateRecoupReq initiateRecoupReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public InitiateRecoupResponseType initiateRecoup(InitiateRecoupReq initiateRecoupReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(initiateRecoupReq.getInitiateRecoupRequest());
 	 	String response = call("InitiateRecoup", initiateRecoupReq.toXMLString(), apiUsername);
-		return new InitiateRecoupResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/InitiateRecoupResponse", document, XPathConstants.NODE);
+			return new InitiateRecoupResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -207,7 +241,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public InitiateRecoupResponseType initiateRecoup(InitiateRecoupReq initiateRecoupReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public InitiateRecoupResponseType initiateRecoup(InitiateRecoupReq initiateRecoupReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return initiateRecoup(initiateRecoupReq, null);
 	 }
 		
@@ -224,10 +258,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public CompleteRecoupResponseType completeRecoup(CompleteRecoupReq completeRecoupReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public CompleteRecoupResponseType completeRecoup(CompleteRecoupReq completeRecoupReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(completeRecoupReq.getCompleteRecoupRequest());
 	 	String response = call("CompleteRecoup", completeRecoupReq.toXMLString(), apiUsername);
-		return new CompleteRecoupResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/CompleteRecoupResponse", document, XPathConstants.NODE);
+			return new CompleteRecoupResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -243,7 +289,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public CompleteRecoupResponseType completeRecoup(CompleteRecoupReq completeRecoupReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public CompleteRecoupResponseType completeRecoup(CompleteRecoupReq completeRecoupReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return completeRecoup(completeRecoupReq, null);
 	 }
 		
@@ -260,10 +306,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public CancelRecoupResponseType cancelRecoup(CancelRecoupReq cancelRecoupReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public CancelRecoupResponseType cancelRecoup(CancelRecoupReq cancelRecoupReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(cancelRecoupReq.getCancelRecoupRequest());
 	 	String response = call("CancelRecoup", cancelRecoupReq.toXMLString(), apiUsername);
-		return new CancelRecoupResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/CancelRecoupResponse", document, XPathConstants.NODE);
+			return new CancelRecoupResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -279,7 +337,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public CancelRecoupResponseType cancelRecoup(CancelRecoupReq cancelRecoupReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public CancelRecoupResponseType cancelRecoup(CancelRecoupReq cancelRecoupReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return cancelRecoup(cancelRecoupReq, null);
 	 }
 		
@@ -296,10 +354,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetTransactionDetailsResponseType getTransactionDetails(GetTransactionDetailsReq getTransactionDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetTransactionDetailsResponseType getTransactionDetails(GetTransactionDetailsReq getTransactionDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(getTransactionDetailsReq.getGetTransactionDetailsRequest());
 	 	String response = call("GetTransactionDetails", getTransactionDetailsReq.toXMLString(), apiUsername);
-		return new GetTransactionDetailsResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/GetTransactionDetailsResponse", document, XPathConstants.NODE);
+			return new GetTransactionDetailsResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -315,7 +385,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetTransactionDetailsResponseType getTransactionDetails(GetTransactionDetailsReq getTransactionDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetTransactionDetailsResponseType getTransactionDetails(GetTransactionDetailsReq getTransactionDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return getTransactionDetails(getTransactionDetailsReq, null);
 	 }
 		
@@ -332,10 +402,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public BillUserResponseType billUser(BillUserReq billUserReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public BillUserResponseType billUser(BillUserReq billUserReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(billUserReq.getBillUserRequest());
 	 	String response = call("BillUser", billUserReq.toXMLString(), apiUsername);
-		return new BillUserResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/BillUserResponse", document, XPathConstants.NODE);
+			return new BillUserResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -351,7 +433,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public BillUserResponseType billUser(BillUserReq billUserReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public BillUserResponseType billUser(BillUserReq billUserReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return billUser(billUserReq, null);
 	 }
 		
@@ -368,10 +450,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public TransactionSearchResponseType transactionSearch(TransactionSearchReq transactionSearchReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public TransactionSearchResponseType transactionSearch(TransactionSearchReq transactionSearchReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(transactionSearchReq.getTransactionSearchRequest());
 	 	String response = call("TransactionSearch", transactionSearchReq.toXMLString(), apiUsername);
-		return new TransactionSearchResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/TransactionSearchResponse", document, XPathConstants.NODE);
+			return new TransactionSearchResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -387,7 +481,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public TransactionSearchResponseType transactionSearch(TransactionSearchReq transactionSearchReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public TransactionSearchResponseType transactionSearch(TransactionSearchReq transactionSearchReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return transactionSearch(transactionSearchReq, null);
 	 }
 		
@@ -404,10 +498,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public MassPayResponseType massPay(MassPayReq massPayReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public MassPayResponseType massPay(MassPayReq massPayReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(massPayReq.getMassPayRequest());
 	 	String response = call("MassPay", massPayReq.toXMLString(), apiUsername);
-		return new MassPayResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/MassPayResponse", document, XPathConstants.NODE);
+			return new MassPayResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -423,7 +529,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public MassPayResponseType massPay(MassPayReq massPayReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public MassPayResponseType massPay(MassPayReq massPayReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return massPay(massPayReq, null);
 	 }
 		
@@ -440,10 +546,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public BAUpdateResponseType billAgreementUpdate(BillAgreementUpdateReq billAgreementUpdateReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public BAUpdateResponseType billAgreementUpdate(BillAgreementUpdateReq billAgreementUpdateReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(billAgreementUpdateReq.getBAUpdateRequest());
 	 	String response = call("BillAgreementUpdate", billAgreementUpdateReq.toXMLString(), apiUsername);
-		return new BAUpdateResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/BAUpdateResponse", document, XPathConstants.NODE);
+			return new BAUpdateResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -459,7 +577,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public BAUpdateResponseType billAgreementUpdate(BillAgreementUpdateReq billAgreementUpdateReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public BAUpdateResponseType billAgreementUpdate(BillAgreementUpdateReq billAgreementUpdateReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return billAgreementUpdate(billAgreementUpdateReq, null);
 	 }
 		
@@ -476,10 +594,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public AddressVerifyResponseType addressVerify(AddressVerifyReq addressVerifyReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public AddressVerifyResponseType addressVerify(AddressVerifyReq addressVerifyReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(addressVerifyReq.getAddressVerifyRequest());
 	 	String response = call("AddressVerify", addressVerifyReq.toXMLString(), apiUsername);
-		return new AddressVerifyResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/AddressVerifyResponse", document, XPathConstants.NODE);
+			return new AddressVerifyResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -495,7 +625,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public AddressVerifyResponseType addressVerify(AddressVerifyReq addressVerifyReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public AddressVerifyResponseType addressVerify(AddressVerifyReq addressVerifyReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return addressVerify(addressVerifyReq, null);
 	 }
 		
@@ -512,10 +642,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public EnterBoardingResponseType enterBoarding(EnterBoardingReq enterBoardingReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public EnterBoardingResponseType enterBoarding(EnterBoardingReq enterBoardingReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(enterBoardingReq.getEnterBoardingRequest());
 	 	String response = call("EnterBoarding", enterBoardingReq.toXMLString(), apiUsername);
-		return new EnterBoardingResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/EnterBoardingResponse", document, XPathConstants.NODE);
+			return new EnterBoardingResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -531,7 +673,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public EnterBoardingResponseType enterBoarding(EnterBoardingReq enterBoardingReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public EnterBoardingResponseType enterBoarding(EnterBoardingReq enterBoardingReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return enterBoarding(enterBoardingReq, null);
 	 }
 		
@@ -548,10 +690,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetBoardingDetailsResponseType getBoardingDetails(GetBoardingDetailsReq getBoardingDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetBoardingDetailsResponseType getBoardingDetails(GetBoardingDetailsReq getBoardingDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(getBoardingDetailsReq.getGetBoardingDetailsRequest());
 	 	String response = call("GetBoardingDetails", getBoardingDetailsReq.toXMLString(), apiUsername);
-		return new GetBoardingDetailsResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/GetBoardingDetailsResponse", document, XPathConstants.NODE);
+			return new GetBoardingDetailsResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -567,7 +721,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetBoardingDetailsResponseType getBoardingDetails(GetBoardingDetailsReq getBoardingDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetBoardingDetailsResponseType getBoardingDetails(GetBoardingDetailsReq getBoardingDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return getBoardingDetails(getBoardingDetailsReq, null);
 	 }
 		
@@ -584,10 +738,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public CreateMobilePaymentResponseType createMobilePayment(CreateMobilePaymentReq createMobilePaymentReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public CreateMobilePaymentResponseType createMobilePayment(CreateMobilePaymentReq createMobilePaymentReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(createMobilePaymentReq.getCreateMobilePaymentRequest());
 	 	String response = call("CreateMobilePayment", createMobilePaymentReq.toXMLString(), apiUsername);
-		return new CreateMobilePaymentResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/CreateMobilePaymentResponse", document, XPathConstants.NODE);
+			return new CreateMobilePaymentResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -603,7 +769,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public CreateMobilePaymentResponseType createMobilePayment(CreateMobilePaymentReq createMobilePaymentReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public CreateMobilePaymentResponseType createMobilePayment(CreateMobilePaymentReq createMobilePaymentReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return createMobilePayment(createMobilePaymentReq, null);
 	 }
 		
@@ -620,10 +786,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetMobileStatusResponseType getMobileStatus(GetMobileStatusReq getMobileStatusReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetMobileStatusResponseType getMobileStatus(GetMobileStatusReq getMobileStatusReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(getMobileStatusReq.getGetMobileStatusRequest());
 	 	String response = call("GetMobileStatus", getMobileStatusReq.toXMLString(), apiUsername);
-		return new GetMobileStatusResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/GetMobileStatusResponse", document, XPathConstants.NODE);
+			return new GetMobileStatusResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -639,7 +817,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetMobileStatusResponseType getMobileStatus(GetMobileStatusReq getMobileStatusReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetMobileStatusResponseType getMobileStatus(GetMobileStatusReq getMobileStatusReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return getMobileStatus(getMobileStatusReq, null);
 	 }
 		
@@ -656,10 +834,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public SetMobileCheckoutResponseType setMobileCheckout(SetMobileCheckoutReq setMobileCheckoutReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public SetMobileCheckoutResponseType setMobileCheckout(SetMobileCheckoutReq setMobileCheckoutReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(setMobileCheckoutReq.getSetMobileCheckoutRequest());
 	 	String response = call("SetMobileCheckout", setMobileCheckoutReq.toXMLString(), apiUsername);
-		return new SetMobileCheckoutResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/SetMobileCheckoutResponse", document, XPathConstants.NODE);
+			return new SetMobileCheckoutResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -675,7 +865,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public SetMobileCheckoutResponseType setMobileCheckout(SetMobileCheckoutReq setMobileCheckoutReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public SetMobileCheckoutResponseType setMobileCheckout(SetMobileCheckoutReq setMobileCheckoutReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return setMobileCheckout(setMobileCheckoutReq, null);
 	 }
 		
@@ -692,10 +882,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoMobileCheckoutPaymentResponseType doMobileCheckoutPayment(DoMobileCheckoutPaymentReq doMobileCheckoutPaymentReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoMobileCheckoutPaymentResponseType doMobileCheckoutPayment(DoMobileCheckoutPaymentReq doMobileCheckoutPaymentReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(doMobileCheckoutPaymentReq.getDoMobileCheckoutPaymentRequest());
 	 	String response = call("DoMobileCheckoutPayment", doMobileCheckoutPaymentReq.toXMLString(), apiUsername);
-		return new DoMobileCheckoutPaymentResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/DoMobileCheckoutPaymentResponse", document, XPathConstants.NODE);
+			return new DoMobileCheckoutPaymentResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -711,7 +913,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoMobileCheckoutPaymentResponseType doMobileCheckoutPayment(DoMobileCheckoutPaymentReq doMobileCheckoutPaymentReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoMobileCheckoutPaymentResponseType doMobileCheckoutPayment(DoMobileCheckoutPaymentReq doMobileCheckoutPaymentReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return doMobileCheckoutPayment(doMobileCheckoutPaymentReq, null);
 	 }
 		
@@ -728,10 +930,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetBalanceResponseType getBalance(GetBalanceReq getBalanceReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetBalanceResponseType getBalance(GetBalanceReq getBalanceReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(getBalanceReq.getGetBalanceRequest());
 	 	String response = call("GetBalance", getBalanceReq.toXMLString(), apiUsername);
-		return new GetBalanceResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/GetBalanceResponse", document, XPathConstants.NODE);
+			return new GetBalanceResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -747,7 +961,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetBalanceResponseType getBalance(GetBalanceReq getBalanceReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetBalanceResponseType getBalance(GetBalanceReq getBalanceReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return getBalance(getBalanceReq, null);
 	 }
 		
@@ -764,10 +978,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetPalDetailsResponseType getPalDetails(GetPalDetailsReq getPalDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetPalDetailsResponseType getPalDetails(GetPalDetailsReq getPalDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(getPalDetailsReq.getGetPalDetailsRequest());
 	 	String response = call("GetPalDetails", getPalDetailsReq.toXMLString(), apiUsername);
-		return new GetPalDetailsResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/GetPalDetailsResponse", document, XPathConstants.NODE);
+			return new GetPalDetailsResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -783,7 +1009,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetPalDetailsResponseType getPalDetails(GetPalDetailsReq getPalDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetPalDetailsResponseType getPalDetails(GetPalDetailsReq getPalDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return getPalDetails(getPalDetailsReq, null);
 	 }
 		
@@ -800,10 +1026,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoExpressCheckoutPaymentResponseType doExpressCheckoutPayment(DoExpressCheckoutPaymentReq doExpressCheckoutPaymentReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoExpressCheckoutPaymentResponseType doExpressCheckoutPayment(DoExpressCheckoutPaymentReq doExpressCheckoutPaymentReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(doExpressCheckoutPaymentReq.getDoExpressCheckoutPaymentRequest());
 	 	String response = call("DoExpressCheckoutPayment", doExpressCheckoutPaymentReq.toXMLString(), apiUsername);
-		return new DoExpressCheckoutPaymentResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/DoExpressCheckoutPaymentResponse", document, XPathConstants.NODE);
+			return new DoExpressCheckoutPaymentResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -819,7 +1057,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoExpressCheckoutPaymentResponseType doExpressCheckoutPayment(DoExpressCheckoutPaymentReq doExpressCheckoutPaymentReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoExpressCheckoutPaymentResponseType doExpressCheckoutPayment(DoExpressCheckoutPaymentReq doExpressCheckoutPaymentReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return doExpressCheckoutPayment(doExpressCheckoutPaymentReq, null);
 	 }
 		
@@ -836,10 +1074,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoUATPExpressCheckoutPaymentResponseType doUATPExpressCheckoutPayment(DoUATPExpressCheckoutPaymentReq doUATPExpressCheckoutPaymentReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoUATPExpressCheckoutPaymentResponseType doUATPExpressCheckoutPayment(DoUATPExpressCheckoutPaymentReq doUATPExpressCheckoutPaymentReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(doUATPExpressCheckoutPaymentReq.getDoUATPExpressCheckoutPaymentRequest());
 	 	String response = call("DoUATPExpressCheckoutPayment", doUATPExpressCheckoutPaymentReq.toXMLString(), apiUsername);
-		return new DoUATPExpressCheckoutPaymentResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/DoUATPExpressCheckoutPaymentResponse", document, XPathConstants.NODE);
+			return new DoUATPExpressCheckoutPaymentResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -855,7 +1105,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoUATPExpressCheckoutPaymentResponseType doUATPExpressCheckoutPayment(DoUATPExpressCheckoutPaymentReq doUATPExpressCheckoutPaymentReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoUATPExpressCheckoutPaymentResponseType doUATPExpressCheckoutPayment(DoUATPExpressCheckoutPaymentReq doUATPExpressCheckoutPaymentReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return doUATPExpressCheckoutPayment(doUATPExpressCheckoutPaymentReq, null);
 	 }
 		
@@ -872,10 +1122,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public SetAuthFlowParamResponseType setAuthFlowParam(SetAuthFlowParamReq setAuthFlowParamReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public SetAuthFlowParamResponseType setAuthFlowParam(SetAuthFlowParamReq setAuthFlowParamReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(setAuthFlowParamReq.getSetAuthFlowParamRequest());
 	 	String response = call("SetAuthFlowParam", setAuthFlowParamReq.toXMLString(), apiUsername);
-		return new SetAuthFlowParamResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/SetAuthFlowParamResponse", document, XPathConstants.NODE);
+			return new SetAuthFlowParamResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -891,7 +1153,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public SetAuthFlowParamResponseType setAuthFlowParam(SetAuthFlowParamReq setAuthFlowParamReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public SetAuthFlowParamResponseType setAuthFlowParam(SetAuthFlowParamReq setAuthFlowParamReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return setAuthFlowParam(setAuthFlowParamReq, null);
 	 }
 		
@@ -908,10 +1170,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetAuthDetailsResponseType getAuthDetails(GetAuthDetailsReq getAuthDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetAuthDetailsResponseType getAuthDetails(GetAuthDetailsReq getAuthDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(getAuthDetailsReq.getGetAuthDetailsRequest());
 	 	String response = call("GetAuthDetails", getAuthDetailsReq.toXMLString(), apiUsername);
-		return new GetAuthDetailsResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/GetAuthDetailsResponse", document, XPathConstants.NODE);
+			return new GetAuthDetailsResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -927,7 +1201,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetAuthDetailsResponseType getAuthDetails(GetAuthDetailsReq getAuthDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetAuthDetailsResponseType getAuthDetails(GetAuthDetailsReq getAuthDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return getAuthDetails(getAuthDetailsReq, null);
 	 }
 		
@@ -944,10 +1218,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public SetAccessPermissionsResponseType setAccessPermissions(SetAccessPermissionsReq setAccessPermissionsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public SetAccessPermissionsResponseType setAccessPermissions(SetAccessPermissionsReq setAccessPermissionsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(setAccessPermissionsReq.getSetAccessPermissionsRequest());
 	 	String response = call("SetAccessPermissions", setAccessPermissionsReq.toXMLString(), apiUsername);
-		return new SetAccessPermissionsResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/SetAccessPermissionsResponse", document, XPathConstants.NODE);
+			return new SetAccessPermissionsResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -963,7 +1249,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public SetAccessPermissionsResponseType setAccessPermissions(SetAccessPermissionsReq setAccessPermissionsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public SetAccessPermissionsResponseType setAccessPermissions(SetAccessPermissionsReq setAccessPermissionsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return setAccessPermissions(setAccessPermissionsReq, null);
 	 }
 		
@@ -980,10 +1266,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public UpdateAccessPermissionsResponseType updateAccessPermissions(UpdateAccessPermissionsReq updateAccessPermissionsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public UpdateAccessPermissionsResponseType updateAccessPermissions(UpdateAccessPermissionsReq updateAccessPermissionsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(updateAccessPermissionsReq.getUpdateAccessPermissionsRequest());
 	 	String response = call("UpdateAccessPermissions", updateAccessPermissionsReq.toXMLString(), apiUsername);
-		return new UpdateAccessPermissionsResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/UpdateAccessPermissionsResponse", document, XPathConstants.NODE);
+			return new UpdateAccessPermissionsResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -999,7 +1297,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public UpdateAccessPermissionsResponseType updateAccessPermissions(UpdateAccessPermissionsReq updateAccessPermissionsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public UpdateAccessPermissionsResponseType updateAccessPermissions(UpdateAccessPermissionsReq updateAccessPermissionsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return updateAccessPermissions(updateAccessPermissionsReq, null);
 	 }
 		
@@ -1016,10 +1314,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetAccessPermissionDetailsResponseType getAccessPermissionDetails(GetAccessPermissionDetailsReq getAccessPermissionDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetAccessPermissionDetailsResponseType getAccessPermissionDetails(GetAccessPermissionDetailsReq getAccessPermissionDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(getAccessPermissionDetailsReq.getGetAccessPermissionDetailsRequest());
 	 	String response = call("GetAccessPermissionDetails", getAccessPermissionDetailsReq.toXMLString(), apiUsername);
-		return new GetAccessPermissionDetailsResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/GetAccessPermissionDetailsResponse", document, XPathConstants.NODE);
+			return new GetAccessPermissionDetailsResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1035,7 +1345,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetAccessPermissionDetailsResponseType getAccessPermissionDetails(GetAccessPermissionDetailsReq getAccessPermissionDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetAccessPermissionDetailsResponseType getAccessPermissionDetails(GetAccessPermissionDetailsReq getAccessPermissionDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return getAccessPermissionDetails(getAccessPermissionDetailsReq, null);
 	 }
 		
@@ -1052,10 +1362,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetIncentiveEvaluationResponseType getIncentiveEvaluation(GetIncentiveEvaluationReq getIncentiveEvaluationReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetIncentiveEvaluationResponseType getIncentiveEvaluation(GetIncentiveEvaluationReq getIncentiveEvaluationReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(getIncentiveEvaluationReq.getGetIncentiveEvaluationRequest());
 	 	String response = call("GetIncentiveEvaluation", getIncentiveEvaluationReq.toXMLString(), apiUsername);
-		return new GetIncentiveEvaluationResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/GetIncentiveEvaluationResponse", document, XPathConstants.NODE);
+			return new GetIncentiveEvaluationResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1071,7 +1393,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetIncentiveEvaluationResponseType getIncentiveEvaluation(GetIncentiveEvaluationReq getIncentiveEvaluationReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetIncentiveEvaluationResponseType getIncentiveEvaluation(GetIncentiveEvaluationReq getIncentiveEvaluationReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return getIncentiveEvaluation(getIncentiveEvaluationReq, null);
 	 }
 		
@@ -1088,10 +1410,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public SetExpressCheckoutResponseType setExpressCheckout(SetExpressCheckoutReq setExpressCheckoutReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public SetExpressCheckoutResponseType setExpressCheckout(SetExpressCheckoutReq setExpressCheckoutReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(setExpressCheckoutReq.getSetExpressCheckoutRequest());
 	 	String response = call("SetExpressCheckout", setExpressCheckoutReq.toXMLString(), apiUsername);
-		return new SetExpressCheckoutResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/SetExpressCheckoutResponse", document, XPathConstants.NODE);
+			return new SetExpressCheckoutResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1107,7 +1441,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public SetExpressCheckoutResponseType setExpressCheckout(SetExpressCheckoutReq setExpressCheckoutReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public SetExpressCheckoutResponseType setExpressCheckout(SetExpressCheckoutReq setExpressCheckoutReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return setExpressCheckout(setExpressCheckoutReq, null);
 	 }
 		
@@ -1124,10 +1458,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public ExecuteCheckoutOperationsResponseType executeCheckoutOperations(ExecuteCheckoutOperationsReq executeCheckoutOperationsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public ExecuteCheckoutOperationsResponseType executeCheckoutOperations(ExecuteCheckoutOperationsReq executeCheckoutOperationsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(executeCheckoutOperationsReq.getExecuteCheckoutOperationsRequest());
 	 	String response = call("ExecuteCheckoutOperations", executeCheckoutOperationsReq.toXMLString(), apiUsername);
-		return new ExecuteCheckoutOperationsResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/ExecuteCheckoutOperationsResponse", document, XPathConstants.NODE);
+			return new ExecuteCheckoutOperationsResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1143,7 +1489,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public ExecuteCheckoutOperationsResponseType executeCheckoutOperations(ExecuteCheckoutOperationsReq executeCheckoutOperationsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public ExecuteCheckoutOperationsResponseType executeCheckoutOperations(ExecuteCheckoutOperationsReq executeCheckoutOperationsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return executeCheckoutOperations(executeCheckoutOperationsReq, null);
 	 }
 		
@@ -1160,10 +1506,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetExpressCheckoutDetailsResponseType getExpressCheckoutDetails(GetExpressCheckoutDetailsReq getExpressCheckoutDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetExpressCheckoutDetailsResponseType getExpressCheckoutDetails(GetExpressCheckoutDetailsReq getExpressCheckoutDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(getExpressCheckoutDetailsReq.getGetExpressCheckoutDetailsRequest());
 	 	String response = call("GetExpressCheckoutDetails", getExpressCheckoutDetailsReq.toXMLString(), apiUsername);
-		return new GetExpressCheckoutDetailsResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/GetExpressCheckoutDetailsResponse", document, XPathConstants.NODE);
+			return new GetExpressCheckoutDetailsResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1179,7 +1537,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetExpressCheckoutDetailsResponseType getExpressCheckoutDetails(GetExpressCheckoutDetailsReq getExpressCheckoutDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetExpressCheckoutDetailsResponseType getExpressCheckoutDetails(GetExpressCheckoutDetailsReq getExpressCheckoutDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return getExpressCheckoutDetails(getExpressCheckoutDetailsReq, null);
 	 }
 		
@@ -1196,10 +1554,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoDirectPaymentResponseType doDirectPayment(DoDirectPaymentReq doDirectPaymentReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoDirectPaymentResponseType doDirectPayment(DoDirectPaymentReq doDirectPaymentReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(doDirectPaymentReq.getDoDirectPaymentRequest());
 	 	String response = call("DoDirectPayment", doDirectPaymentReq.toXMLString(), apiUsername);
-		return new DoDirectPaymentResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/DoDirectPaymentResponse", document, XPathConstants.NODE);
+			return new DoDirectPaymentResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1215,7 +1585,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoDirectPaymentResponseType doDirectPayment(DoDirectPaymentReq doDirectPaymentReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoDirectPaymentResponseType doDirectPayment(DoDirectPaymentReq doDirectPaymentReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return doDirectPayment(doDirectPaymentReq, null);
 	 }
 		
@@ -1232,10 +1602,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public ManagePendingTransactionStatusResponseType managePendingTransactionStatus(ManagePendingTransactionStatusReq managePendingTransactionStatusReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public ManagePendingTransactionStatusResponseType managePendingTransactionStatus(ManagePendingTransactionStatusReq managePendingTransactionStatusReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(managePendingTransactionStatusReq.getManagePendingTransactionStatusRequest());
 	 	String response = call("ManagePendingTransactionStatus", managePendingTransactionStatusReq.toXMLString(), apiUsername);
-		return new ManagePendingTransactionStatusResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/ManagePendingTransactionStatusResponse", document, XPathConstants.NODE);
+			return new ManagePendingTransactionStatusResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1251,7 +1633,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public ManagePendingTransactionStatusResponseType managePendingTransactionStatus(ManagePendingTransactionStatusReq managePendingTransactionStatusReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public ManagePendingTransactionStatusResponseType managePendingTransactionStatus(ManagePendingTransactionStatusReq managePendingTransactionStatusReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return managePendingTransactionStatus(managePendingTransactionStatusReq, null);
 	 }
 		
@@ -1268,10 +1650,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoCancelResponseType doCancel(DoCancelReq doCancelReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoCancelResponseType doCancel(DoCancelReq doCancelReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(doCancelReq.getDoCancelRequest());
 	 	String response = call("DoCancel", doCancelReq.toXMLString(), apiUsername);
-		return new DoCancelResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/DoCancelResponse", document, XPathConstants.NODE);
+			return new DoCancelResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1287,7 +1681,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoCancelResponseType doCancel(DoCancelReq doCancelReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoCancelResponseType doCancel(DoCancelReq doCancelReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return doCancel(doCancelReq, null);
 	 }
 		
@@ -1304,10 +1698,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoCaptureResponseType doCapture(DoCaptureReq doCaptureReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoCaptureResponseType doCapture(DoCaptureReq doCaptureReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(doCaptureReq.getDoCaptureRequest());
 	 	String response = call("DoCapture", doCaptureReq.toXMLString(), apiUsername);
-		return new DoCaptureResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/DoCaptureResponse", document, XPathConstants.NODE);
+			return new DoCaptureResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1323,7 +1729,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoCaptureResponseType doCapture(DoCaptureReq doCaptureReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoCaptureResponseType doCapture(DoCaptureReq doCaptureReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return doCapture(doCaptureReq, null);
 	 }
 		
@@ -1340,10 +1746,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoReauthorizationResponseType doReauthorization(DoReauthorizationReq doReauthorizationReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoReauthorizationResponseType doReauthorization(DoReauthorizationReq doReauthorizationReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(doReauthorizationReq.getDoReauthorizationRequest());
 	 	String response = call("DoReauthorization", doReauthorizationReq.toXMLString(), apiUsername);
-		return new DoReauthorizationResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/DoReauthorizationResponse", document, XPathConstants.NODE);
+			return new DoReauthorizationResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1359,7 +1777,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoReauthorizationResponseType doReauthorization(DoReauthorizationReq doReauthorizationReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoReauthorizationResponseType doReauthorization(DoReauthorizationReq doReauthorizationReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return doReauthorization(doReauthorizationReq, null);
 	 }
 		
@@ -1376,10 +1794,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoVoidResponseType doVoid(DoVoidReq doVoidReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoVoidResponseType doVoid(DoVoidReq doVoidReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(doVoidReq.getDoVoidRequest());
 	 	String response = call("DoVoid", doVoidReq.toXMLString(), apiUsername);
-		return new DoVoidResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/DoVoidResponse", document, XPathConstants.NODE);
+			return new DoVoidResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1395,7 +1825,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoVoidResponseType doVoid(DoVoidReq doVoidReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoVoidResponseType doVoid(DoVoidReq doVoidReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return doVoid(doVoidReq, null);
 	 }
 		
@@ -1412,10 +1842,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoAuthorizationResponseType doAuthorization(DoAuthorizationReq doAuthorizationReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoAuthorizationResponseType doAuthorization(DoAuthorizationReq doAuthorizationReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(doAuthorizationReq.getDoAuthorizationRequest());
 	 	String response = call("DoAuthorization", doAuthorizationReq.toXMLString(), apiUsername);
-		return new DoAuthorizationResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/DoAuthorizationResponse", document, XPathConstants.NODE);
+			return new DoAuthorizationResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1431,7 +1873,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoAuthorizationResponseType doAuthorization(DoAuthorizationReq doAuthorizationReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoAuthorizationResponseType doAuthorization(DoAuthorizationReq doAuthorizationReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return doAuthorization(doAuthorizationReq, null);
 	 }
 		
@@ -1448,10 +1890,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public SetCustomerBillingAgreementResponseType setCustomerBillingAgreement(SetCustomerBillingAgreementReq setCustomerBillingAgreementReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public SetCustomerBillingAgreementResponseType setCustomerBillingAgreement(SetCustomerBillingAgreementReq setCustomerBillingAgreementReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(setCustomerBillingAgreementReq.getSetCustomerBillingAgreementRequest());
 	 	String response = call("SetCustomerBillingAgreement", setCustomerBillingAgreementReq.toXMLString(), apiUsername);
-		return new SetCustomerBillingAgreementResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/SetCustomerBillingAgreementResponse", document, XPathConstants.NODE);
+			return new SetCustomerBillingAgreementResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1467,7 +1921,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public SetCustomerBillingAgreementResponseType setCustomerBillingAgreement(SetCustomerBillingAgreementReq setCustomerBillingAgreementReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public SetCustomerBillingAgreementResponseType setCustomerBillingAgreement(SetCustomerBillingAgreementReq setCustomerBillingAgreementReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return setCustomerBillingAgreement(setCustomerBillingAgreementReq, null);
 	 }
 		
@@ -1484,10 +1938,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetBillingAgreementCustomerDetailsResponseType getBillingAgreementCustomerDetails(GetBillingAgreementCustomerDetailsReq getBillingAgreementCustomerDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetBillingAgreementCustomerDetailsResponseType getBillingAgreementCustomerDetails(GetBillingAgreementCustomerDetailsReq getBillingAgreementCustomerDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(getBillingAgreementCustomerDetailsReq.getGetBillingAgreementCustomerDetailsRequest());
 	 	String response = call("GetBillingAgreementCustomerDetails", getBillingAgreementCustomerDetailsReq.toXMLString(), apiUsername);
-		return new GetBillingAgreementCustomerDetailsResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/GetBillingAgreementCustomerDetailsResponse", document, XPathConstants.NODE);
+			return new GetBillingAgreementCustomerDetailsResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1503,7 +1969,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetBillingAgreementCustomerDetailsResponseType getBillingAgreementCustomerDetails(GetBillingAgreementCustomerDetailsReq getBillingAgreementCustomerDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetBillingAgreementCustomerDetailsResponseType getBillingAgreementCustomerDetails(GetBillingAgreementCustomerDetailsReq getBillingAgreementCustomerDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return getBillingAgreementCustomerDetails(getBillingAgreementCustomerDetailsReq, null);
 	 }
 		
@@ -1520,10 +1986,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public CreateBillingAgreementResponseType createBillingAgreement(CreateBillingAgreementReq createBillingAgreementReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public CreateBillingAgreementResponseType createBillingAgreement(CreateBillingAgreementReq createBillingAgreementReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(createBillingAgreementReq.getCreateBillingAgreementRequest());
 	 	String response = call("CreateBillingAgreement", createBillingAgreementReq.toXMLString(), apiUsername);
-		return new CreateBillingAgreementResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/CreateBillingAgreementResponse", document, XPathConstants.NODE);
+			return new CreateBillingAgreementResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1539,7 +2017,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public CreateBillingAgreementResponseType createBillingAgreement(CreateBillingAgreementReq createBillingAgreementReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public CreateBillingAgreementResponseType createBillingAgreement(CreateBillingAgreementReq createBillingAgreementReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return createBillingAgreement(createBillingAgreementReq, null);
 	 }
 		
@@ -1556,10 +2034,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoReferenceTransactionResponseType doReferenceTransaction(DoReferenceTransactionReq doReferenceTransactionReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoReferenceTransactionResponseType doReferenceTransaction(DoReferenceTransactionReq doReferenceTransactionReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(doReferenceTransactionReq.getDoReferenceTransactionRequest());
 	 	String response = call("DoReferenceTransaction", doReferenceTransactionReq.toXMLString(), apiUsername);
-		return new DoReferenceTransactionResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/DoReferenceTransactionResponse", document, XPathConstants.NODE);
+			return new DoReferenceTransactionResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1575,7 +2065,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoReferenceTransactionResponseType doReferenceTransaction(DoReferenceTransactionReq doReferenceTransactionReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoReferenceTransactionResponseType doReferenceTransaction(DoReferenceTransactionReq doReferenceTransactionReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return doReferenceTransaction(doReferenceTransactionReq, null);
 	 }
 		
@@ -1592,10 +2082,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoNonReferencedCreditResponseType doNonReferencedCredit(DoNonReferencedCreditReq doNonReferencedCreditReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoNonReferencedCreditResponseType doNonReferencedCredit(DoNonReferencedCreditReq doNonReferencedCreditReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(doNonReferencedCreditReq.getDoNonReferencedCreditRequest());
 	 	String response = call("DoNonReferencedCredit", doNonReferencedCreditReq.toXMLString(), apiUsername);
-		return new DoNonReferencedCreditResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/DoNonReferencedCreditResponse", document, XPathConstants.NODE);
+			return new DoNonReferencedCreditResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1611,7 +2113,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoNonReferencedCreditResponseType doNonReferencedCredit(DoNonReferencedCreditReq doNonReferencedCreditReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoNonReferencedCreditResponseType doNonReferencedCredit(DoNonReferencedCreditReq doNonReferencedCreditReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return doNonReferencedCredit(doNonReferencedCreditReq, null);
 	 }
 		
@@ -1628,10 +2130,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoUATPAuthorizationResponseType doUATPAuthorization(DoUATPAuthorizationReq doUATPAuthorizationReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoUATPAuthorizationResponseType doUATPAuthorization(DoUATPAuthorizationReq doUATPAuthorizationReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(doUATPAuthorizationReq.getDoUATPAuthorizationRequest());
 	 	String response = call("DoUATPAuthorization", doUATPAuthorizationReq.toXMLString(), apiUsername);
-		return new DoUATPAuthorizationResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/DoUATPAuthorizationResponse", document, XPathConstants.NODE);
+			return new DoUATPAuthorizationResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1647,7 +2161,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public DoUATPAuthorizationResponseType doUATPAuthorization(DoUATPAuthorizationReq doUATPAuthorizationReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public DoUATPAuthorizationResponseType doUATPAuthorization(DoUATPAuthorizationReq doUATPAuthorizationReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return doUATPAuthorization(doUATPAuthorizationReq, null);
 	 }
 		
@@ -1664,10 +2178,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public CreateRecurringPaymentsProfileResponseType createRecurringPaymentsProfile(CreateRecurringPaymentsProfileReq createRecurringPaymentsProfileReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public CreateRecurringPaymentsProfileResponseType createRecurringPaymentsProfile(CreateRecurringPaymentsProfileReq createRecurringPaymentsProfileReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(createRecurringPaymentsProfileReq.getCreateRecurringPaymentsProfileRequest());
 	 	String response = call("CreateRecurringPaymentsProfile", createRecurringPaymentsProfileReq.toXMLString(), apiUsername);
-		return new CreateRecurringPaymentsProfileResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/CreateRecurringPaymentsProfileResponse", document, XPathConstants.NODE);
+			return new CreateRecurringPaymentsProfileResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1683,7 +2209,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public CreateRecurringPaymentsProfileResponseType createRecurringPaymentsProfile(CreateRecurringPaymentsProfileReq createRecurringPaymentsProfileReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public CreateRecurringPaymentsProfileResponseType createRecurringPaymentsProfile(CreateRecurringPaymentsProfileReq createRecurringPaymentsProfileReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return createRecurringPaymentsProfile(createRecurringPaymentsProfileReq, null);
 	 }
 		
@@ -1700,10 +2226,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetRecurringPaymentsProfileDetailsResponseType getRecurringPaymentsProfileDetails(GetRecurringPaymentsProfileDetailsReq getRecurringPaymentsProfileDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetRecurringPaymentsProfileDetailsResponseType getRecurringPaymentsProfileDetails(GetRecurringPaymentsProfileDetailsReq getRecurringPaymentsProfileDetailsReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(getRecurringPaymentsProfileDetailsReq.getGetRecurringPaymentsProfileDetailsRequest());
 	 	String response = call("GetRecurringPaymentsProfileDetails", getRecurringPaymentsProfileDetailsReq.toXMLString(), apiUsername);
-		return new GetRecurringPaymentsProfileDetailsResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/GetRecurringPaymentsProfileDetailsResponse", document, XPathConstants.NODE);
+			return new GetRecurringPaymentsProfileDetailsResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1719,7 +2257,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public GetRecurringPaymentsProfileDetailsResponseType getRecurringPaymentsProfileDetails(GetRecurringPaymentsProfileDetailsReq getRecurringPaymentsProfileDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public GetRecurringPaymentsProfileDetailsResponseType getRecurringPaymentsProfileDetails(GetRecurringPaymentsProfileDetailsReq getRecurringPaymentsProfileDetailsReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return getRecurringPaymentsProfileDetails(getRecurringPaymentsProfileDetailsReq, null);
 	 }
 		
@@ -1736,10 +2274,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public ManageRecurringPaymentsProfileStatusResponseType manageRecurringPaymentsProfileStatus(ManageRecurringPaymentsProfileStatusReq manageRecurringPaymentsProfileStatusReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public ManageRecurringPaymentsProfileStatusResponseType manageRecurringPaymentsProfileStatus(ManageRecurringPaymentsProfileStatusReq manageRecurringPaymentsProfileStatusReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(manageRecurringPaymentsProfileStatusReq.getManageRecurringPaymentsProfileStatusRequest());
 	 	String response = call("ManageRecurringPaymentsProfileStatus", manageRecurringPaymentsProfileStatusReq.toXMLString(), apiUsername);
-		return new ManageRecurringPaymentsProfileStatusResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/ManageRecurringPaymentsProfileStatusResponse", document, XPathConstants.NODE);
+			return new ManageRecurringPaymentsProfileStatusResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1755,7 +2305,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public ManageRecurringPaymentsProfileStatusResponseType manageRecurringPaymentsProfileStatus(ManageRecurringPaymentsProfileStatusReq manageRecurringPaymentsProfileStatusReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public ManageRecurringPaymentsProfileStatusResponseType manageRecurringPaymentsProfileStatus(ManageRecurringPaymentsProfileStatusReq manageRecurringPaymentsProfileStatusReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return manageRecurringPaymentsProfileStatus(manageRecurringPaymentsProfileStatusReq, null);
 	 }
 		
@@ -1772,10 +2322,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public BillOutstandingAmountResponseType billOutstandingAmount(BillOutstandingAmountReq billOutstandingAmountReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public BillOutstandingAmountResponseType billOutstandingAmount(BillOutstandingAmountReq billOutstandingAmountReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(billOutstandingAmountReq.getBillOutstandingAmountRequest());
 	 	String response = call("BillOutstandingAmount", billOutstandingAmountReq.toXMLString(), apiUsername);
-		return new BillOutstandingAmountResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/BillOutstandingAmountResponse", document, XPathConstants.NODE);
+			return new BillOutstandingAmountResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1791,7 +2353,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public BillOutstandingAmountResponseType billOutstandingAmount(BillOutstandingAmountReq billOutstandingAmountReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public BillOutstandingAmountResponseType billOutstandingAmount(BillOutstandingAmountReq billOutstandingAmountReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return billOutstandingAmount(billOutstandingAmountReq, null);
 	 }
 		
@@ -1808,10 +2370,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public UpdateRecurringPaymentsProfileResponseType updateRecurringPaymentsProfile(UpdateRecurringPaymentsProfileReq updateRecurringPaymentsProfileReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public UpdateRecurringPaymentsProfileResponseType updateRecurringPaymentsProfile(UpdateRecurringPaymentsProfileReq updateRecurringPaymentsProfileReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(updateRecurringPaymentsProfileReq.getUpdateRecurringPaymentsProfileRequest());
 	 	String response = call("UpdateRecurringPaymentsProfile", updateRecurringPaymentsProfileReq.toXMLString(), apiUsername);
-		return new UpdateRecurringPaymentsProfileResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/UpdateRecurringPaymentsProfileResponse", document, XPathConstants.NODE);
+			return new UpdateRecurringPaymentsProfileResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1827,7 +2401,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public UpdateRecurringPaymentsProfileResponseType updateRecurringPaymentsProfile(UpdateRecurringPaymentsProfileReq updateRecurringPaymentsProfileReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public UpdateRecurringPaymentsProfileResponseType updateRecurringPaymentsProfile(UpdateRecurringPaymentsProfileReq updateRecurringPaymentsProfileReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return updateRecurringPaymentsProfile(updateRecurringPaymentsProfileReq, null);
 	 }
 		
@@ -1844,10 +2418,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public ReverseTransactionResponseType reverseTransaction(ReverseTransactionReq reverseTransactionReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public ReverseTransactionResponseType reverseTransaction(ReverseTransactionReq reverseTransactionReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(reverseTransactionReq.getReverseTransactionRequest());
 	 	String response = call("ReverseTransaction", reverseTransactionReq.toXMLString(), apiUsername);
-		return new ReverseTransactionResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/ReverseTransactionResponse", document, XPathConstants.NODE);
+			return new ReverseTransactionResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1863,7 +2449,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public ReverseTransactionResponseType reverseTransaction(ReverseTransactionReq reverseTransactionReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public ReverseTransactionResponseType reverseTransaction(ReverseTransactionReq reverseTransactionReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return reverseTransaction(reverseTransactionReq, null);
 	 }
 		
@@ -1880,10 +2466,22 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public ExternalRememberMeOptOutResponseType externalRememberMeOptOut(ExternalRememberMeOptOutReq externalRememberMeOptOutReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public ExternalRememberMeOptOutResponseType externalRememberMeOptOut(ExternalRememberMeOptOutReq externalRememberMeOptOutReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
 		setStandardParams(externalRememberMeOptOutReq.getExternalRememberMeOptOutRequest());
 	 	String response = call("ExternalRememberMeOptOut", externalRememberMeOptOutReq.toXMLString(), apiUsername);
-		return new ExternalRememberMeOptOutResponseType(response);
+		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		Document document = builder.parse(inStream);
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			Node node = (Node) xpath.evaluate("Envelope/Body/ExternalRememberMeOptOutResponse", document, XPathConstants.NODE);
+			return new ExternalRememberMeOptOutResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
 	 }
 	 
 	/** 
@@ -1899,7 +2497,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService{
 	 * @throws InterruptedException
 	 * @throws OAuthException
 	 */
-	 public ExternalRememberMeOptOutResponseType externalRememberMeOptOut(ExternalRememberMeOptOutReq externalRememberMeOptOutReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException {
+	 public ExternalRememberMeOptOutResponseType externalRememberMeOptOut(ExternalRememberMeOptOutReq externalRememberMeOptOutReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
 	 	return externalRememberMeOptOut(externalRememberMeOptOutReq, null);
 	 }
 
