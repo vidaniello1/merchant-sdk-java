@@ -105,31 +105,31 @@ public class AuthenticationService {
 			soapMsg.append("<urn:RequesterCredentials/>");
 			soapMsg.append("</soapenv:Header>");
 		} else if (apiCred instanceof SignatureCredential) {
+			SignatureCredential signCred = (SignatureCredential) apiCred;
 			soapMsg.append("<soapenv:Header>");
 			soapMsg.append("<urn:RequesterCredentials>");
 			soapMsg.append("<ebl:Credentials>");
-			soapMsg.append("<ebl:Username>"
-					+ ((SignatureCredential) apiCred).getUserName()
-					+ "</ebl:Username>");
-			soapMsg.append("<ebl:Password>"
-					+ ((SignatureCredential) apiCred).getPassword()
-					+ "</ebl:Password>");
-			soapMsg.append("<ebl:Signature>"
-					+ ((SignatureCredential) apiCred).getSignature()
-					+ "</ebl:Signature>");
+			soapMsg.append("<ebl:Username>"+ signCred.getUserName()+ "</ebl:Username>");
+			soapMsg.append("<ebl:Password>"+ signCred.getPassword()+ "</ebl:Password>");
+			soapMsg.append("<ebl:Signature>"+ signCred.getSignature()+ "</ebl:Signature>");
+			if(signCred.getSubject()!= null && signCred.getSubject() !=Constants.EMPTY_STRING)
+			{
+				soapMsg.append("<ebl:Subject>"+ signCred.getSubject() + "</ebl:Subject>");
+			}
 			soapMsg.append("</ebl:Credentials>");
 			soapMsg.append("</urn:RequesterCredentials>");
 			soapMsg.append("</soapenv:Header>");
 		} else if (apiCred instanceof CertificateCredential) {
+			CertificateCredential certCred = (CertificateCredential)apiCred;
 			soapMsg.append("<soapenv:Header>");
 			soapMsg.append("<urn:RequesterCredentials>");
 			soapMsg.append("<ebl:Credentials>");
-			soapMsg.append("<ebl:Username>"
-					+ ((CertificateCredential) apiCred).getUserName()
-					+ "</ebl:Username>");
-			soapMsg.append("<ebl:Password>"
-					+ ((CertificateCredential) apiCred).getPassword()
-					+ "</ebl:Password>");
+			soapMsg.append("<ebl:Username>"+ certCred.getUserName() + "</ebl:Username>");
+			soapMsg.append("<ebl:Password>"+ certCred.getPassword() + "</ebl:Password>");
+			if(certCred.getSubject()!= null && certCred.getSubject() != Constants.EMPTY_STRING)
+			{
+				soapMsg.append("<ebl:Subject>"+ certCred.getSubject() + "</ebl:Subject>");
+			}
 			soapMsg.append("</ebl:Credentials>");
 			soapMsg.append("</urn:RequesterCredentials>");
 			soapMsg.append("</soapenv:Header>");
