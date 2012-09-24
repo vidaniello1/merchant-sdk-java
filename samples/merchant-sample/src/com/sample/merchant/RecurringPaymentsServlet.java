@@ -63,6 +63,7 @@ import urn.ebay.apis.eBLBaseComponents.ManageRecurringPaymentsProfileStatusReque
 import urn.ebay.apis.eBLBaseComponents.MerchantPullPaymentCodeType;
 import urn.ebay.apis.eBLBaseComponents.MerchantPullPaymentType;
 import urn.ebay.apis.eBLBaseComponents.MerchantPullStatusCodeType;
+import urn.ebay.apis.eBLBaseComponents.PayerInfoType;
 import urn.ebay.apis.eBLBaseComponents.PaymentActionCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentDetailsType;
 import urn.ebay.apis.eBLBaseComponents.PersonNameType;
@@ -517,15 +518,15 @@ public class RecurringPaymentsServlet extends HttpServlet {
 					BillingPeriodDetailsType paymentPeriod = new BillingPeriodDetailsType(
 							period, frequency, paymentAmount);
 					paymentPeriod.setTotalBillingCycles(numCycles);
-					if (request.getParameter("trialShippingAmount") != "") {
+					if (request.getParameter("shippingAmount") != "") {
 						paymentPeriod.setShippingAmount(new BasicAmountType(
 								currency, request
-										.getParameter("trialShippingAmount")));
+										.getParameter("shippingAmount")));
 					}
-					if (request.getParameter("trialTaxAmount") != "") {
+					if (request.getParameter("taxAmount") != "") {
 						paymentPeriod.setTaxAmount(new BasicAmountType(
 								currency, request
-										.getParameter("trialTaxAmount")));
+										.getParameter("taxAmount")));
 					}
 					scheduleDetails.setPaymentPeriod(paymentPeriod);
 				}
@@ -537,18 +538,33 @@ public class RecurringPaymentsServlet extends HttpServlet {
 					reqDetails.setToken(request.getParameter("token"));
 				else if (request.getParameter("creditCardNumber") != "") {
 					CreditCardDetailsType cc = new CreditCardDetailsType();
-					cc.setCreditCardNumber(request
-							.getParameter("creditCardNumber"));
+					cc.setCreditCardNumber(request.getParameter("creditCardNumber"));
 					cc.setCVV2(request.getParameter("cvv"));
-					cc.setExpMonth(Integer.parseInt(request
-							.getParameter("expMonth")));
-					cc.setExpYear(Integer.parseInt(request
-							.getParameter("expYear")));
+					cc.setExpMonth(Integer.parseInt(request.getParameter("expMonth")));
+					cc.setExpYear(Integer.parseInt(request.getParameter("expYear")));
+					PayerInfoType payerInfo= new PayerInfoType();
+					payerInfo.setPayer(request.getParameter("BuyerEmailId"));
+					cc.setCardOwner(payerInfo);
+					CreditCardTypeType type = CreditCardTypeType.fromValue(request.getParameter("creditCardType"));
+					switch(type){
+						case AMEX:
+							cc.setCreditCardType(CreditCardTypeType.AMEX);
+							break;
+						case VISA:
+							cc.setCreditCardType(CreditCardTypeType.VISA);
+							break;
+						case DISCOVER:
+							cc.setCreditCardType(CreditCardTypeType.DISCOVER);
+							break;
+						case MASTERCARD:
+							cc.setCreditCardType(CreditCardTypeType.MASTERCARD);
+							break;
+					}
+					
 					reqDetails.setCreditCard(cc);
 				}
 
 				reqType.setCreateRecurringPaymentsProfileRequestDetails(reqDetails);
-
 				req.setCreateRecurringPaymentsProfileRequest(reqType);
 				CreateRecurringPaymentsProfileResponseType resp = service
 						.createRecurringPaymentsProfile(req);
@@ -648,6 +664,24 @@ public class RecurringPaymentsServlet extends HttpServlet {
 							.getParameter("expMonth")));
 					cc.setExpYear(Integer.parseInt(request
 							.getParameter("expYear")));
+					PayerInfoType payerInfo= new PayerInfoType();
+					payerInfo.setPayer(request.getParameter("BuyerEmailId"));
+					cc.setCardOwner(payerInfo);
+					CreditCardTypeType type = CreditCardTypeType.fromValue(request.getParameter("creditCardType"));
+					switch(type){
+						case AMEX:
+							cc.setCreditCardType(CreditCardTypeType.AMEX);
+							break;
+						case VISA:
+							cc.setCreditCardType(CreditCardTypeType.VISA);
+							break;
+						case DISCOVER:
+							cc.setCreditCardType(CreditCardTypeType.DISCOVER);
+							break;
+						case MASTERCARD:
+							cc.setCreditCardType(CreditCardTypeType.MASTERCARD);
+							break;
+					}
 					reqDetails.setCreditCard(cc);
 				}
 				reqDetails.setBillingStartDate(request
@@ -698,15 +732,15 @@ public class RecurringPaymentsServlet extends HttpServlet {
 					paymentPeriod.setBillingFrequency(frequency);
 					paymentPeriod.setAmount(paymentAmount);
 					paymentPeriod.setTotalBillingCycles(numCycles);
-					if (request.getParameter("trialShippingAmount") != "") {
+					if (request.getParameter("billingShippingAmount") != "") {
 						paymentPeriod.setShippingAmount(new BasicAmountType(
 								currency, request
-										.getParameter("trialShippingAmount")));
+										.getParameter("billingShippingAmount")));
 					}
-					if (request.getParameter("trialTaxAmount") != "") {
+					if (request.getParameter("billingTaxAmount") != "") {
 						paymentPeriod.setTaxAmount(new BasicAmountType(
 								currency, request
-										.getParameter("trialTaxAmount")));
+										.getParameter("billingTaxAmount")));
 					}
 					reqDetails.setPaymentPeriod(paymentPeriod);
 				}
@@ -734,11 +768,11 @@ public class RecurringPaymentsServlet extends HttpServlet {
 							.getParameter("amount")));
 				}
 				if (request.getParameter("shippingAmount") != "") {
-					reqDetails.setAmount(new BasicAmountType(currency, request
+					reqDetails.setShippingAmount(new BasicAmountType(currency, request
 							.getParameter("shippingAmount")));
 				}
 				if (request.getParameter("taxAmount") != "") {
-					reqDetails.setAmount(new BasicAmountType(currency, request
+					reqDetails.setTaxAmount(new BasicAmountType(currency, request
 							.getParameter("taxAmount")));
 				}
 

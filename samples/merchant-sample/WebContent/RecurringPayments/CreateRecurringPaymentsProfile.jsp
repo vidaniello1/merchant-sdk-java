@@ -45,7 +45,7 @@
 					<tr>
 						<th class="param_name">Credit Card number</th>
 						<th class="param_name">Expiry date</th>
-						<th class="param_name">Name on card</th>
+						<th class="param_name">Buyer Email Id</th>
 						<th class="param_name">Credit Card type</th>
 						<th class="param_name">CVV</th>
 					</tr>
@@ -73,10 +73,12 @@
 									<option value="2012">2012</option>
 									<option value="2013">2013</option>
 									<option value="2014">2014</option>
+									<option value="2015">2015</option>
+									<option value="2016">2016</option>
 								</select>
 							</div></td>
 						<td><div class="param_value">
-								<input type="text" name="cardOnName" id="cardOnName" value="" />
+								<input type="text" name="BuyerEmailId" id="BuyerEmailId" value="" />
 							</div></td>
 						<td><div class="param_value">
 								<select name="creditCardType">
@@ -147,7 +149,7 @@
 				</table>
 				<div class="section_header">Schedule details</div>
 				<div class="params">
-					<div class="param_name">Description (must match billing
+					<div class="param_name">Description* (must match billing
 						agreement if using Express Checkout token)</div>
 					<div class="param_value">
 						<textarea rows="5" cols="60" name="profileDescription"></textarea>
@@ -208,7 +210,7 @@
 					</tr>
 				</table>
 
-				<div class="section_header">Payment Period</div>
+				<div class="section_header">Payment Period *</div>
 				<table class="params_name">
 					<tr>
 						<th>Billing frequency</th>

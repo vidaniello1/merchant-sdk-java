@@ -41,7 +41,7 @@
 					<tr>
 						<th class="param_name">Credit Card number</th>
 						<th class="param_name">Expiry date</th>
-						<th class="param_name">Name on card</th>
+						<th class="param_name">Buyer Email Id</th>
 						<th class="param_name">Credit Card type</th>
 						<th class="param_name">CVV</th>
 					</tr>
@@ -72,7 +72,7 @@
 								</select>
 							</div></td>
 						<td><div class="param_value">
-								<input type="text" name="cardOnName" id="cardOnName" value="" />
+								<input type="text" name="BuyerEmailId" id="BuyerEmailId" value="" />
 							</div></td>
 						<td><div class="param_value">
 								<select name="creditCardType">
@@ -233,9 +233,9 @@
 						<td><span class="param_value"> <input type="text"
 								id="billingAmount" name="billingAmount" value="5.0" /> </span></td>
 						<td><span class="param_value"> <input type="text"
-								id="shippingAmount" name="shippingAmount" value="1.0" /> </span></td>
+								id="billingShippingAmount" name="billingShippingAmount" value="1.0" /> </span></td>
 						<td><span class="param_value"> <input type="text"
-								id="taxAmount" name="taxAmount" value="0.0" /> </span></td>
+								id="billingTaxAmount" name="billingTaxAmount" value="0.0" /> </span></td>
 					</tr>
 				</table>
 				<div class="params">

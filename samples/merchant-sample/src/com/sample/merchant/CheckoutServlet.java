@@ -184,18 +184,18 @@ public class CheckoutServlet extends HttpServlet {
 				item.setAmount(amt);
 				item.setItemCategory(ItemCategoryType.fromValue(request
 						.getParameter("itemCategory")));
+				item.setDescription(request.getParameter("itemDescription"));
 				lineItems.add(item);
 
 				if (request.getParameter("salesTax") != "") {
 					item.setTax(new BasicAmountType(CurrencyCodeType
 							.fromValue(request.getParameter("currencyCode")),
-							request.getParameter("salesTax")));
-					orderTotal += Double.parseDouble(request
-							.getParameter("salesTax"));
+							request.getParameter("salesTax")));					
 				}
-				itemTotal += Double.parseDouble(qtyItems)
-						* Double.parseDouble(amountItems);
-
+				
+				itemTotal += Double.parseDouble(qtyItems) * Double.parseDouble(amountItems);
+				orderTotal += itemTotal;
+				
 				List<PaymentDetailsType> payDetails = new ArrayList<PaymentDetailsType>();
 				PaymentDetailsType paydtl = new PaymentDetailsType();
 				paydtl.setPaymentAction(PaymentActionCodeType.fromValue(request
@@ -239,7 +239,7 @@ public class CheckoutServlet extends HttpServlet {
 							.getParameter("orderDescription"));
 				}
 
-				orderTotal += itemTotal;
+				
 				BasicAmountType itemsTotal = new BasicAmountType();
 				itemsTotal.setValue(Double.toString(itemTotal));
 				itemsTotal.setCurrencyID(CurrencyCodeType.fromValue(request
@@ -262,9 +262,18 @@ public class CheckoutServlet extends HttpServlet {
 					billList.add(billingAgreement);
 					details.setBillingAgreementDetails(billList);
 				}
-				// populate shipping address details}
+				// shipping display options
 				details.setNoShipping(request.getParameter("noShipping"));
-
+				
+				// PayPal page styling attributes
+				details.setBrandName(request.getParameter("brandName"));
+				details.setCustom(request.getParameter("pageStyle"));
+				details.setCppHeaderImage(request.getParameter("cppheaderimage"));
+				details.setCppHeaderBorderColor(request.getParameter("cppheaderbordercolor"));
+				details.setCppHeaderBackColor(request.getParameter("cppheaderbackcolor"));
+				details.setCppPayflowColor(request.getParameter("cpppayflowcolor"));
+				details.setAllowNote(request.getParameter("allowNote"));
+				
 				setExpressCheckoutReq
 						.setSetExpressCheckoutRequestDetails(details);
 
