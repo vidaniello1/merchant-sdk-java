@@ -38,6 +38,7 @@ import urn.ebay.api.PayPalAPI.SetExpressCheckoutReq;
 import urn.ebay.api.PayPalAPI.SetExpressCheckoutRequestType;
 import urn.ebay.api.PayPalAPI.SetExpressCheckoutResponseType;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
+import urn.ebay.apis.eBLBaseComponents.AddressType;
 import urn.ebay.apis.eBLBaseComponents.ApprovalSubTypeType;
 import urn.ebay.apis.eBLBaseComponents.ApprovalTypeType;
 import urn.ebay.apis.eBLBaseComponents.AuthorizationRequestType;
@@ -45,6 +46,7 @@ import urn.ebay.apis.eBLBaseComponents.BillingAgreementDetailsType;
 import urn.ebay.apis.eBLBaseComponents.BillingApprovalDetailsType;
 import urn.ebay.apis.eBLBaseComponents.BillingCodeType;
 import urn.ebay.apis.eBLBaseComponents.BuyerDetailType;
+import urn.ebay.apis.eBLBaseComponents.CountryCodeType;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.DoExpressCheckoutPaymentRequestDetailsType;
 import urn.ebay.apis.eBLBaseComponents.ExecuteCheckoutOperationsRequestDetailsType;
@@ -262,6 +264,20 @@ public class CheckoutServlet extends HttpServlet {
 					billList.add(billingAgreement);
 					details.setBillingAgreementDetails(billList);
 				}
+				
+				//shipping address
+				details.setReqConfirmShipping(request.getParameter("reqConfirmShipping"));
+				details.setAddressOverride(request.getParameter("addressoverride"));
+				AddressType shipToAddress=new AddressType();
+				shipToAddress.setName(request.getParameter("name"));
+				shipToAddress.setStreet1(request.getParameter("street1"));
+				shipToAddress.setStreet2(request.getParameter("street2"));
+				shipToAddress.setCityName(request.getParameter("city"));
+				shipToAddress.setStateOrProvince(request.getParameter("state"));
+				shipToAddress.setPostalCode(request.getParameter("postalCode"));
+				shipToAddress.setCountry(CountryCodeType.fromValue(request.getParameter("countryCode")));
+				details.setAddress(shipToAddress);
+				
 				// shipping display options
 				details.setNoShipping(request.getParameter("noShipping"));
 				

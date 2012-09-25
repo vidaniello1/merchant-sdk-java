@@ -36,7 +36,7 @@
 						</select>
 					</div>
 				</div>
-				<div class="section_header">Payment Details</div>
+				<div class="section_header"><b>Payment Details</b></div>
 				<div class="params">
 					<div class="param_name">Total Shipping costs</div>
 					<div class="param_value">
@@ -137,9 +137,76 @@
 						</td>
 					</tr>
 				</table>
-				
-				<div class="section_header">Billing Agreement (Required for
-					Recurring payments/Reference transactions only)</div>
+				<div class="section_header"><b>Ship To Address:</b></div>
+				<div class="param_name">Require buyer's PayPal Shipping address to be a confirmed address</div> 
+		        <div class="param_value"> 
+	                <select name="reqConfirmShipping"> 
+	                    <option value="0" >No</option> 
+	                    <option value="1">Yes</option> 
+	                </select> 
+		        </div>
+		        <div class="param_name">Allow Address override</div> 
+	            <div class="param_value"> 
+	                <select name="addressoverride"> 
+	                    <option value="">-Select a value-</option>
+	                     <option value="0">No - PayPal should not display shipping address</option>
+	                     <option value="1">Yes - PayPal should display shipping address</option>
+	                </select> 
+	            </div>
+						
+				<div class="params">
+					<div class="param_name">Name</div>
+					<div class="param_value">
+						<input type="text" name="name" value="John" size="50"
+							maxlength="260" />
+					</div>
+				</div>
+				<div class="params">
+					<div class="param_name">street1</div>
+					<div class="param_value">
+						<input type="text" name="street1" value="1,Main St" size="50"
+							maxlength="260" />
+					</div>
+				</div>
+				<div class="params">
+					<div class="param_name">street2</div>
+					<div class="param_value">
+						<input type="text" name="street2" value="" size="50"
+							maxlength="260" />
+					</div>
+				</div>
+				<div class="params">
+					<div class="param_name">City</div>
+					<div class="param_value">
+						<input type="text" name="city" value="Austin" size="50"
+							maxlength="260" />
+					</div>
+
+				</div>
+				<div class="params">
+					<div class="param_name">State</div>
+					<div class="param_value">
+						<input type="text" name="state" value="TX" size="50"
+							maxlength="260" />
+					</div>
+				</div>
+				<div class="params">
+					<div class="param_name">PostalCode</div>
+					<div class="param_value">
+						<input type="text" name="postalCode" value="78750" size="50"
+							maxlength="260" />
+					</div>
+				</div>
+
+				<div class="params">
+					<div class="param_name">CountryCode</div>
+					<div class="param_value">
+						<input type="text" name="countryCode" value="US" size="50"
+							maxlength="260" />
+					</div>
+				</div>
+				<div class="section_header"><b>Billing Agreement (Required for
+					Recurring payments/Reference transactions only)</b></div>
 				<div class="param_name">Billing Agreement Description *</div>
 				<div class="param_value">
 					<textarea cols="80" rows="10" name="billingAgreementText"></textarea>
@@ -159,8 +226,8 @@
 				</div>
 
 				<!-- PayPal page styling attributes -->
-				<div class="section_header">PayPal page styling attributes
-					(optional)</div>
+				<div class="section_header"><b>PayPal page styling attributes
+					(optional)</b></div>
 				<div class="param_name">Business name to display in the PayPal
 					account on the PayPal hosted checkout pages</div>
 				<div class="param_value">
@@ -195,7 +262,7 @@
 
 
 				<!-- Advanced features -->
-				<div class="section_header">Advanced features (optional)</div>
+				<div class="section_header"><b>Advanced features (optional)</b></div>
 				<div class="param_name">Allow buyer to enter note to merchant
 					on PayPal pages</div>
 				<div class="param_value">
