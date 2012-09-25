@@ -137,53 +137,7 @@
 						</td>
 					</tr>
 				</table>
-				<div class="section_header">Ship To Address:</div>
-
-				<div class="params">
-					<div class="param_name">Name</div>
-					<div class="param_value">
-						<input type="text" name="name" value="John" size="50"
-							maxlength="260" />
-					</div>
-				</div>
-				<div class="params">
-					<div class="param_name">Address Line1</div>
-					<div class="param_value">
-						<input type="text" name="street" value="1,Main St" size="50"
-							maxlength="260" />
-					</div>
-				</div>
-
-				<div class="params">
-					<div class="param_name">City</div>
-					<div class="param_value">
-						<input type="text" name="city" value="Austin" size="50"
-							maxlength="260" />
-					</div>
-
-				</div>
-				<div class="params">
-					<div class="param_name">State</div>
-					<div class="param_value">
-						<input type="text" name="state" value="TX" size="50"
-							maxlength="260" />
-					</div>
-				</div>
-				<div class="params">
-					<div class="param_name">PostalCode</div>
-					<div class="param_value">
-						<input type="text" name="postalCode" value="78750" size="50"
-							maxlength="260" />
-					</div>
-				</div>
-
-				<div class="params">
-					<div class="param_name">CountryCode</div>
-					<div class="param_value">
-						<input type="text" name="countryCode" value="US" size="50"
-							maxlength="260" />
-					</div>
-				</div>
+				
 				<div class="section_header">Billing Agreement (Required for
 					Recurring payments/Reference transactions only)</div>
 				<div class="param_name">Billing Agreement Description *</div>
