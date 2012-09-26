@@ -1,6 +1,58 @@
 <html>
 <head>
 <title>PayPal SDK - DoDirectPayment</title>
+<script language="JavaScript">
+	function generateCC(){
+		var cc_number = new Array(16);
+		var cc_len = 16;
+		var start = 0;
+		var rand_number = Math.random();
+		
+		switch(document.frmDCC.creditCardType.value)
+        {
+			case "Visa":
+				cc_number[start++] = 4;
+				break;
+			case "Discover":
+				cc_number[start++] = 6;
+				cc_number[start++] = 0;
+				cc_number[start++] = 1;
+				cc_number[start++] = 1;
+				break;
+			case "MasterCard":
+				cc_number[start++] = 5;
+				cc_number[start++] = Math.floor(Math.random() * 5) + 1;
+				break;
+			case "Amex":
+				cc_number[start++] = 3;
+				cc_number[start++] = Math.round(Math.random()) ? 7 : 4 ;
+				cc_len = 15;
+				break;
+        }
+        
+        for (var i = start; i < (cc_len - 1); i++) {
+			cc_number[i] = Math.floor(Math.random() * 10);
+        }
+		
+		var sum = 0;
+		for (var j = 0; j < (cc_len - 1); j++) {
+			var digit = cc_number[j];
+			if ((j & 1) == (cc_len & 1)) digit *= 2;
+			if (digit > 9) digit -= 9;
+			sum += digit;
+		}
+		
+		var check_digit = new Array(0, 9, 8, 7, 6, 5, 4, 3, 2, 1);
+		cc_number[cc_len - 1] = check_digit[sum % 10];
+		
+		document.frmDCC.creditCardNumber.value = "";
+		for (var k = 0; k < cc_len; k++) {
+			document.frmDCC.creditCardNumber.value += cc_number[k];
+		}
+	}
+	
+	
+</script>
 </head>
 <body>
 	<div id="wrapper">
@@ -11,7 +63,7 @@
 					card payment.</p>
 			</div>
 		</div>
-		<form method="POST">
+		<form method="POST" name="frmDCC">
 			<div id="request_form">
 				<div class="params">
 					<div class="param_name">First Name*</div>
@@ -29,7 +81,7 @@
 				<div class="params">
 					<div class="param_name">Card Type</div>
 					<div class="param_value">
-						<select name=creditCardType>
+						<select name="creditCardType">
 							<option value=Visa selected>Visa</option>
 							<option value=MasterCard>MasterCard</option>
 							<option value=Discover>Discover</option>
@@ -40,7 +92,7 @@
 				<div class="params">
 					<div class="param_name">Card Number</div>
 					<div class="param_value">
-						<input type=text size=19 maxlength=19 name=creditCardNumber>
+						<input type=text size=19 maxlength=19 name="creditCardNumber">
 					</div>
 				</div>
 				<div class="params">
@@ -220,5 +272,8 @@
 			</ul>
 		</div>
 	</div>
+	<script language="javascript">
+		generateCC();
+	</script>
 </body>
 </html>
