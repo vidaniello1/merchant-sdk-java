@@ -82,9 +82,9 @@ public class ReportingServlet extends HttpServlet {
 				"<ul><li><a href='Report/GetTransactionDetails'>GetTransactionDetails</a></li><li><a href='Report/TransactionSearch'>TransactionSearch</a></li><li><a href='Report/GetBalance'>GetBalance</a></li><li><a href='Report/GetPalDetails'>GetPalDetails</a></li><li><a href='Report/AddressVerify'>AddressVerify</a></li></ul>");
 		response.setContentType("text/html");
 		try {
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
-					.getClass().getResourceAsStream("/sdk_config.properties")
-							+ "/WEB-INF/sdk_config.properties");
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(
+					this.getClass().getResourceAsStream(
+							"/sdk_config.properties"));
 			if (request.getRequestURI().contains("TransactionSearch")) {
 				TransactionSearchReq txnreq = new TransactionSearchReq();
 				TransactionSearchRequestType type = new TransactionSearchRequestType();
@@ -100,7 +100,7 @@ public class ReportingServlet extends HttpServlet {
 					type.setEndDate(request.getParameter("endDate"));
 				}
 
-				if(request.getParameter("transactionID") !=""){
+				if (request.getParameter("transactionID") != "") {
 					type.setTransactionID(request.getParameter("transactionID"));
 				}
 
@@ -124,12 +124,12 @@ public class ReportingServlet extends HttpServlet {
 										.next();
 								map.put("Transaction ID" + index,
 										result.getTransactionID());
-								if(result.getNetAmount() !=null)
-								{
+								if (result.getNetAmount() != null) {
 									map.put("Net Amount" + index, result
 											.getNetAmount().getValue()
 											+ " "
-											+ result.getNetAmount().getCurrencyID());
+											+ result.getNetAmount()
+													.getCurrencyID());
 								}
 								map.put("Payer" + index, result.getPayer());
 								map.put("Status" + index, result.getStatus());
