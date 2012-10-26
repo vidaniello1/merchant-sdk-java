@@ -133,10 +133,10 @@ public class DoDirectPaymentServlet extends HttpServlet {
 							+ ddresponse.getAmount().getCurrencyID());
 					map.put("Payment Status", ddresponse.getPaymentStatus());
 					session.setAttribute("map", map);
-					res.sendRedirect("/merchant-sample/Response.jsp");
+					res.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
 				} else {
 					session.setAttribute("Error", ddresponse.getErrors());
-					res.sendRedirect("/merchant-sample/Error.jsp");
+					res.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
 				}
 			}
 		} catch (FileNotFoundException e) {

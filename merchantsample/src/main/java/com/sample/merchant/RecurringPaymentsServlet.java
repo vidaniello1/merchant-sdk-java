@@ -213,10 +213,10 @@ public class RecurringPaymentsServlet extends HttpServlet {
 										.getPayerInfo().getPayer());
 						
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchant-sample/Response.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
 					} else {
 						session.setAttribute("Error", txnresponse.getErrors());
-						response.sendRedirect("/merchant-sample/Error.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
 					}
 				}
 
@@ -252,10 +252,10 @@ public class RecurringPaymentsServlet extends HttpServlet {
 								.getBAUpdateResponseDetails()
 								.getBillingAgreementStatus());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchant-sample/Response.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
 					} else {
 						session.setAttribute("Error", txnresponse.getErrors());
-						response.sendRedirect("/merchant-sample/Error.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains(
@@ -358,10 +358,10 @@ public class RecurringPaymentsServlet extends HttpServlet {
 								.getBillingAgreementID());
 						
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchant-sample/Response.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
 					} else {
 						session.setAttribute("Error", txnresponse.getErrors());
-						response.sendRedirect("/merchant-sample/Error.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains("BillUser")) {
@@ -412,10 +412,10 @@ public class RecurringPaymentsServlet extends HttpServlet {
 								.getBillUserResponseDetails().getPaymentInfo()
 								.getTransactionID());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchant-sample/Response.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchant-sample/Error.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
 					}
 				}
 			}
@@ -583,10 +583,10 @@ public class RecurringPaymentsServlet extends HttpServlet {
 								resp.getCreateRecurringPaymentsProfileResponseDetails()
 										.getProfileStatus());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchant-sample/Response.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchant-sample/Error.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
 					}
 				}
 
@@ -611,10 +611,10 @@ public class RecurringPaymentsServlet extends HttpServlet {
 								resp.getGetRecurringPaymentsProfileDetailsResponseDetails()
 										.getProfileStatus());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchant-sample/Response.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchant-sample/Error.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
 					}
 				}
 
@@ -641,10 +641,10 @@ public class RecurringPaymentsServlet extends HttpServlet {
 								resp.getManageRecurringPaymentsProfileStatusResponseDetails()
 										.getProfileID());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchant-sample/Response.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchant-sample/Error.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains(
@@ -812,10 +812,10 @@ public class RecurringPaymentsServlet extends HttpServlet {
 								resp.getUpdateRecurringPaymentsProfileResponseDetails()
 										.getProfileID());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchant-sample/Response.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchant-sample/Error.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI()
@@ -842,10 +842,10 @@ public class RecurringPaymentsServlet extends HttpServlet {
 								.getBillOutstandingAmountResponseDetails()
 								.getProfileID());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchant-sample/Response.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchant-sample/Error.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
 					}
 				}
 			}

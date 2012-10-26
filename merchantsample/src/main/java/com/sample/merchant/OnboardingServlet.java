@@ -166,10 +166,10 @@ public class OnboardingServlet extends HttpServlet {
 										+ ">Redirect to https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_partner-onboard-flow&onboarding_token="
 										+ resp.getToken() + "</a>");
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchant-sample/Response.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchant-sample/Error.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains("GetBoardingDetails")) {
@@ -201,10 +201,10 @@ public class OnboardingServlet extends HttpServlet {
 								.getGetBoardingDetailsResponseDetails()
 								.getProgramCode());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchant-sample/Response.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchant-sample/Error.jsp");
+						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
 					}
 				}
 			}
