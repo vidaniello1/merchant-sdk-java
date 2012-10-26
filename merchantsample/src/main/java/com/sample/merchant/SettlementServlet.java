@@ -171,12 +171,12 @@ public class SettlementServlet extends HttpServlet {
 						map.put("Payment Status", resp.getAuthorizationInfo()
 								.getPaymentStatus());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 
 					} else {
 
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains("DoReauthorization")) {
@@ -202,11 +202,11 @@ public class SettlementServlet extends HttpServlet {
 						map.put("Payment Status", resp.getAuthorizationInfo()
 								.getPaymentStatus());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains("DoVoid")) {
@@ -223,11 +223,11 @@ public class SettlementServlet extends HttpServlet {
 						map.put("Ack", resp.getAck());
 						map.put("Authorization ID", resp.getAuthorizationID());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains("DoCapture")) {
@@ -259,12 +259,12 @@ public class SettlementServlet extends HttpServlet {
 										.getPaymentInfo().getGrossAmount()
 										.getCurrencyID());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 
 					} else {
 
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains("Refund")) {
@@ -306,11 +306,11 @@ public class SettlementServlet extends HttpServlet {
 								+ " "
 								+ resp.getTotalRefundedAmount().getCurrencyID());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 
@@ -346,10 +346,10 @@ public class SettlementServlet extends HttpServlet {
 						map.put("Amount", resp.getAmount().getValue() + " "
 								+ resp.getAmount().getCurrencyID());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains("ReverseTransaction")) {
@@ -374,10 +374,10 @@ public class SettlementServlet extends HttpServlet {
 								.getReverseTransactionResponseDetails()
 								.getStatus());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 
@@ -436,10 +436,10 @@ public class SettlementServlet extends HttpServlet {
 										+ resp.getDoNonReferencedCreditResponseDetails()
 												.getAmount().getCurrencyID());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains(
@@ -461,10 +461,10 @@ public class SettlementServlet extends HttpServlet {
 						map.put("Transaction ID", resp.getTransactionID());
 						map.put("Status", resp.getStatus());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 

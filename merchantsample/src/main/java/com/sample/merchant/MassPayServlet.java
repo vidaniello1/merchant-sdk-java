@@ -122,10 +122,10 @@ public class MassPayServlet extends HttpServlet {
 					Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 					map.put("Ack", resp.getAck());
 					session.setAttribute("map", map);
-					response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+					response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 				} else {
 					session.setAttribute("Error", resp.getErrors());
-					response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+					response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 				}
 			}
 

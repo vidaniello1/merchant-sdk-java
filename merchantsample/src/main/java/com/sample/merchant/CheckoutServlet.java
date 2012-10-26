@@ -312,12 +312,12 @@ public class CheckoutServlet extends HttpServlet {
 										+ setExpressCheckoutResponse.getToken()
 										+ ">Redirect To PayPal</a>");
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 
 						session.setAttribute("Error",
 								setExpressCheckoutResponse.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			}
@@ -341,11 +341,11 @@ public class CheckoutServlet extends HttpServlet {
 								.getGetExpressCheckoutDetailsResponseDetails()
 								.getPayerInfo().getPayerID());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			}
@@ -426,12 +426,12 @@ public class CheckoutServlet extends HttpServlet {
 										.getDoExpressCheckoutPaymentResponseDetails()
 										.getBillingAgreementID());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 
 						session.setAttribute("Error",
 								doCheckoutPaymentResponseType.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 
@@ -486,12 +486,12 @@ public class CheckoutServlet extends HttpServlet {
 								.getDoExpressCheckoutPaymentResponseDetails()
 								.getBillingAgreementID());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 
 					} else {
 
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains(
@@ -516,10 +516,10 @@ public class CheckoutServlet extends HttpServlet {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains(
@@ -590,10 +590,10 @@ public class CheckoutServlet extends HttpServlet {
 								.getExecuteCheckoutOperationsResponseDetails()
 								.getSetDataResponse().getToken());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			}

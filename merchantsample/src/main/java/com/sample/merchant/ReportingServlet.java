@@ -137,11 +137,11 @@ public class ReportingServlet extends HttpServlet {
 							}
 
 							session.setAttribute("map", map);
-							response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+							response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 						}
 					} else {
 						session.setAttribute("Error", txnresponse.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI()
@@ -173,11 +173,11 @@ public class ReportingServlet extends HttpServlet {
 						map.put("Receiver", resp.getPaymentTransactionDetails()
 								.getReceiverInfo().getReceiver());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains("GetBalance")) {
@@ -207,11 +207,11 @@ public class ReportingServlet extends HttpServlet {
 							index++;
 						}
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains("GetPalDetails")) {
@@ -227,10 +227,10 @@ public class ReportingServlet extends HttpServlet {
 						map.put("Ack", resp.getAck());
 						map.put("Pal ID", resp.getPal());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			} else if (request.getRequestURI().contains("AddressVerify")) {
@@ -252,10 +252,10 @@ public class ReportingServlet extends HttpServlet {
 						map.put("Street Match", resp.getStreetMatch());
 						map.put("Zip Match", resp.getZipMatch());
 						session.setAttribute("map", map);
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Response.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
 						session.setAttribute("Error", resp.getErrors());
-						response.sendRedirect("/merchantsample-1.0-SNAPSHOT/Error.jsp");
+						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
 			}
