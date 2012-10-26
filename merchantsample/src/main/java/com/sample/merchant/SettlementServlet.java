@@ -147,9 +147,8 @@ public class SettlementServlet extends HttpServlet {
 				"<ul><li><a href='Settlement/DoAuthorization'>DoAuthorization</a></li><li><a href='Settlement/DoCapture'>DoCapture</a></li><li><a href='Settlement/DoVoid'>DoVoid</a></li><li><a href='Settlement/DoReauthorization'>DoReauthorization</a></li><li><a href='Settlement/Refund'>Refund</a></li><li><a href='Settlement/ReverseTransaction'>ReverseTransaction</a></li><li><a href='Settlement/DoNonReferencedCredit'>DoNonReferencedCredit</a></li><li><a href='Settlement/ManagePendingTransactionStatus'>ManagePendingTransactionStatus</a></li></ul>");
 		response.setContentType("text/html");
 		try {
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(
-					this.getServletContext().getRealPath("/")
-							+ "/WEB-INF/sdk_config.properties");
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
+					.getClass().getResourceAsStream("/sdk_config.properties"));
 			if (request.getRequestURI().contains("DoAuthorization")) {
 				DoAuthorizationReq req = new DoAuthorizationReq();
 				BasicAmountType amount = new BasicAmountType(

@@ -188,9 +188,8 @@ public class RecurringPaymentsServlet extends HttpServlet {
 		response.setContentType("text/html");
 		CurrencyCodeType currency = CurrencyCodeType.fromValue("USD");
 		try {
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(
-					this.getServletContext().getRealPath("/")
-							+ "/WEB-INF/sdk_config.properties");
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
+					.getClass().getResourceAsStream("/sdk_config.properties"));
 			if (request.getRequestURI().contains(
 					"GetBillingAgreementCustomerDetails")) {
 

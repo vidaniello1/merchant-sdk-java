@@ -90,9 +90,8 @@ public class OnboardingServlet extends HttpServlet {
 				"<ul><li><a href='Onboard/EnterBoarding'>EnterBoarding</a></li><li><a href='Onboard/GetBoardingDetails'>GetBoardingDetails</a></li></ul>");
 		response.setContentType("text/html");
 		try {
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(
-					this.getServletContext().getRealPath("/")
-							+ "/WEB-INF/sdk_config.properties");
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
+					.getClass().getResourceAsStream("/sdk_config.properties"));
 			if (request.getRequestURI().contains("EnterBoarding")) {
 				EnterBoardingReq req = new EnterBoardingReq();
 				EnterBoardingRequestDetailsType reqDetails = new EnterBoardingRequestDetailsType();

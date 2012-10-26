@@ -141,9 +141,8 @@ public class CheckoutServlet extends HttpServlet {
 				"<ul><li><a href='EC/SetExpressCheckout'>SetExpressCheckout</a></li><li><a href='EC/GetExpressCheckout'>GetExpressCheckout</a></li><li><a href='EC/DoExpressCheckout'>DoExpressCheckout</a></li></ul>");
 		response.setContentType("text/html");
 		try {
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(
-					this.getServletContext().getRealPath("/")
-							+ "/WEB-INF/sdk_config.properties");
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
+					.getClass().getResourceAsStream("/sdk_config.properties"));
 			if (request.getRequestURI().contains("SetExpressCheckout")) {
 				SetExpressCheckoutRequestType setExpressCheckoutReq = new SetExpressCheckoutRequestType();
 				SetExpressCheckoutRequestDetailsType details = new SetExpressCheckoutRequestDetailsType();
