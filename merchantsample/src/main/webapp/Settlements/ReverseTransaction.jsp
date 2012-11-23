@@ -30,7 +30,7 @@
 					<input type="submit" name="ReverseTransactionBtn"
 						value="ReverseTransaction" /><br />
 				</div>
-				<a href="/merchant-sample/index.html">Home</a>
+				<a href="../index.html">Home</a>
 			</div>
 		</form>
 

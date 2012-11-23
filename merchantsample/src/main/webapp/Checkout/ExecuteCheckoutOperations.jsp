@@ -88,7 +88,7 @@
 					<input type="submit" name="ExecuteCheckoutOperationsBtn"
 						value="ExecuteCheckoutOperations" /> <br />
 				</div>
-				<a href="/merchant-sample/index.html">Home</a>
+				<a href="../index.html">Home</a>
 			</div>
 		</form>
 		<div id="relatedcalls">

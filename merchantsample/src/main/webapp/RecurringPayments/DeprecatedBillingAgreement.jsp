@@ -13,7 +13,7 @@
 		SetCustomerBillingAgreement and CreateBillingAgreement api's.
 	</p>
 	<br />
-	<a href="/merchant-sample/index.html">Home</a>
+	<a href="../index.html">Home</a>
 	<div id="relatedcalls">
 		See also:
 		<ul>

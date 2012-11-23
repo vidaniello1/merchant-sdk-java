@@ -85,7 +85,7 @@
 				<div class="submit">
 					<input type="submit" name="RefundBtn" value="Refund" /><br />
 				</div>
-				<a href="/merchant-sample/index.html">Home</a>
+				<a href="../index.html">Home</a>
 			</div>
 		</form>
 		<div id="relatedcalls">

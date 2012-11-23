@@ -66,7 +66,7 @@
 					<input type="submit" name="DoUATPAuthorizationBtn"
 						value="DoUATPAuthorization" /> <br />
 				</div>
-				<a href="/merchant-sample/index.html">Home</a>
+				<a href="../index.html">Home</a>
 			</div>
 		</form>
 		<div id="relatedcalls">

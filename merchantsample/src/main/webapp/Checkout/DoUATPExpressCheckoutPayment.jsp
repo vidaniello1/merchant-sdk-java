@@ -58,7 +58,7 @@
 					<input type="submit" name="DoUATPExpressCheckoutPaymentBtn"
 						value="DoUATPExpressCheckoutPayment" /><br />
 				</div>
-				<a href="/merchant-sample/index.html">Home</a>
+				<a href="../index.html">Home</a>
 			</div>
 		</form>
 		<div id="relatedcalls">

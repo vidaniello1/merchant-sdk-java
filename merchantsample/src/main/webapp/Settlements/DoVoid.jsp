@@ -25,7 +25,7 @@
 				<div class="submit">
 					<input type="submit" name="DoVoidBtn" value="DoVoid" /><br />
 				</div>
-				<a href="/merchant-sample/index.html">Home</a>
+				<a href="../index.html">Home</a>
 			</div>
 		</form>
 		<div id="relatedcalls">

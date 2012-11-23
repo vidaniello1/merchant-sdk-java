@@ -259,7 +259,7 @@
 				<div class="submit">
 					<input type="submit" name="DirectPaymentBtn" value="DirectPayment" /><br />
 				</div>
-				<a href="/merchant-sample/index.html">Home</a> <br /> <br />
+				<a href="../index.html">Home</a> <br /> <br />
 			</div>
 		</form>
 		<div id="relatedcalls">
