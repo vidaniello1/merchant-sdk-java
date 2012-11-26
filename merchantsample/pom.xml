@@ -2,16 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.paypal.sdk</groupId>
   <artifactId>merchantsample</artifactId>
-  <version>1.2.95-SNAPSHOT</version>
+  <version>1.2.95</version>
   <name>MerchantSample</name>
   <packaging>war</packaging>
-  <parent>
-  	<groupId>com.paypal.sdk</groupId>
-  	<version>1.2.95-SNAPSHOT</version>
-  	<relativePath>../pom.xml</relativePath>
-  	<artifactId>merchant</artifactId>
-  </parent>
-  <dependencies>
+    <dependencies>
   	<dependency>
   		<groupId>javax.servlet</groupId>
   		<artifactId>servlet-api</artifactId>
@@ -21,7 +15,7 @@
   	<dependency>
   		<groupId>com.paypal.sdk</groupId>
   		<artifactId>merchantsdk</artifactId>
-  		<version>1.2.95-SNAPSHOT</version>
+  		<version>1.2.95</version>
   	</dependency>
   </dependencies>
 </project>
