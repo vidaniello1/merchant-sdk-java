@@ -10,6 +10,6 @@ To build and run this application:
 
 *   Update the 'sdk_config.properties' in the 'merchantsample/src/main/resources' directory with your API credentials.
 *	Simply run mvn install to build war file.
-*	Copy the 'target/merchantsample-2.0.96.war' into your 'tomcat/webapps' directory.
+*	Copy 'merchantsample-2.0.96.war' into your 'tomcat/webapps' directory.
 *	Start your tomcat if it's not already running.
 *	Access 'http://<your-server-host:port>/merchantsample-2.0.96/' in your browser to play with the test pages.
