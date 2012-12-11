@@ -90,6 +90,8 @@ The SDK uses .properties format configuration file. Sample of this file is at
 
 For additional information on Merchant API, please refer to https://www.x.com/developers/paypal/documentation-tools/api
 
-
+Instant Payment Notification(IPN) 
+---------------------------------
+* Please refer readme  at 'merchantsample/IPN-README.md'
 
 
