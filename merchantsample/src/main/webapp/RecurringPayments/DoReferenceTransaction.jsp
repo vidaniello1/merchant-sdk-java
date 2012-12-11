@@ -190,7 +190,12 @@
 					</div>
 				</div>
 
-
+				<div class="params">
+						<div class="param_name">IPN Notification Url (Receive IPN call back from PayPal)</div>
+						<div class="param_value">
+							<input type=text size="50"  name="notifyURL" value="">
+				</div>
+					
 				<table class="params">
 					<tr>
 						<th class="param_name">Override CreditCard Details</th>
@@ -377,6 +382,8 @@
 							<input type="text" name="zip" id="zip" value="95131" />
 						</div>
 					</div>
+					
+				</div>
 				</div>
 				<div class="submit">
 					<input type="submit" name="DoReferenceTransactionBtn"

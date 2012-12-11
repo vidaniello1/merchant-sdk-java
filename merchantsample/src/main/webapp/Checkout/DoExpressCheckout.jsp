@@ -67,7 +67,12 @@
 							</div></td>
 					</tr>
 				</table>
-
+				<div class="params">
+					<div class="param_name">IPN Notification Url (Receive IPN call back from PayPal)</div>
+					<div class="param_value">
+						<input type=text size="50"  name="notifyURL" value="">
+					</div>
+				</div>
 				<div class="submit">
 					<input type="submit" name="DoExpressCheckoutBtn"
 						value="DoExpressCheckout" /> <br />

@@ -137,6 +137,13 @@
 						</td>
 					</tr>
 				</table>
+				<div class="params">
+					<div class="param_name">IPN Notification Url (Receive IPN call back from PayPal)</div>
+					<div class="param_value">
+						<input type=text size="50"  name="notifyURL" value="">
+					</div>
+				</div>
+				<br>
 				<div class="section_header"><b>Ship To Address:</b></div>
 				<div class="param_name">Require buyer's PayPal Shipping address to be a confirmed address</div> 
 		        <div class="param_value"> 

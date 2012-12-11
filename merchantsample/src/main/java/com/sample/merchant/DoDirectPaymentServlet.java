@@ -83,7 +83,7 @@ public class DoDirectPaymentServlet extends HttpServlet {
 				.getParameter("countryCode")));
 		shipTo.setPostalCode(req.getParameter("zip"));
 		paymentDetails.setShipToAddress(shipTo);
-
+		paymentDetails.setNotifyURL(req.getParameter("notifyURL"));
 		details.setPaymentDetails(paymentDetails);
 
 		CreditCardDetailsType cardDetails = new CreditCardDetailsType();

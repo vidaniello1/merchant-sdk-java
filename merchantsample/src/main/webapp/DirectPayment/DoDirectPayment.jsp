@@ -141,6 +141,12 @@
 						</select>
 					</div>
 				</div>
+				<div class="params">
+					<div class="param_name">IPN Notification Url (Receive IPN call back from PayPal)</div>
+					<div class="param_value">
+						<input type=text size="50"  name="notifyURL" value="">
+					</div>
+				</div>
 				<br> <b>Billing Address*</b>
 				<div class="params">
 					<div class="param_name">Address Line 1</div>

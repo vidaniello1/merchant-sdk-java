@@ -251,6 +251,7 @@ public class CheckoutServlet extends HttpServlet {
 				paydtl.setPaymentDetailsItem(lineItems);
 
 				paydtl.setItemTotal(itemsTotal);
+				paydtl.setNotifyURL(request.getParameter("notifyURL"));
 				payDetails.add(paydtl);
 				details.setPaymentDetails(payDetails);
 				if (request.getParameter("billingAgreementText") != "") {
@@ -288,9 +289,8 @@ public class CheckoutServlet extends HttpServlet {
 				details.setCppHeaderBackColor(request.getParameter("cppheaderbackcolor"));
 				details.setCppPayflowColor(request.getParameter("cpppayflowcolor"));
 				details.setAllowNote(request.getParameter("allowNote"));
-				
-				setExpressCheckoutReq
-						.setSetExpressCheckoutRequestDetails(details);
+
+				setExpressCheckoutReq.setSetExpressCheckoutRequestDetails(details);
 
 				SetExpressCheckoutReq expressCheckoutReq = new SetExpressCheckoutReq();
 				expressCheckoutReq
@@ -389,7 +389,8 @@ public class CheckoutServlet extends HttpServlet {
 				paymentItem.setAmount(amount);
 				paymentItems.add(paymentItem);
 				paymentDetails.setPaymentDetailsItem(paymentItems);
-
+				paymentDetails.setNotifyURL(request.getParameter("notifyURL"));
+				
 				List<PaymentDetailsType> payDetailType = new ArrayList<PaymentDetailsType>();
 				payDetailType.add(paymentDetails);
 				details.setPaymentDetails(payDetailType);

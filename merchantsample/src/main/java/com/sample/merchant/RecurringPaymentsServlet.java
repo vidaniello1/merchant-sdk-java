@@ -289,7 +289,7 @@ public class RecurringPaymentsServlet extends HttpServlet {
 				shipTo.setCountry(CountryCodeType.US);
 				shipTo.setPostalCode(request.getParameter("zip"));
 				paymentDetails.setShipToAddress(shipTo);
-
+				paymentDetails.setNotifyURL(request.getParameter("notifyURL"));
 				doDetailsType.setPaymentDetails(paymentDetails);
 
 				doDetailsType.setReferenceID(request
