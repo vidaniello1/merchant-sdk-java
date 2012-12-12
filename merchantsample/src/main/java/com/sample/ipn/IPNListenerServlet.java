@@ -20,21 +20,13 @@ public class IPNListenerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		IPNMessage ipnlistener=null;
 		PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
 				.getClass().getResourceAsStream("/sdk_config.properties"));
-		try{
 			
-			ipnlistener = new IPNMessage(request);
-
-		}catch(IOException io){
-			LoggingManager.debug(IPNListenerServlet.class, io.getMessage());
-		}
-		
-		
-		boolean isIpnVerified = ipnlistener.isIpnVerified();
+		IPNMessage ipnlistener = new IPNMessage(request);
+		boolean isIpnVerified = ipnlistener.validate();
 		String transactionType = ipnlistener.getTransactionType();
-		Map<String,String> map = ipnlistener.getIpnParamValueMap();
+		Map<String,String> map = ipnlistener.getIpnMap();
 		
 		LoggingManager.info(IPNListenerServlet.class, "******* IPN (name:value) pair : "+ map + "  " +
 				"######### TransactionType : "+transactionType+"  ======== IPN verified : "+ isIpnVerified);
