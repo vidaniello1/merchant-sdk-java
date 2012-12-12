@@ -34,6 +34,16 @@
 	</servlet-mapping>
 	<servlet>
 		<description></description>
+		<display-name>PermissionsMassPayServlet</display-name>
+		<servlet-name>PermissionsMassPayServlet</servlet-name>
+		<servlet-class>com.sample.merchant.PermissionsMassPayServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PermissionsMassPayServlet</servlet-name>
+		<url-pattern>/PermissionsMassPay</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description></description>
 		<display-name>MassPayServlet</display-name>
 		<servlet-name>MassPayServlet</servlet-name>
 		<servlet-class>com.sample.merchant.MassPayServlet</servlet-class>
@@ -85,6 +95,26 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<description></description>
+		<display-name>RequestPermissions</display-name>
+		<servlet-name>RequestPermissions</servlet-name>
+		<servlet-class>com.sample.merchant.PermissionServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RequestPermissions</servlet-name>
+		<url-pattern>/RequestPermissions</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description></description>
+		<display-name>GenerateAccessToken</display-name>
+		<servlet-name>GenerateAccessToken</servlet-name>
+		<servlet-class>com.sample.merchant.GenerateAccessTokenServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GenerateAccessToken</servlet-name>
+		<url-pattern>/GenerateAccessToken</url-pattern>
+	</servlet-mapping>
+    <servlet>
 		<description></description>
 		<display-name>IPNListenerServlet</display-name>
 		<servlet-name>IPNListenerServlet</servlet-name>
