@@ -8,8 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
-
+import com.paypal.core.ConfigManager;
 import com.paypal.core.LoggingManager;
 import com.paypal.ipn.IPNMessage;
 
@@ -20,9 +19,7 @@ public class IPNListenerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
-				.getClass().getResourceAsStream("/sdk_config.properties"));
-			
+		ConfigManager.getInstance().load(this.getClass().getResourceAsStream("/sdk_config.properties"));
 		IPNMessage ipnlistener = new IPNMessage(request);
 		boolean isIpnVerified = ipnlistener.validate();
 		String transactionType = ipnlistener.getTransactionType();
