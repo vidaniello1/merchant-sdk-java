@@ -45,7 +45,6 @@ IPN variables :
 * txn_type
 * verify_sign
 * transaction_subject
-* btn_id 
 
 
 [BuyerInfo]
@@ -132,7 +131,6 @@ IPN variables :
 * exchange_rate
 * fraud_managment_pending_filters_X
 * invoice
-* item_name
 * item_nameX
 * item_numberX
 * mc_currency
@@ -166,9 +164,6 @@ IPN variables :
 * transaction_entity
 * payment_type
 * handling_amount
-* shipping_discount
-* insurance_amount
-* discount
 
 [BillingAgreement]
 ------------------
