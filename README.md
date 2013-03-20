@@ -17,11 +17,13 @@ SDK Integration:
 
 *	Add dependency to sdk in your application's pom.xml as below.
 		
-		<dependency>
-			<groupId>com.paypal.sdk</groupId>
-			<artifactId>merchantsdk</artifactId>
-			<version>2.2.98</version>
-		</dependency>
+    ```xml
+    <dependency>
+        <groupId>com.paypal.sdk</groupId>
+        <artifactId>merchantsdk</artifactId>
+        <version>2.2.98</version>
+    </dependency>
+    ```
 		
 To make an API call:
 --------------------			
@@ -29,15 +31,20 @@ To make an API call:
 		
 *	Copy the configuration file 'sdk_config.properties' in 'merchantsample/src/main/resources' folder to your application 'src/main/resources'. And load it using,  
 		  
-		new PayPalAPIInterfaceServiceService(this.getClass().getResourceAsStream("/sdk_config.properties"));
+    ```java
+    new PayPalAPIInterfaceServiceService(this.getClass().getResourceAsStream("/sdk_config.properties"));
+    ```
 	
 *	Or load the configuration file from any location using absolute path with the below method calls as required.
 
-          new PayPalAPIInterfaceServiceService(new File(" .../sdk_config.properties"));
-                                 Or
-		  new PayPalAPIInterfaceServiceService(new InputStream(new File(" .../sdk_config.properties")));
-                                 Or
-          new PayPalAPIInterfaceServiceService(" .../sdk_config.properties");
+    ```java
+    new PayPalAPIInterfaceServiceService(new File(" .../sdk_config.properties"));
+
+                         Or
+    new PayPalAPIInterfaceServiceService(new InputStream(new File(" .../sdk_config.properties")));
+                         Or
+    new PayPalAPIInterfaceServiceService(" .../sdk_config.properties");
+    ```
   
 *	Create a service wrapper object.
 
@@ -45,29 +52,27 @@ To make an API call:
 
 *	Invoke the appropriate method on the service wrapper object.
 
-For example,
+    For example,
 
           
-	  import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
-	  import urn.ebay.api.PayPalAPI.TransactionSearchReq;
-	  import urn.ebay.api.PayPalAPI.TransactionSearchRequestType;
-	  import urn.ebay.api.PayPalAPI.TransactionSearchResponseType;
-	  ...
-	  
-          
-          
-      TransactionSearchReq txnreq = new TransactionSearchReq();
-	  TransactionSearchRequestType requestType = new TransactionSearchRequestType();
-	  
-	  requestType.setStartDate("2011-10-04T00:00:00.000Z"); 
-	  requestType.setEndDate("2011-10-05T23:59:59.000Z"); 
-	  requestType.setVersion("95.0");
-	  requestType.setTransactionID(request.getParameter("transactionID"));
-	  txnreq.setTransactionSearchRequest(requestType);
-	  
-      PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this.getClass().getResourceAsStream("/sdk_config.properties"));
-	  //username is optional
-	  TransactionSearchResponseType txnresponse = service.transactionSearch(txnreq, username);
+    ```java
+    import urn.ebay.api.PayPalAPI.*;
+    ...
+      
+    TransactionSearchReq txnreq = new TransactionSearchReq();
+    TransactionSearchRequestType requestType = new TransactionSearchRequestType();
+
+    requestType.setStartDate("2011-10-04T00:00:00.000Z"); 
+    requestType.setEndDate("2011-10-05T23:59:59.000Z"); 
+    requestType.setVersion("95.0");
+    requestType.setTransactionID(request.getParameter("transactionID"));
+    txnreq.setTransactionSearchRequest(requestType);
+
+    PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(
+                                                this.getClass().getResourceAsStream("/sdk_config.properties"));
+    //username is optional
+    TransactionSearchResponseType txnresponse = service.transactionSearch(txnreq, username);
+    ```
 		  
 
 SDK Logging:
