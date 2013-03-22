@@ -29,26 +29,23 @@ To make an API call:
 --------------------			
 *	Import PayPalAPIInterfaceServiceService.java into your code.
 		
-*	Copy the configuration file 'sdk_config.properties' in 'merchantsample/src/main/resources' folder to your application 'src/main/resources'. Use the default constructor to run in default configuration.
-		  
-    ```java
-    new PayPalAPIInterfaceServiceService();
-    ```
-	
-*	Or load the configuration file from any location using absolute path with the below method calls as required.
-
-    ```java
-    new PayPalAPIInterfaceServiceService(new File("/pathto/custom.properties"));
-                         Or
-    new PayPalAPIInterfaceServiceService(new FileInputStream(new File("/pathto/custom.properties")));
-                         Or
-    new PayPalAPIInterfaceServiceService("/pathto/custom.properties");
-    			 Or
-    new PayPalAPIInterfaceServiceService(Map<String, String> customConfigurationMap);
-    			 Or
-    new PayPalAPIInterfaceServiceService(Properties customProperties);
-    ```
-*	The SDK assumes defaults for certain parameters(refer sdk_config.properties for defaults). Either 'mode' or 'service.Endpoint' is a mandatory configuration. Account credentials are treated as mandatory parameters.
+*	Copy the configuration file 'sdk_config.properties' in 'merchantsample/src/main/resources' folder to your application 'src/main/resources'. Use the default constructor to run in default configuration(configuration used from sdk_config.properties found in classpath).
+	```java
+	new PayPalAPIInterfaceServiceService();
+	```
+*	For Dynamic configuration(configuration is tied to the lifetime of the service object)
+	```java
+	new PayPalAPIInterfaceServiceService(new File("/pathto/custom.properties"));
+			Or
+	new PayPalAPIInterfaceServiceService(new FileInputStream(new File("/pathto/custom.properties")));
+			Or
+	new PayPalAPIInterfaceServiceService("/pathto/custom.properties");
+			Or
+	new PayPalAPIInterfaceServiceService(Map<String, String> customConfigurationMap);
+			Or
+	new PayPalAPIInterfaceServiceService(Properties customProperties);
+	```
+*	The SDK takes defaults for certain parameters(refer sdk_config.properties for defaults). Account Credentials and either of 'mode' or 'service.Endpoint' are mandatory parameters.
 
 *	Create a service wrapper object.
 
@@ -62,7 +59,6 @@ To make an API call:
     ```java
     import urn.ebay.api.PayPalAPI.*;
     ...
-      
     TransactionSearchReq txnreq = new TransactionSearchReq();
     TransactionSearchRequestType requestType = new TransactionSearchRequestType();
 
@@ -73,7 +69,11 @@ To make an API call:
     txnreq.setTransactionSearchRequest(requestType);
 
     PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService();
-    //username is optional
+    			Or
+    Map<String, String> customConfigurationMap = new HashMap<String, String>();
+    customConfigurationMap.put("mode", "sandbox"); // Load the map with all mandatory parameters
+    ...
+    PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Map<String, String> customConfigurationMap);
     TransactionSearchResponseType txnresponse = service.transactionSearch(txnreq, username);
     ```
 		  
@@ -97,7 +97,7 @@ The SDK uses .properties format configuration file. Sample of this file is at
 
 *	Service configuration.
 
-Multiple End-points Support
+Multiple SDK usage (Multiple End-points Support)
 ---------------------------
 Multiple end-points configuration can be done by specifying mulitple end-points identified by specific property keys. 
 When using multiple SDKs in combination, like Merchant and Permissions etc..configure the endpoints as shown below 
