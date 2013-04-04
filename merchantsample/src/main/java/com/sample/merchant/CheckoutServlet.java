@@ -143,6 +143,7 @@ public class CheckoutServlet extends HttpServlet {
 		try {
 			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
 					.getClass().getResourceAsStream("/sdk_config.properties"));
+			
 			if (request.getRequestURI().contains("SetExpressCheckout")) {
 				SetExpressCheckoutRequestType setExpressCheckoutReq = new SetExpressCheckoutRequestType();
 				SetExpressCheckoutRequestDetailsType details = new SetExpressCheckoutRequestDetailsType();
@@ -161,16 +162,43 @@ public class CheckoutServlet extends HttpServlet {
 						+ request.getParameter("currencyCode"));
 
 				details.setCancelURL(cancelURL);
+				/*
+				 *  (Optional) Email address of the buyer as entered during checkout.
+				 *  PayPal uses this value to pre-fill the PayPal membership sign-up portion on the PayPal pages.
+				 *	Character length and limitations: 127 single-byte alphanumeric characters
+				 */
 				details.setBuyerEmail(request.getParameter("buyerMail"));
+				
+				/*
+				 * How you want to obtain payment. When implementing parallel payments, 
+				 * this field is required and must be set to Order.
+				 *  When implementing digital goods, this field is required and must be set to Sale.
+				 *   If the transaction does not include a one-time purchase, this field is ignored. 
+				 *   It is one of the following values:
 
-				request.getSession().setAttribute("paymentType",
-						request.getParameter("paymentType"));
+    				Sale – This is a final sale for which you are requesting payment (default).
+    				Authorization – This payment is a basic authorization subject to settlement with PayPal Authorization and Capture.
+    				Order – This payment is an order authorization subject to settlement with PayPal Authorization and Capture.
+				 */
+				request.getSession().setAttribute("paymentType",request.getParameter("paymentType"));
 
 				double itemTotal = 0.00;
 				double orderTotal = 0.00;
 				// populate line item details
+				//Cost of item. This field is required when you pass a value for ItemCategory.
 				String amountItems = request.getParameter("itemAmount");
+				/*
+				 * Item quantity. This field is required when you pass a value for ItemCategory. 
+				 * For digital goods (ItemCategory=Digital), this field is required.
+				   Character length and limitations: Any positive integer
+				   This field is introduced in version 53.0. 
+				 */
 				String qtyItems = request.getParameter("itemQuantity");
+				/*
+				 * Item name. This field is required when you pass a value for ItemCategory.
+					Character length and limitations: 127 single-byte characters
+					This field is introduced in version 53.0. 
+				 */
 				String names = request.getParameter("itemName");
 
 				List<PaymentDetailsItemType> lineItems = new ArrayList<PaymentDetailsItemType>();
@@ -183,11 +211,28 @@ public class CheckoutServlet extends HttpServlet {
 				item.setQuantity(new Integer(qtyItems));
 				item.setName(names);
 				item.setAmount(amt);
-				item.setItemCategory(ItemCategoryType.fromValue(request
-						.getParameter("itemCategory")));
+				/*
+				 * Indicates whether an item is digital or physical. For digital goods, this field is required and must be set to Digital. It is one of the following values:
+    			 	1.Digital
+    				2.Physical
+				   This field is available since version 65.1. 
+				 */
+				item.setItemCategory(ItemCategoryType.fromValue(request.getParameter("itemCategory")));
+				/*
+				 *  (Optional) Item description.
+					Character length and limitations: 127 single-byte characters
+					This field is introduced in version 53.0. 
+				 */
 				item.setDescription(request.getParameter("itemDescription"));
 				lineItems.add(item);
-
+				/*
+				 * (Optional) Item sales tax.
+					Note: You must set the currencyID attribute to one of 
+					the 3-character currency codes for any of the supported PayPal currencies.
+					Character length and limitations: Value is a positive number which cannot exceed $10,000 USD in any currency.
+					It includes no currency symbol. It must have 2 decimal places, the decimal separator must be a period (.), 
+					and the optional thousands separator must be a comma (,).
+				 */
 				if (request.getParameter("salesTax") != "") {
 					item.setTax(new BasicAmountType(CurrencyCodeType
 							.fromValue(request.getParameter("currencyCode")),
@@ -199,8 +244,29 @@ public class CheckoutServlet extends HttpServlet {
 				
 				List<PaymentDetailsType> payDetails = new ArrayList<PaymentDetailsType>();
 				PaymentDetailsType paydtl = new PaymentDetailsType();
-				paydtl.setPaymentAction(PaymentActionCodeType.fromValue(request
-						.getParameter("paymentType")));
+				/*
+				 * How you want to obtain payment. When implementing parallel payments, 
+				 * this field is required and must be set to Order.
+				 *  When implementing digital goods, this field is required and must be set to Sale.
+				 *   If the transaction does not include a one-time purchase, this field is ignored. 
+				 *   It is one of the following values:
+
+    				Sale – This is a final sale for which you are requesting payment (default).
+    				Authorization – This payment is a basic authorization subject to settlement with PayPal Authorization and Capture.
+    				Order – This payment is an order authorization subject to settlement with PayPal Authorization and Capture.
+				 */
+				paydtl.setPaymentAction(PaymentActionCodeType.fromValue(request.getParameter("paymentType")));
+				/*
+				 *  (Optional) Total shipping costs for this order.
+					Note:
+					You must set the currencyID attribute to one of the 3-character currency codes 
+					for any of the supported PayPal currencies.
+					Character length and limitations: 
+					Value is a positive number which cannot exceed $10,000 USD in any currency.
+					It includes no currency symbol. 
+					It must have 2 decimal places, the decimal separator must be a period (.), 
+					and the optional thousands separator must be a comma (,)
+				 */
 				if (request.getParameter("shippingTotal") != "") {
 					BasicAmountType shippingTotal = new BasicAmountType();
 					shippingTotal.setValue(request
@@ -211,6 +277,20 @@ public class CheckoutServlet extends HttpServlet {
 							.getParameter("shippingTotal"));
 					paydtl.setShippingTotal(shippingTotal);
 				}
+				
+				/*
+				 *  (Optional) Total shipping insurance costs for this order. 
+				 *  The value must be a non-negative currency amount or null if you offer insurance options.
+					 Note:
+					 You must set the currencyID attribute to one of the 3-character currency 
+					 codes for any of the supported PayPal currencies.
+					 Character length and limitations: 
+					 Value is a positive number which cannot exceed $10,000 USD in any currency. 
+					 It includes no currency symbol. It must have 2 decimal places,
+					 the decimal separator must be a period (.), 
+					 and the optional thousands separator must be a comma (,).
+					 InsuranceTotal is available since version 53.0.
+				 */
 				if (request.getParameter("insuranceTotal") != "") {
 					paydtl.setInsuranceTotal(new BasicAmountType(
 							CurrencyCodeType.fromValue(request
@@ -220,6 +300,17 @@ public class CheckoutServlet extends HttpServlet {
 					orderTotal += Double.parseDouble(request
 							.getParameter("insuranceTotal"));
 				}
+				/*
+				 *  (Optional) Total handling costs for this order.
+					 Note:
+					 You must set the currencyID attribute to one of the 3-character currency codes 
+					 for any of the supported PayPal currencies.
+					 Character length and limitations: Value is a positive number which 
+					 cannot exceed $10,000 USD in any currency.
+					 It includes no currency symbol. It must have 2 decimal places, 
+					 the decimal separator must be a period (.), and the optional 
+					 thousands separator must be a comma (,). 
+				 */
 				if (request.getParameter("handlingTotal") != "") {
 					paydtl.setHandlingTotal(new BasicAmountType(
 							CurrencyCodeType.fromValue(request
@@ -228,6 +319,17 @@ public class CheckoutServlet extends HttpServlet {
 					orderTotal += Double.parseDouble(request
 							.getParameter("handlingTotal"));
 				}
+				
+				/*
+				 *  (Optional) Sum of tax for all items in this order.
+					 Note:
+					 You must set the currencyID attribute to one of the 3-character currency codes
+					 for any of the supported PayPal currencies.
+					 Character length and limitations: Value is a positive number which 
+					 cannot exceed $10,000 USD in any currency. It includes no currency symbol.
+					 It must have 2 decimal places, the decimal separator must be a period (.),
+					 and the optional thousands separator must be a comma (,).
+				 */
 				if (request.getParameter("taxTotal") != "") {
 					paydtl.setTaxTotal(new BasicAmountType(CurrencyCodeType
 							.fromValue(request.getParameter("currencyCode")),
@@ -235,9 +337,17 @@ public class CheckoutServlet extends HttpServlet {
 					orderTotal += Double.parseDouble(request
 							.getParameter("taxTotal"));
 				}
+				
+				/*
+				 *  (Optional) Description of items the buyer is purchasing.
+					 Note:
+					 The value you specify is available only if the transaction includes a purchase.
+					 This field is ignored if you set up a billing agreement for a recurring payment 
+					 that is not immediately charged.
+					 Character length and limitations: 127 single-byte alphanumeric characters
+				 */
 				if (request.getParameter("orderDescription") != "") {
-					paydtl.setOrderDescription(request
-							.getParameter("orderDescription"));
+					paydtl.setOrderDescription(request.getParameter("orderDescription"));
 				}
 
 				
@@ -251,43 +361,179 @@ public class CheckoutServlet extends HttpServlet {
 				paydtl.setPaymentDetailsItem(lineItems);
 
 				paydtl.setItemTotal(itemsTotal);
+				/*
+				 *  (Optional) Your URL for receiving Instant Payment Notification (IPN) 
+				 *  about this transaction. If you do not specify this value in the request, 
+				 *  the notification URL from your Merchant Profile is used, if one exists.
+					Important:
+					The notify URL applies only to DoExpressCheckoutPayment. 
+					This value is ignored when set in SetExpressCheckout or GetExpressCheckoutDetails.
+					Character length and limitations: 2,048 single-byte alphanumeric characters
+				 */
 				paydtl.setNotifyURL(request.getParameter("notifyURL"));
 				payDetails.add(paydtl);
 				details.setPaymentDetails(payDetails);
 				if (request.getParameter("billingAgreementText") != "") {
+					/*
+					 *  (Required) Type of billing agreement. For recurring payments,
+					 *   this field must be set to RecurringPayments. 
+					 *   In this case, you can specify up to ten billing agreements. 
+					 *   Other defined values are not valid.
+						 Type of billing agreement for reference transactions. 
+						 You must have permission from PayPal to use this field. 
+						 This field must be set to one of the following values:
+    						1. MerchantInitiatedBilling - PayPal creates a billing agreement 
+    						   for each transaction associated with buyer.You must specify 
+    						   version 54.0 or higher to use this option.
+    						2. MerchantInitiatedBillingSingleAgreement - PayPal creates a 
+    						   single billing agreement for all transactions associated with buyer.
+    						   Use this value unless you need per-transaction billing agreements. 
+    						   You must specify version 58.0 or higher to use this option.
+
+					 */
 					BillingAgreementDetailsType billingAgreement = new BillingAgreementDetailsType(
-							BillingCodeType.fromValue(request
-									.getParameter("billingType")));
-					billingAgreement.setBillingAgreementDescription(request
-							.getParameter("billingAgreementText"));
+							BillingCodeType.fromValue(request.getParameter("billingType")));
+					/*
+					 * Description of goods or services associated with the billing agreement. 
+					 * This field is required for each recurring payment billing agreement.
+					 *  PayPal recommends that the description contain a brief summary of 
+					 *  the billing agreement terms and conditions. For example,
+					 *   buyer is billed at "9.99 per month for 2 years".
+					   Character length and limitations: 127 single-byte alphanumeric characters
+					 */
+					billingAgreement.setBillingAgreementDescription(request.getParameter("billingAgreementText"));
 					List<BillingAgreementDetailsType> billList = new ArrayList<BillingAgreementDetailsType>();
 					billList.add(billingAgreement);
 					details.setBillingAgreementDetails(billList);
 				}
 				
 				//shipping address
+				/*
+				 * Indicates whether or not you require the buyer's shipping address on 
+				 * file with PayPal be a confirmed address. For digital goods, 
+				 * this field is required, and you must set it to 0. It is one of the following values:
+    				0 – You do not require the buyer's shipping address be a confirmed address.
+    				1 – You require the buyer's shipping address be a confirmed address.
+					Note:
+					Setting this field overrides the setting you specified in your Merchant Account Profile.
+					Character length and limitations: 1 single-byte numeric character
+				 */
 				details.setReqConfirmShipping(request.getParameter("reqConfirmShipping"));
+				/*
+				 *  (Optional) Determines whether or not the PayPal pages should 
+				 *  display the shipping address set by you in this SetExpressCheckout request,
+				 *   not the shipping address on file with PayPal for this buyer. Displaying 
+				 *   the PayPal street address on file does not allow the buyer to edit that address. 
+				 *   It is one of the following values:
+    				 0 – The PayPal pages should not display the shipping address.
+    				 1 – The PayPal pages should display the shipping address.
+					Character length and limitations: 1 single-byte numeric character
+				 */
 				details.setAddressOverride(request.getParameter("addressoverride"));
 				AddressType shipToAddress=new AddressType();
+				/*
+				 * Person's name associated with this shipping address.
+				 *  It is required if using a shipping address.
+				   Character length and limitations: 32 single-byte characters
+				 */
 				shipToAddress.setName(request.getParameter("name"));
+				/*
+				 * First street address. It is required if using a shipping address.
+				   Character length and limitations: 100 single-byte characters
+				 */
 				shipToAddress.setStreet1(request.getParameter("street1"));
+				/*
+				 *  (Optional) Second street address.
+					Character length and limitations: 100 single-byte characters
+				 */
 				shipToAddress.setStreet2(request.getParameter("street2"));
+				/*
+				 * Name of city. It is required if using a shipping address.
+				   Character length and limitations: 40 single-byte characters
+				 */
 				shipToAddress.setCityName(request.getParameter("city"));
+				/*
+				 * State or province. It is required if using a shipping address.
+				   Character length and limitations: 40 single-byte characters
+				 */
 				shipToAddress.setStateOrProvince(request.getParameter("state"));
+				/*
+				 * U.S. ZIP code or other country-specific postal code. 
+				 * It is required if using a U.S. shipping address and may be
+				 *  required for other countries.
+				   Character length and limitations: 20 single-byte characters
+				 */
 				shipToAddress.setPostalCode(request.getParameter("postalCode"));
+				/*
+				 * Country code. It is required if using a shipping address.
+				   Character length and limitations: 2 single-byte characters
+				 */
 				shipToAddress.setCountry(CountryCodeType.fromValue(request.getParameter("countryCode")));
 				details.setAddress(shipToAddress);
 				
-				// shipping display options
+				/*
+				 * Determines where or not PayPal displays shipping address fields on the PayPal pages. 
+				 * For digital goods, this field is required, and you must set it to 1. It is one of the
+				 *  following values:
+    				0 – PayPal displays the shipping address on the PayPal pages.
+    				1 – PayPal does not display shipping address fields whatsoever.
+    				2 – If you do not pass the shipping address, PayPal obtains it from the 
+    				buyer's account profile.
+					Character length and limitations: 4 single-byte numeric characters
+				 */
 				details.setNoShipping(request.getParameter("noShipping"));
 				
 				// PayPal page styling attributes
+				/*
+				 *  (Optional) A label that overrides the business name in the PayPal account on 
+				 *   the PayPal hosted checkout pages.
+					 Character length and limitations: 127 single-byte alphanumeric characters
+				 */
 				details.setBrandName(request.getParameter("brandName"));
+				/*
+				 *  (Optional) Name of the Custom Payment Page Style for payment pages associated with
+				 *  this button or link. It corresponds to the HTML variable page_style for customizing
+				 *  payment pages. It is the same name as the Page Style Name you chose to add or edit 
+				 *  the page style in your PayPal Account profile.
+					Character length and limitations: 30 single-byte alphabetic characters
+				 */
 				details.setCustom(request.getParameter("pageStyle"));
+				/*
+				 * (Optional) URL for the image you want to appear at the top left of the payment page. 
+				 * The image has a maximum size of 750 pixels wide by 90 pixels high. PayPal recommends 
+				 * that you provide an image that is stored on a secure (https) server. 
+				 * If you do not specify an image, the business name displays.
+				 */
 				details.setCppHeaderImage(request.getParameter("cppheaderimage"));
+				/*
+				 *  (Optional) Sets the border color around the header of the payment page. 
+				 *  The border is a 2-pixel perimeter around the header space, which is 750 pixels
+				 *  wide by 90 pixels high. By default, the color is black.
+					Character length and limitations: 6-character HTML hexadecimal ASCII color code
+				 */
 				details.setCppHeaderBorderColor(request.getParameter("cppheaderbordercolor"));
+				/*
+				 *  (Optional) Sets the background color for the header of the payment page. 
+				 *   By default, the color is white.
+					 Character length and limitations: 6-character HTML hexadecimal ASCII color code 
+				 */
 				details.setCppHeaderBackColor(request.getParameter("cppheaderbackcolor"));
+				/*
+				 *  (Optional) Sets the background color for the payment page. 
+				 *   By default, the color is white.
+					 Character length and limitations: 6-character HTML hexadecimal ASCII color code 
+				 */
 				details.setCppPayflowColor(request.getParameter("cpppayflowcolor"));
+				/*
+				 *  (Optional) Enables the buyer to enter a note to the merchant on the 
+				 *  PayPal page during checkout. The note is returned in the 
+				 *  GetExpressCheckoutDetails response and the DoExpressCheckoutPayment response.
+				 *  It is one of the following values:
+    				0 – The buyer is unable to enter a note to the merchant.
+    				1 – The buyer is able to enter a note to the merchant.
+					Character length and limitations: 1 single-byte numeric character
+					This field is available since version 53.0. 
+				 */
 				details.setAllowNote(request.getParameter("allowNote"));
 
 				setExpressCheckoutReq.setSetExpressCheckoutRequestDetails(details);
@@ -323,6 +569,13 @@ public class CheckoutServlet extends HttpServlet {
 			}
 			if (request.getRequestURI().contains("GetExpressCheckout")) {
 				GetExpressCheckoutDetailsReq req = new GetExpressCheckoutDetailsReq();
+				/*
+				 * A timestamped token by which you identify to PayPal that you are processing
+				 * this payment with Express Checkout. The token expires after three hours. 
+				 * If you set the token in the SetExpressCheckout request, the value of the token
+				 * in the response is identical to the value in the request.
+				   Character length and limitations: 20 single-byte characters
+				 */
 				GetExpressCheckoutDetailsRequestType reqType = new GetExpressCheckoutDetailsRequestType(
 						request.getParameter("token"));
 				req.setGetExpressCheckoutDetailsRequest(reqType);
@@ -352,43 +605,72 @@ public class CheckoutServlet extends HttpServlet {
 			if (request.getRequestURI().contains("DoExpressCheckout")) {
 				DoExpressCheckoutPaymentRequestType doCheckoutPaymentRequestType = new DoExpressCheckoutPaymentRequestType();
 				DoExpressCheckoutPaymentRequestDetailsType details = new DoExpressCheckoutPaymentRequestDetailsType();
+				/*
+				 * A timestamped token by which you identify to PayPal that you are processing
+				 * this payment with Express Checkout. The token expires after three hours. 
+				 * If you set the token in the SetExpressCheckout request, the value of the token
+				 * in the response is identical to the value in the request.
+				   Character length and limitations: 20 single-byte characters
+				 */
 				details.setToken(request.getParameter("token"));
+				/*
+				 * Unique PayPal Customer Account identification number.
+				   Character length and limitations: 13 single-byte alphanumeric characters
+				 */
 				details.setPayerID(request.getParameter("payerID"));
-				details.setPaymentAction(PaymentActionCodeType
-						.fromValue(request.getParameter("paymentAction")));
+				/*
+				 *  (Optional) How you want to obtain payment. If the transaction does not include
+				 *  a one-time purchase, this field is ignored. 
+				 *  It is one of the following values:
+    					Sale – This is a final sale for which you are requesting payment (default).
+    					Authorization – This payment is a basic authorization subject to settlement with PayPal Authorization and Capture.
+    					Order – This payment is an order authorization subject to settlement with PayPal Authorization and Capture.
+					Note:
+					You cannot set this field to Sale in SetExpressCheckout request and then change 
+					this value to Authorization or Order in the DoExpressCheckoutPayment request. 
+					If you set the field to Authorization or Order in SetExpressCheckout, 
+					you may set the field to Sale.
+					Character length and limitations: Up to 13 single-byte alphabetic characters
+					This field is deprecated. Use PaymentAction in PaymentDetailsType instead.
+				 */
+				details.setPaymentAction(PaymentActionCodeType.fromValue(request.getParameter("paymentAction")));
 				double itemTotalAmt = 0.00;
 				double orderTotalAmt = 0.00;
 				String amt = request.getParameter("amt");
 				String quantity = request.getParameter("itemQuantity");
-				itemTotalAmt = Double.parseDouble(amt)
-						* Double.parseDouble(quantity);
+				itemTotalAmt = Double.parseDouble(amt) * Double.parseDouble(quantity);
 				orderTotalAmt += itemTotalAmt;
 				PaymentDetailsType paymentDetails = new PaymentDetailsType();
 				BasicAmountType orderTotal = new BasicAmountType();
 				orderTotal.setValue(Double.toString(orderTotalAmt));
-				orderTotal.setCurrencyID(CurrencyCodeType.fromValue(request
-						.getParameter("currencyCode")));
+				orderTotal.setCurrencyID(CurrencyCodeType.fromValue(request.getParameter("currencyCode")));
 				paymentDetails.setOrderTotal(orderTotal);
 
 				BasicAmountType itemTotal = new BasicAmountType();
 				itemTotal.setValue(Double.toString(itemTotalAmt));
 
-				itemTotal.setCurrencyID(CurrencyCodeType.fromValue(request
-						.getParameter("currencyCode")));
+				itemTotal.setCurrencyID(CurrencyCodeType.fromValue(request.getParameter("currencyCode")));
 				paymentDetails.setItemTotal(itemTotal);
 
 				List<PaymentDetailsItemType> paymentItems = new ArrayList<PaymentDetailsItemType>();
 				PaymentDetailsItemType paymentItem = new PaymentDetailsItemType();
 				paymentItem.setName(request.getParameter("itemName"));
-				paymentItem.setQuantity(Integer.parseInt(request
-						.getParameter("itemQuantity")));
+				paymentItem.setQuantity(Integer.parseInt(request.getParameter("itemQuantity")));
 				BasicAmountType amount = new BasicAmountType();
 				amount.setValue(request.getParameter("amt"));
-				amount.setCurrencyID(CurrencyCodeType.fromValue(request
-						.getParameter("currencyCode")));
+				amount.setCurrencyID(CurrencyCodeType.fromValue(request.getParameter("currencyCode")));
 				paymentItem.setAmount(amount);
 				paymentItems.add(paymentItem);
 				paymentDetails.setPaymentDetailsItem(paymentItems);
+				/*
+				 *  (Optional) Your URL for receiving Instant Payment Notification (IPN) 
+				 *  about this transaction. If you do not specify this value in the request, 
+				 *  the notification URL from your Merchant Profile is used, if one exists.
+					Important:
+					The notify URL applies only to DoExpressCheckoutPayment. 
+					This value is ignored when set in SetExpressCheckout or GetExpressCheckoutDetails.
+					Character length and limitations: 2,048 single-byte alphanumeric characters
+				 */
 				paymentDetails.setNotifyURL(request.getParameter("notifyURL"));
 				
 				List<PaymentDetailsType> payDetailType = new ArrayList<PaymentDetailsType>();
@@ -442,10 +724,35 @@ public class CheckoutServlet extends HttpServlet {
 				DoUATPExpressCheckoutPaymentRequestType reqType = new DoUATPExpressCheckoutPaymentRequestType();
 
 				DoExpressCheckoutPaymentRequestDetailsType checkoutDetails = new DoExpressCheckoutPaymentRequestDetailsType();
+				/*
+				 * Unique PayPal Customer Account identification number.
+				   Character length and limitations: 13 single-byte alphanumeric characters
+				 */
 				checkoutDetails.setPayerID(request.getParameter("payerID"));
+				/*
+				 * A timestamped token by which you identify to PayPal that you are processing
+				 * this payment with Express Checkout. The token expires after three hours. 
+				 * If you set the token in the SetExpressCheckout request, the value of the token
+				 * in the response is identical to the value in the request.
+				   Character length and limitations: 20 single-byte characters
+				 */
 				checkoutDetails.setToken(request.getParameter("token"));
-				checkoutDetails.setPaymentAction(PaymentActionCodeType
-						.fromValue(request.getParameter("paymentAction")));
+				/*
+				 *  (Optional) How you want to obtain payment. If the transaction does not include
+				 *  a one-time purchase, this field is ignored. 
+				 *  It is one of the following values:
+    					Sale – This is a final sale for which you are requesting payment (default).
+    					Authorization – This payment is a basic authorization subject to settlement with PayPal Authorization and Capture.
+    					Order – This payment is an order authorization subject to settlement with PayPal Authorization and Capture.
+					Note:
+					You cannot set this field to Sale in SetExpressCheckout request and then change 
+					this value to Authorization or Order in the DoExpressCheckoutPayment request. 
+					If you set the field to Authorization or Order in SetExpressCheckout, 
+					you may set the field to Sale.
+					Character length and limitations: Up to 13 single-byte alphabetic characters
+					This field is deprecated. Use PaymentAction in PaymentDetailsType instead.
+				 */
+				checkoutDetails.setPaymentAction(PaymentActionCodeType.fromValue(request.getParameter("paymentAction")));
 				BasicAmountType amount = new BasicAmountType(
 						CurrencyCodeType.fromValue(request
 								.getParameter("currencyID")),
@@ -502,10 +809,8 @@ public class CheckoutServlet extends HttpServlet {
 						request.getParameter("externalRememberMeID"));
 				ExternalRememberMeOwnerDetailsType externalRememberMeOwner = new ExternalRememberMeOwnerDetailsType();
 				externalRememberMeOwner
-						.setExternalRememberMeOwnerIDType(request
-								.getParameter("ownerIDType"));
-				externalRememberMeOwner.setExternalRememberMeOwnerID(request
-						.getParameter("ownerID"));
+						.setExternalRememberMeOwnerIDType(request.getParameter("ownerIDType"));
+				externalRememberMeOwner.setExternalRememberMeOwnerID(request.getParameter("ownerID"));
 				reqType.setExternalRememberMeOwnerDetails(externalRememberMeOwner);
 				req.setExternalRememberMeOptOutRequest(reqType);
 				ExternalRememberMeOptOutResponseType resp = service
@@ -529,8 +834,7 @@ public class CheckoutServlet extends HttpServlet {
 				SetDataRequestType setDataRequest = new SetDataRequestType();
 				List<BillingApprovalDetailsType> billingApprovalList = new ArrayList<BillingApprovalDetailsType>();
 				BillingApprovalDetailsType billingApproval = new BillingApprovalDetailsType(
-						ApprovalTypeType.fromValue(request
-								.getParameter("billingApprovalType")));
+						ApprovalTypeType.fromValue(request.getParameter("billingApprovalType")));
 				billingApproval.setApprovalSubType(ApprovalSubTypeType
 						.fromValue(request
 								.getParameter("billingApprovalSubType")));

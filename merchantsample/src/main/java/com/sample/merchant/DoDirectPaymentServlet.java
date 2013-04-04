@@ -61,48 +61,109 @@ public class DoDirectPaymentServlet extends HttpServlet {
 		session.setAttribute(
 				"relatedUrl",
 				"<ul><li><a href='DCC/DoDirectPayment'>DoDirectPayment</a></li><li><a href='RT/DoReferenceTransaction'>DoReferenceTransaction</a></li><li><a href='RP/CreateRecurringPaymentsProfile'>CreateRecurringPaymentsProfile</a></li></ul>");
+		// ## DoDirectPaymentReq
 		DoDirectPaymentReq doPaymentReq = new DoDirectPaymentReq();
+		
 		DoDirectPaymentRequestType pprequest = new DoDirectPaymentRequestType();
 		DoDirectPaymentRequestDetailsType details = new DoDirectPaymentRequestDetailsType();
 		PaymentDetailsType paymentDetails = new PaymentDetailsType();
-
+		
+		// Total cost of the transaction to the buyer. If shipping cost and tax
+		// charges are known, include them in this value. If not, this value
+		// should be the current sub-total of the order.
+		//
+		// If the transaction includes one or more one-time purchases, this
+		// field must be equal to
+		// the sum of the purchases. Set this field to 0 if the transaction does
+		// not include a one-time purchase such as when you set up a billing
+		// agreement for a recurring payment that is not immediately charged.
+		// When the field is set to 0, purchase-specific fields are ignored.
+		//
+		// * `Currency Code` - You must set the currencyID attribute to one of
+		// the
+		// 3-character currency codes for any of the supported PayPal
+		// currencies.
+		// * `Amount`
 		BasicAmountType amount = new BasicAmountType();
 		amount.setValue(req.getParameter("amount"));
-		amount.setCurrencyID(CurrencyCodeType.fromValue(req
-				.getParameter("currencyCode")));
+		amount.setCurrencyID(CurrencyCodeType.fromValue(req.getParameter("currencyCode")));
 		paymentDetails.setOrderTotal(amount);
-
+		
 		AddressType shipTo = new AddressType();
-		shipTo.setName(req.getParameter("firstName") + " "
-				+ req.getParameter("lastName"));
+		shipTo.setName(req.getParameter("firstName") + " "+ req.getParameter("lastName"));
+		/*
+		 *  (Required) First street address.
+			 Character length and limitations: 100 single-byte characters
+		 */
 		shipTo.setStreet1(req.getParameter("address1"));
+		/*
+		 *  (Optional) Second street address.
+			Character length and limitations: 100 single-byte characters
+		 */
 		shipTo.setStreet2(req.getParameter("address2"));
+		/*
+		 *  (Required) Name of city.
+			Character length and limitations: 40 single-byte characters
+		 */
 		shipTo.setCityName(req.getParameter("city"));
+		/*
+		 *  (Required) State or province.
+			Character length and limitations: 40 single-byte characters
+		 */
 		shipTo.setStateOrProvince(req.getParameter("state"));
-		shipTo.setCountry(CountryCodeType.fromValue(req
-				.getParameter("countryCode")));
+		/*
+		 *  (Required) Country code.
+			Character length and limitations: 2 single-byte characters
+		 */
+		shipTo.setCountry(CountryCodeType.fromValue(req.getParameter("countryCode")));
+		/*
+		 *  (Required) U.S. ZIP code or other country-specific postal code.
+			Character length and limitations: 20 single-byte characters
+		 */
 		shipTo.setPostalCode(req.getParameter("zip"));
 		paymentDetails.setShipToAddress(shipTo);
+		/*
+		 *  (Optional) Your URL for receiving Instant Payment Notification (IPN) about this transaction. If you do not specify this value in the request, the notification URL from your Merchant Profile is used, if one exists.
+			Important:
+            The notify URL applies only to DoExpressCheckoutPayment. This value is ignored when set in SetExpressCheckout or GetExpressCheckoutDetails.
+		 */
 		paymentDetails.setNotifyURL(req.getParameter("notifyURL"));
 		details.setPaymentDetails(paymentDetails);
-
+		
 		CreditCardDetailsType cardDetails = new CreditCardDetailsType();
+		// Type of credit card. For UK, only Maestro, MasterCard, Discover, and
+		// Visa are allowable. For Canada, only MasterCard and Visa are
+		// allowable and Interac debit cards are not supported. It is one of the
+		// following values:
+		//
+		// * Visa
+		// * MasterCard
+		// * Discover
+		// * Amex
+		// * Solo
+		// * Switch
+		// * Maestro: See note.
+		// `Note:
+		// If the credit card type is Maestro, you must set currencyId to GBP.
+		// In addition, you must specify either StartMonth and StartYear or
+		// IssueNumber.`
 		cardDetails.setCreditCardType(CreditCardTypeType.fromValue(req
 				.getParameter("creditCardType")));
+		// Credit Card number
 		cardDetails.setCreditCardNumber(req.getParameter("creditCardNumber"));
-		cardDetails.setExpMonth(Integer.parseInt(req
-				.getParameter("expDateMonth")));
-		cardDetails
-				.setExpYear(Integer.parseInt(req.getParameter("expDateYear")));
+		// ExpiryMonth of credit card
+		cardDetails.setExpMonth(Integer.parseInt(req.getParameter("expDateMonth")));
+		// Expiry Year of credit card
+		cardDetails.setExpYear(Integer.parseInt(req.getParameter("expDateYear")));
+		//cvv2 number
 		cardDetails.setCVV2(req.getParameter("cvv2Number"));
-
+		
 		PayerInfoType payer = new PayerInfoType();
 		PersonNameType name = new PersonNameType();
 		name.setFirstName(req.getParameter("firstName"));
 		name.setLastName(req.getParameter("lastName"));
 		payer.setPayerName(name);
-		payer.setPayerCountry(CountryCodeType.fromValue(req
-				.getParameter("countryCode")));
+		payer.setPayerCountry(CountryCodeType.fromValue(req.getParameter("countryCode")));
 		payer.setAddress(shipTo);
 
 		cardDetails.setCardOwner(payer);
@@ -110,8 +171,15 @@ public class DoDirectPaymentServlet extends HttpServlet {
 		details.setCreditCard(cardDetails);
 
 		details.setIPAddress("127.0.0.1");
-		details.setPaymentAction(PaymentActionCodeType.fromValue(req
-				.getParameter("paymentType")));
+		/*
+		 *(Optional) How you want to obtain payment. It is one of the following values:
+    		Authorization – This payment is a basic authorization subject to settlement with PayPal Authorization and Capture.
+    		Sale – This is a final sale for which you are requesting payment (default).
+		  Note:
+			Order is not allowed for Direct Payment.
+			Character length and limit: Up to 13 single-byte alphabetic characters
+		 */
+		details.setPaymentAction(PaymentActionCodeType.fromValue(req.getParameter("paymentType")));
 
 		pprequest.setDoDirectPaymentRequestDetails(details);
 		doPaymentReq.setDoDirectPaymentRequest(pprequest);

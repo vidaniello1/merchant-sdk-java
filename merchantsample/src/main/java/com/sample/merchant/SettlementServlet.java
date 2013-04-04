@@ -147,14 +147,28 @@ public class SettlementServlet extends HttpServlet {
 				"<ul><li><a href='Settlement/DoAuthorization'>DoAuthorization</a></li><li><a href='Settlement/DoCapture'>DoCapture</a></li><li><a href='Settlement/DoVoid'>DoVoid</a></li><li><a href='Settlement/DoReauthorization'>DoReauthorization</a></li><li><a href='Settlement/Refund'>Refund</a></li><li><a href='Settlement/ReverseTransaction'>ReverseTransaction</a></li><li><a href='Settlement/DoNonReferencedCredit'>DoNonReferencedCredit</a></li><li><a href='Settlement/ManagePendingTransactionStatus'>ManagePendingTransactionStatus</a></li></ul>");
 		response.setContentType("text/html");
 		try {
+			// ## Creating service wrapper object
+			// Creating service wrapper object to make API call and loading
+			// configuration file for your credentials and endpoint
 			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
 					.getClass().getResourceAsStream("/sdk_config.properties"));
 			if (request.getRequestURI().contains("DoAuthorization")) {
+				// ## DoAuthorizationReq
 				DoAuthorizationReq req = new DoAuthorizationReq();
+
+				// `Amount` which takes mandatory params:
+				//
+				// * `currencyCode`
+				// * `amount
 				BasicAmountType amount = new BasicAmountType(
-						CurrencyCodeType.fromValue(request
-								.getParameter("currencyCode")),
+						CurrencyCodeType.fromValue(request.getParameter("currencyCode")),
 						request.getParameter("amt"));
+				
+				// `DoAuthorizationRequest` which takes mandatory params:
+				//
+				// * `Transaction ID` - Value of the order's transaction identification
+				// number returned by PayPal.
+				// * `Amount` - Amount to authorize.
 				DoAuthorizationRequestType reqType = new DoAuthorizationRequestType(
 						request.getParameter("transID"), amount);
 
@@ -180,17 +194,26 @@ public class SettlementServlet extends HttpServlet {
 					}
 				}
 			} else if (request.getRequestURI().contains("DoReauthorization")) {
+				// ## DoAuthorizationReq
 				DoReauthorizationReq req = new DoReauthorizationReq();
+				// `Amount` to reauthorize which takes mandatory params:
+				//
+				// * `currencyCode`
+				// * `amount`
 				BasicAmountType amount = new BasicAmountType(
 						CurrencyCodeType.fromValue(request
 								.getParameter("currencyCode")),
 						request.getParameter("amt"));
+				// `DoReauthorizationRequest` which takes mandatory params:
+				//
+				// * `Authorization Id` - Value of a previously authorized transaction
+				// identification number returned by PayPal.
+				// * `amount`
 				DoReauthorizationRequestType reqType = new DoReauthorizationRequestType(
 						request.getParameter("authID"), amount);
 
 				req.setDoReauthorizationRequest(reqType);
-				DoReauthorizationResponseType resp = service
-						.doReauthorization(req);
+				DoReauthorizationResponseType resp = service.doReauthorization(req);
 
 				if (resp != null) {
 					session.setAttribute("lastReq", service.getLastRequest());
@@ -231,15 +254,38 @@ public class SettlementServlet extends HttpServlet {
 					}
 				}
 			} else if (request.getRequestURI().contains("DoCapture")) {
+				// ## DoCaptureReq
 				DoCaptureReq req = new DoCaptureReq();
+				// `Amount` to capture which takes mandatory params:
+				//
+				// * `currencyCode`
+				// * `amount`
 				BasicAmountType amount = new BasicAmountType(
 						CurrencyCodeType.fromValue(request
 								.getParameter("currencyCode")),
 						request.getParameter("amt"));
+
+				// `DoCaptureRequest` which takes mandatory params:
+				//
+				// * `Authorization ID` - Authorization identification number of the
+				// payment you want to capture. This is the transaction ID returned from
+				// DoExpressCheckoutPayment, DoDirectPayment, or CheckOut. For
+				// point-of-sale transactions, this is the transaction ID returned by
+				// the CheckOut call when the payment action is Authorization.
+				// * `amount` - Amount to capture
+				// * `CompleteCode` - Indicates whether or not this is your last capture.
+				// It is one of the following values:
+				// * Complete – This is the last capture you intend to make.
+				// * NotComplete – You intend to make additional captures.
+				// `Note:
+				// If Complete, any remaining amount of the original authorized
+				// transaction is automatically voided and all remaining open
+				// authorizations are voided.`
 				DoCaptureRequestType reqType = new DoCaptureRequestType(
 						request.getParameter("authID"), amount,
 						CompleteCodeType.fromValue(request
 								.getParameter("completeCodeType")));
+				
 				req.setDoCaptureRequest(reqType);
 				DoCaptureResponseType resp = service.doCapture(req);
 				if (resp != null) {
