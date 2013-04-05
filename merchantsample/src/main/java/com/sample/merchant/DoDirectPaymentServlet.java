@@ -208,7 +208,19 @@ public class DoDirectPaymentServlet extends HttpServlet {
 				if (ddresponse.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 					Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 					map.put("Ack", ddresponse.getAck());
+					/*
+					 * Unique transaction ID of the payment.
+					  Note:
+					  If the PaymentAction of the request was Authorization, 
+					  the value of TransactionID is your AuthorizationID for use with 
+					  the Authorization and Capture APIs.
+					  Character length and limitations: 19 single-byte characters
+					 */
 					map.put("Transaction ID", ddresponse.getTransactionID());
+					/*
+					 * This value is the amount of the payment as specified by you on 
+					 * DoDirectPaymentRequest for reference transactions with direct payments.
+					 */
 					map.put("Amount", ddresponse.getAmount().getValue() + " "
 							+ ddresponse.getAmount().getCurrencyID());
 					map.put("Payment Status", ddresponse.getPaymentStatus());

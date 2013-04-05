@@ -180,8 +180,31 @@ public class SettlementServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						/*
+						 *  Amount you specified in the request.
+							Character length and limitations: Value is a positive number which 
+							cannot exceed $10,000 USD in any currency. It includes no currency symbol. 
+							It must have 2 decimal places, the decimal separator must be a period (.), 
+							and the optional thousands separator must be a comma (,).
+						 */
 						map.put("Amount", resp.getAmount().getValue() + " "
 								+ resp.getAmount().getCurrencyID());
+						/*
+						 * Status of the payment. It is one of the following values:
+						    None – No status.
+						    Canceled-Reversal – A reversal has been canceled. For example, when you win a dispute, PayPal returns the funds for the reversal to you.
+						    Completed – The payment has been completed, and the funds have been added successfully to your account balance.
+						    Denied – You denied the payment. This happens only if the payment was previously pending because of possible reasons described for the PendingReason element.
+						    Expired – The authorization period for this payment has been reached.
+						    Failed – The payment has failed. This happens only if the payment was made from the buyer's bank account.
+						    In-Progress – The transaction has not terminated. For example, an authorization may be awaiting completion.
+						    Partially-Refunded – The payment has been partially refunded.
+						    Pending – The payment is pending. See the PendingReason field for more information.
+						    Refunded – You refunded the payment.
+						    Reversed– A payment was reversed due to a chargeback or other type of reversal. PayPal removes the funds from your account balance and returns them to the buyer. The ReasonCode element specifies the reason for the reversal.
+						    Processed – A payment has been accepted.
+						    Voided – An authorization for this transaction has been voided.
+						 */
 						map.put("Payment Status", resp.getAuthorizationInfo()
 								.getPaymentStatus());
 						session.setAttribute("map", map);
@@ -221,7 +244,27 @@ public class SettlementServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						/*
+						 * New authorization identification number.
+						   Character length and limits:19 single-byte characters 
+						 */
 						map.put("Authorization ID", resp.getAuthorizationID());
+						/*
+						 * Status of the payment. It is one of the following values:
+						    None – No status.
+						    Canceled-Reversal – A reversal has been canceled. For example, when you win a dispute, PayPal returns the funds for the reversal to you.
+						    Completed – The payment has been completed, and the funds have been added successfully to your account balance.
+						    Denied – You denied the payment. This happens only if the payment was previously pending because of possible reasons described for the PendingReason element.
+						    Expired – The authorization period for this payment has been reached.
+						    Failed – The payment has failed. This happens only if the payment was made from the buyer's bank account.
+						    In-Progress – The transaction has not terminated. For example, an authorization may be awaiting completion.
+						    Partially-Refunded – The payment has been partially refunded.
+						    Pending – The payment is pending. See the PendingReason field for more information.
+						    Refunded – You refunded the payment.
+						    Reversed– A payment was reversed due to a chargeback or other type of reversal. PayPal removes the funds from your account balance and returns them to the buyer. The ReasonCode element specifies the reason for the reversal.
+						    Processed – A payment has been accepted.
+						    Voided – An authorization for this transaction has been voided.
+						 */
 						map.put("Payment Status", resp.getAuthorizationInfo()
 								.getPaymentStatus());
 						session.setAttribute("map", map);
@@ -250,6 +293,10 @@ public class SettlementServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						/*
+						 * Authorization identification number you specified in the request.
+							Character length and limitations: 19 single-byte characters
+						 */
 						map.put("Authorization ID", resp.getAuthorizationID());
 						session.setAttribute("map", map);
 						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
@@ -300,9 +347,23 @@ public class SettlementServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						/*
+						 * Authorization identification number you specified in the request.
+						  Character length and limits: 19 single-byte characters maximum
+						 */
 						map.put("Authorization ID", resp
 								.getDoCaptureResponseDetails()
 								.getAuthorizationID());
+						/*
+						 * The final amount charged, including any shipping and taxes from your 
+						 * Merchant Profile. Shipping and taxes do not apply to point-of-sale 
+						 * transactions.
+							Character length and limitations: Value is a positive number which 
+							cannot exceed $10,000 USD in any currency. It includes no currency symbol. 
+							It must have 2 decimal places, the decimal separator must be a period (.), 
+							and the optional thousands separator must be a comma (,). Equivalent to 9 
+							characters maximum for USD. 
+						 */
 						map.put("Gross Amount", resp
 								.getDoCaptureResponseDetails().getPaymentInfo()
 								.getGrossAmount().getValue()
@@ -388,12 +449,24 @@ public class SettlementServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
-						map.put("Refund Transaction ID",
-								resp.getRefundTransactionID());
-						map.put("Total Refunded Amount", resp
-								.getTotalRefundedAmount().getValue()
-								+ " "
-								+ resp.getTotalRefundedAmount().getCurrencyID());
+						/*
+						 * Unique transaction ID of the refund.
+						   Character length and limitations:17 single-byte characters
+						 */
+						map.put("Refund Transaction ID",resp.getRefundTransactionID());
+						/*
+						 * Total amount refunded so far from the original purchase. Say, for example, 
+						 * a buyer makes $100 purchase, the buyer was refunded $20 a week ago and is 
+						 * refunded $30 in this transaction. The gross refund amount is $30 
+						 * (in this transaction). The total refunded amount is $50.
+						   Character length and limitations: Value is a positive number which 
+						   cannot exceed $10,000 USD in any currency. It includes no currency symbol. 
+						   It must have 2 decimal places, the decimal separator must be a period (.), 
+						   and the optional thousands separator must be a comma (,).
+						   This field is available since version 67.0. 
+						 */
+						map.put("Total Refunded Amount", resp.getTotalRefundedAmount().getValue()
+								+ " " + resp.getTotalRefundedAmount().getCurrencyID());
 						session.setAttribute("map", map);
 						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 					} else {
@@ -470,8 +543,7 @@ public class SettlementServlet extends HttpServlet {
 					}
 				}
 
-			} else if (request.getRequestURI()
-					.contains("DoNonReferencedCredit")) {
+			} else if (request.getRequestURI().contains("DoNonReferencedCredit")) {
 				DoNonReferencedCreditReq req = new DoNonReferencedCreditReq();
 				DoNonReferencedCreditRequestDetailsType reqDetails = new DoNonReferencedCreditRequestDetailsType();
 				CreditCardDetailsType cardDetails = new CreditCardDetailsType();
@@ -580,9 +652,19 @@ public class SettlementServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						/*
+						 * Unique identifier of a transaction.
+							Character length and limitations: 17 single-byte alphanumeric characters.
+						 */
 						map.put("Transaction ID", resp
 								.getDoNonReferencedCreditResponseDetails()
 								.getTransactionID());
+						/*
+						 * Total of order, including shipping, handling, and tax.
+							Character length and limitations: Must not exceed $10,000 USD in any currency. 
+							No currency symbol. Must have 2 decimal places, decimal separator must be a period (.), 
+							and the optional thousands separator must be a comma (,).
+						 */
 						map.put("Amount",
 								resp.getDoNonReferencedCreditResponseDetails()
 										.getAmount().getValue()
@@ -618,7 +700,19 @@ public class SettlementServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						//The transaction ID of the transaction whose payment has been denied or accepted. 
 						map.put("Transaction ID", resp.getTransactionID());
+						/*
+						 *  TransactionStatus is one of the following values:
+						    Pending
+						    Processing
+						    Completed
+						    Denied
+						    Reversed
+						    Display Only
+						    Partially Refunded
+						    Created Refunded
+						 */
 						map.put("Status", resp.getStatus());
 						session.setAttribute("map", map);
 						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");

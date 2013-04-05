@@ -136,8 +136,10 @@ public class ReportingServlet extends HttpServlet {
 							while (iterator.hasNext()) {
 								PaymentTransactionSearchResultType result = (PaymentTransactionSearchResultType) iterator
 										.next();
+								//Merchant's transaction ID.
 								map.put("Transaction ID" + index,
 										result.getTransactionID());
+								//The net amount of the transaction.
 								if (result.getNetAmount() != null) {
 									map.put("Net Amount" + index, result
 											.getNetAmount().getValue()
@@ -145,7 +147,13 @@ public class ReportingServlet extends HttpServlet {
 											+ result.getNetAmount()
 													.getCurrencyID());
 								}
+							/*
+							 * Email address of either the buyer or the payment recipient (the "payee").
+							 * If the payment amount is positive, this field is the recipient of the funds. 
+							 * If the payment is negative, this field is the paying buyer.
+							 */
 								map.put("Payer" + index, result.getPayer());
+							   //The status of the transaction. 	
 								map.put("Status" + index, result.getStatus());
 								index++;
 							}
@@ -174,8 +182,18 @@ public class ReportingServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						//Email address of buyer.
 						map.put("Payer", resp.getPaymentTransactionDetails()
 								.getPayerInfo().getPayer());
+						/*
+						 * The final amount charged, including any shipping and taxes from 
+						 * your Merchant Profile.
+							Character length and limitations: Value is a positive number 
+							which cannot exceed $10,000 USD in any currency. 
+							It includes no currency symbol. It must have 2 decimal places, 
+							the decimal separator must be a period (.), and the optional 
+							thousands separator must be a comma (,). 
+						 */
 						map.put("Gross Amount", resp
 								.getPaymentTransactionDetails()
 								.getPaymentInfo().getGrossAmount().getValue()
@@ -183,9 +201,20 @@ public class ReportingServlet extends HttpServlet {
 								+ resp.getPaymentTransactionDetails()
 										.getPaymentInfo().getGrossAmount()
 										.getCurrencyID());
+						/*
+						 * Invoice number you set in the original transaction.
+							Character length and limitations: 256 single-byte alphanumeric characters
+						 */
 						map.put("Invoice ID", resp
 								.getPaymentTransactionDetails()
 								.getPaymentItemInfo().getInvoiceID());
+						/*
+						 * Primary email address of the payment recipient (the merchant).
+						   If you are the recipient of the payment and the payment is sent 
+						   to your non-primary email address, the value of Receiver is still 
+						   your primary email address.
+						   Character length and limitations: 127 single-byte alphanumeric characters
+						 */
 						map.put("Receiver", resp.getPaymentTransactionDetails()
 								.getReceiverInfo().getReceiver());
 						session.setAttribute("map", map);
@@ -218,10 +247,12 @@ public class ReportingServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						//Available balance and associated currency code for the primary currency holding. 
 						map.put("Balance", resp.getBalance().getValue() + " "
 								+ resp.getBalance().getCurrencyID());
 						Iterator<BasicAmountType> iterator = resp
 								.getBalanceHoldings().iterator();
+						//Amount in different currency holding, that constitute the part of available balance 
 						int index = 1;
 						while (iterator.hasNext()) {
 							BasicAmountType amount = (BasicAmountType) iterator

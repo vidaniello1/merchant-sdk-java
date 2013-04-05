@@ -551,6 +551,13 @@ public class CheckoutServlet extends HttpServlet {
 							.equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", setExpressCheckoutResponse.getAck());
+						/*
+						 * A time stamped token by which you identify to PayPal that you are processing 
+						 * this payment with Express Checkout. The token expires after three hours. 
+						 * If you set the token in the SetExpressCheckout request, the value of the 
+						 * token in the response is identical to the value in the request.
+							Character length and limitations: 20 single-byte characters
+						 */
 						map.put("Token", setExpressCheckoutResponse.getToken());
 						map.put("Redirect URL",
 								"<a href=https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token="
@@ -586,11 +593,17 @@ public class CheckoutServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
-						map.put("Token", resp
-								.getGetExpressCheckoutDetailsResponseDetails()
-								.getToken());
-						map.put("Payer ID", resp
-								.getGetExpressCheckoutDetailsResponseDetails()
+						/*
+						 * The time stamped token value that was returned by SetExpressCheckout 
+						 * response and passed on GetExpressCheckoutDetails request.
+							Character length and limitations: 20 single-byte characters
+						 */
+						map.put("Token", resp.getGetExpressCheckoutDetailsResponseDetails().getToken());
+						/*
+						 * Unique PayPal Customer Account identification number.
+							Character length and limitations: 13 single-byte alphanumeric characters
+						 */
+						map.put("Payer ID", resp.getGetExpressCheckoutDetailsResponseDetails()
 								.getPayerInfo().getPayerID());
 						session.setAttribute("map", map);
 						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
@@ -720,13 +733,21 @@ public class CheckoutServlet extends HttpServlet {
 								.getDoExpressCheckoutPaymentResponseDetails()
 								.getPaymentInfo().iterator();
 						int index = 1;
+						/*
+						 * Unique transaction ID of the payment.
+						 Note:
+							If the PaymentAction of the request was Authorization or Order, 
+							this value is your AuthorizationID for use with the Authorization 
+							& Capture APIs.
+							Character length and limitations: 19 single-byte characters
+						 */
 						while (iterator.hasNext()) {
-							PaymentInfoType result = (PaymentInfoType) iterator
-									.next();
+							PaymentInfoType result = (PaymentInfoType) iterator.next();
 							map.put("Transaction ID" + index,
 									result.getTransactionID());
 							index++;
 						}
+						//The ID of the billing agreement associated with the Express Checkout transaction.
 						map.put("Billing Agreement ID",
 								doCheckoutPaymentResponseType
 										.getDoExpressCheckoutPaymentResponseDetails()

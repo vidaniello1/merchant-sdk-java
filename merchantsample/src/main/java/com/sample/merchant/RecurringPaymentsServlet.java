@@ -213,6 +213,7 @@ public class RecurringPaymentsServlet extends HttpServlet {
 							.equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", txnresponse.getAck());
+						//Email address of buyer.
 						map.put("Payer Mail",
 								txnresponse
 										.getGetBillingAgreementCustomerDetailsResponseDetails()
@@ -950,6 +951,11 @@ public class RecurringPaymentsServlet extends HttpServlet {
 						map.put("Transaction ID",
 								resp.getCreateRecurringPaymentsProfileResponseDetails()
 										.getTransactionID());
+						/*
+						 * Status of the recurring payment profile.
+    						ActiveProfile – The recurring payment profile has been successfully created and activated for scheduled payments according the billing instructions from the recurring payments profile.
+    						PendingProfile – The system is in the process of creating the recurring payment profile. Please check your IPN messages for an update.
+						 */
 						map.put("Profile Status",
 								resp.getCreateRecurringPaymentsProfileResponseDetails()
 										.getProfileStatus());
@@ -992,6 +998,14 @@ public class RecurringPaymentsServlet extends HttpServlet {
 						map.put("Profile ID",
 								resp.getGetRecurringPaymentsProfileDetailsResponseDetails()
 										.getProfileID());
+						/*
+						 * Status of the recurring payment profile. It is one of the following values:
+						    Active
+						    Pending
+						    Cancelled
+						    Suspended
+						    Expired
+						 */
 						map.put("Profile Status",
 								resp.getGetRecurringPaymentsProfileDetailsResponseDetails()
 										.getProfileStatus());
