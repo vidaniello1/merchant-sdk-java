@@ -87,6 +87,13 @@ public class MassPayServlet extends HttpServlet {
 		MassPayRequestItemType item1 = new MassPayRequestItemType(amount1);
 		MassPayRequestItemType item2 = new MassPayRequestItemType(amount2);
 		MassPayRequestItemType item3 = new MassPayRequestItemType(amount3);
+		/*
+		 *  (Optional) How you identify the recipients of payments in this call to MassPay. 
+		 *   It is one of the following values:
+    			EmailAddress
+    			UserID
+    			PhoneNumber
+		 */
 		if (request.getParameter("receiverInfoCode").equalsIgnoreCase(
 				"EmailAddress")) {
 			item1.setReceiverEmail(request.getParameter("mail1"));

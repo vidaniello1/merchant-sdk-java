@@ -234,8 +234,14 @@ public class SettlementServlet extends HttpServlet {
 				}
 			} else if (request.getRequestURI().contains("DoVoid")) {
 				DoVoidReq req = new DoVoidReq();
-				DoVoidRequestType reqType = new DoVoidRequestType(
-						request.getParameter("authID"));
+				// DoVoidRequest which takes mandatory params:
+				//
+				// * `Authorization ID` - Original authorization ID specifying the
+				// authorization to void or, to void an order, the order ID.
+				// `Important:
+				// If you are voiding a transaction that has been reauthorized, use the
+				// ID from the original authorization, and not the reauthorization.`
+				DoVoidRequestType reqType = new DoVoidRequestType(request.getParameter("authID"));
 				req.setDoVoidRequest(reqType);
 				DoVoidResponseType resp = service.doVoid(req);
 				if (resp != null) {
@@ -316,7 +322,22 @@ public class SettlementServlet extends HttpServlet {
 			} else if (request.getRequestURI().contains("Refund")) {
 				RefundTransactionReq req = new RefundTransactionReq();
 				RefundTransactionRequestType reqType = new RefundTransactionRequestType();
+				/*
+				 *  (Required) Unique identifier of the transaction to be refunded.
+					Note:
+					Either the transaction ID or the payer ID must be specified.
+					Character length and limitations: 17 single-byte alphanumeric characters
+				 */
 				reqType.setTransactionID(request.getParameter("transID"));
+				
+				/*
+				 *  Type of refund you are making. It is one of the following values:
+    				Full – Full refund (default).
+    				Partial – Partial refund.
+    				ExternalDispute – External dispute. (Value available since version 82.0)
+    				Other – Other type of refund. (Value available since version 82.0)
+
+				 */
 				if (request.getParameter("refundType") != "Full"
 						& request.getParameter("refundType") != "") {
 					reqType.setAmount(new BasicAmountType(CurrencyCodeType
@@ -326,14 +347,36 @@ public class SettlementServlet extends HttpServlet {
 				if (request.getParameter("refundType") != "")
 					reqType.setRefundType(RefundType.fromValue(request
 							.getParameter("refundType")));
+				/*
+				 *  (Optional)Type of PayPal funding source (balance or eCheck) that can be used for auto refund. 
+				 *  It is one of the following values:
+    				any – The merchant does not have a preference. Use any available funding source.
+    				default – Use the merchant's preferred funding source, as configured in the merchant's profile.
+    				instant – Use the merchant's balance as the funding source.
+    				eCheck – The merchant prefers using the eCheck funding source. 
+    				If the merchant's PayPal balance can cover the refund amount, use the PayPal balance.
+				 Note:
+					This field does not apply to point-of-sale transactions.
+					This field is available since version 82.0. 
+				 */
 				if (request.getParameter("refundSource") != "")
 					reqType.setRefundSource(RefundSourceCodeType
 							.fromValue(request.getParameter("refundSource")));
+				/*
+				 * Identifier of the merchant store at which the refund is given. 
+				 * This field is required for point-of-sale transactions.
+					Character length and limitations: 50 single-byte characters
+					This field is available since version 82.0. 
+				 */
 				if (request.getParameter("storeID") != null) {
 					MerchantStoreDetailsType merchantStoreDetails = new MerchantStoreDetailsType(
 							request.getParameter("storeID"));
-					merchantStoreDetails.setTerminalID(request
-							.getParameter("terminalID"));
+					/*
+					 *  (Optional) ID of the terminal.
+						Character length and limitations: 50 single-byte characters
+						This field is available since version 82.0. 
+					 */
+					merchantStoreDetails.setTerminalID(request.getParameter("terminalID"));
 					reqType.setMerchantStoreDetails(merchantStoreDetails);
 				}
 				req.setRefundTransactionRequest(reqType);
@@ -401,9 +444,9 @@ public class SettlementServlet extends HttpServlet {
 			} else if (request.getRequestURI().contains("ReverseTransaction")) {
 				ReverseTransactionReq req = new ReverseTransactionReq();
 				ReverseTransactionRequestDetailsType reqDetails = new ReverseTransactionRequestDetailsType();
+				//The transaction ID of the transaction whose payment has been denied or accepted.
 				reqDetails.setTransactionID(request.getParameter("transID"));
-				ReverseTransactionRequestType reqType = new ReverseTransactionRequestType(
-						reqDetails);
+				ReverseTransactionRequestType reqType = new ReverseTransactionRequestType(reqDetails);
 				req.setReverseTransactionRequest(reqType);
 				ReverseTransactionResponseType resp = service
 						.reverseTransaction(req);
@@ -432,27 +475,92 @@ public class SettlementServlet extends HttpServlet {
 				DoNonReferencedCreditReq req = new DoNonReferencedCreditReq();
 				DoNonReferencedCreditRequestDetailsType reqDetails = new DoNonReferencedCreditRequestDetailsType();
 				CreditCardDetailsType cardDetails = new CreditCardDetailsType();
-				cardDetails.setCreditCardType(CreditCardTypeType
-						.fromValue(request.getParameter("creditCardType")));
-				cardDetails.setCreditCardNumber(request
-						.getParameter("creditCardNumber"));
-				cardDetails.setExpMonth(Integer.parseInt(request
-						.getParameter("expMonth")));
-				cardDetails.setExpYear(Integer.parseInt(request
-						.getParameter("expYear")));
+				/*
+				 *  (Optional) Type of credit card. For UK, only Maestro, MasterCard, Discover, and Visa are allowable. For Canada, only MasterCard and Visa are allowable and Interac debit cards are not supported. It is one of the following values:
+    			   [Visa,  MasterCard, Discover, Amex, Maestro: See note]
+				  Note:
+					If the credit card type is Maestro, you must set currencyId to GBP. 
+					In addition, you must specify either StartMonth and StartYear or IssueNumber.
+					Character length and limitations: Up to 10 single-byte alphabetic characters
+				 */
+				cardDetails.setCreditCardType(CreditCardTypeType.fromValue(request.getParameter("creditCardType")));
+				/*
+				 *  (Required) Credit card number.
+					Character length and limitations: Numeric characters only with no spaces
+					or punctuation. The string must conform with modulo and length required by 
+					each credit card type.
+				 */
+				cardDetails.setCreditCardNumber(request.getParameter("creditCardNumber"));
+				/*
+				 *  (Required) Credit card expiration month.
+					Character length and limitations: 2 single-byte numeric characters, 
+					including leading zero
+				 */
+				cardDetails.setExpMonth(Integer.parseInt(request.getParameter("expMonth")));
+				/*
+				 *  (Required) Credit card expiration year.
+					Character length and limitations: 4 single-byte numeric characters
+				 */
+				cardDetails.setExpYear(Integer.parseInt(request.getParameter("expYear")));
+				/*
+				 * Card Verification Value, version 2. Your Merchant Account settings determine
+				 * whether this field is required. To comply with credit card processing regulations, 
+				 * you must not store this value after a transaction has been completed.
+				   Character length and limitations: For Visa, MasterCard, and Discover, 
+				   the value is exactly 3 digits. For American Express, the value is exactly 4 digits.
+				 */
 				cardDetails.setCVV2(request.getParameter("cvv"));
 				reqDetails.setCreditCard(cardDetails);
+				/*
+				 * (Optional) Field used by merchant to record why this credit was issued to a buyer. 
+				 * It is similar to a "memo" field (freeform text or string field).
+				 */
 				reqDetails.setComment(request.getParameter("comment"));
+				
+				/*
+				 *  (Optional) Total amount of all items in this transaction.
+					Note:
+					The only valid currencies are AUD, CAD, EUR, GBP, JPY, and USD.
+					Character length and limitations: Must not exceed $10,000 USD in any currency. 
+					No currency symbol. Must have 2 decimal places, decimal separator must be a period (.), 
+					and the optional thousands separator must be a comma (,). 
+				 */
 				reqDetails.setNetAmount(new BasicAmountType(CurrencyCodeType
 						.fromValue(request.getParameter("currencyID")), request
 						.getParameter("itemAmount")));
+				/*
+				 *  (Optional) Total shipping costs in this transaction.
+					Note:
+					The only valid currencies are AUD, CAD, EUR, GBP, JPY, and USD.
+					Character length and limitations: Value must be zero or greater and cannot 
+					exceed $10,000 USD in any currency. No currency symbol. 
+					Must have 2 decimal places, decimal separator must be a period (.), 
+					and the optional thousands separator must be a comma (,). 
+					The only valid currencies are AUD, CAD, EUR, GBP, JPY, and USD.
+				 */
 				reqDetails.setShippingAmount(new BasicAmountType(
 						CurrencyCodeType.fromValue(request
 								.getParameter("currencyID")), request
 								.getParameter("shippingAmount")));
+				/*
+				 *  (Optional) Sum of tax for all items in this order.
+					Note:
+					The only valid currencies are AUD, CAD, EUR, GBP, JPY, and USD.
+					Character length and limitations: The value must be zero or greater and 
+					cannot exceed $10,000 USD in any currency. No currency symbol. 
+					Must have 2 decimal places, decimal separator must be a period (.), 
+					and the optional thousands separator must be a comma (,).
+				 */
 				reqDetails.setTaxAmount(new BasicAmountType(CurrencyCodeType
 						.fromValue(request.getParameter("currencyID")), request
 						.getParameter("taxAmount")));
+				/*
+				 *  (Required) Total of order, including shipping, handling, and tax. 
+				 *  Amount = NetAmount + ShippingAmount + TaxAmount
+					Character length and limitations: Must not exceed $10,000 USD in any currency. 
+					No currency symbol. Must have 2 decimal places, decimal separator must be a period (.),
+					and the optional thousands separator must be a comma (,).
+				 */
 				double totalAmount = Double.parseDouble(request
 						.getParameter("itemAmount"))
 						+ Double.parseDouble(request
@@ -488,9 +596,15 @@ public class SettlementServlet extends HttpServlet {
 						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
-			} else if (request.getRequestURI().contains(
-					"ManagePendingTransactionStatus")) {
+			} else if (request.getRequestURI().contains("ManagePendingTransactionStatus")) {
 				ManagePendingTransactionStatusReq req = new ManagePendingTransactionStatusReq();
+				/*
+				 * (Required) The transaction ID of the payment transaction.
+				 * (Required) The operation you want to perform on the transaction. 
+				 * It is one of the following values:
+    				Accept – Accepts the payment
+    				Deny – Rejects the payment
+				 */
 				ManagePendingTransactionStatusRequestType reqType = new ManagePendingTransactionStatusRequestType(
 						request.getParameter("transactionID"),
 						FMFPendingTransactionActionType.fromValue(request

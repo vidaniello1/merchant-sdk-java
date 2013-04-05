@@ -88,18 +88,32 @@ public class ReportingServlet extends HttpServlet {
 			if (request.getRequestURI().contains("TransactionSearch")) {
 				TransactionSearchReq txnreq = new TransactionSearchReq();
 				TransactionSearchRequestType type = new TransactionSearchRequestType();
+				/*
+				 *  (Required) The earliest transaction date at which to start the search.
+					Character length and limitations: No wildcards are allowed. 
+					The value must be in UTC/GMT.
+				 */
 				if ((request.getParameter("startDate") != null)
 						&& !request.getParameter("startDate").toString()
 								.equals("")) {
 					type.setStartDate(request.getParameter("startDate"));
 				}
-
+				
+				/*
+				 *  (Optional) The latest transaction date to be included in the search.
+					Character length and limitations: No wildcards are allowed. 
+					The value must be in UTC/GMT.
+				 */
 				if ((request.getParameter("endDate") != null)
 						&& !request.getParameter("endDate").toString()
 								.equals("")) {
 					type.setEndDate(request.getParameter("endDate"));
 				}
-
+				/*
+				 *  (Optional) Search by the transaction ID. 
+				 *  The returned results are from the merchant's transaction records.
+					Character length and limitations: 19 single-byte characters maximum
+				 */
 				if (request.getParameter("transactionID") != "") {
 					type.setTransactionID(request.getParameter("transactionID"));
 				}
@@ -144,14 +158,16 @@ public class ReportingServlet extends HttpServlet {
 						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
-			} else if (request.getRequestURI()
-					.contains("GetTransactionDetails")) {
+			} else if (request.getRequestURI().contains("GetTransactionDetails")) {
 				GetTransactionDetailsReq req = new GetTransactionDetailsReq();
 				GetTransactionDetailsRequestType reqType = new GetTransactionDetailsRequestType();
+				/*
+				 * Unique transaction ID of the payment.
+				   Character length and limitations: 17 single-byte characters
+				 */
 				reqType.setTransactionID(request.getParameter("transID"));
 				req.setGetTransactionDetailsRequest(reqType);
-				GetTransactionDetailsResponseType resp = service
-						.getTransactionDetails(req);
+				GetTransactionDetailsResponseType resp = service.getTransactionDetails(req);
 				if (resp != null) {
 					session.setAttribute("lastReq", service.getLastRequest());
 					session.setAttribute("lastResp", service.getLastResponse());
@@ -184,8 +200,16 @@ public class ReportingServlet extends HttpServlet {
 				GetBalanceReq req = new GetBalanceReq();
 				GetBalanceRequestType reqType = new GetBalanceRequestType();
 
-				reqType.setReturnAllCurrencies(request
-						.getParameter("returnAllCurrencies"));
+				/*
+				(Optional) Indicates whether to return all currencies. It is one of the following values:
+    				0 – Return only the balance for the primary currency holding.
+    				1 – Return the balance for each currency holding.
+				Note:
+				This field is available since version 51. 
+				Prior versions return only the balance for the primary currency holding.
+
+				 */
+				reqType.setReturnAllCurrencies(request.getParameter("returnAllCurrencies"));
 				req.setGetBalanceRequest(reqType);
 				GetBalanceResponseType resp = service.getBalance(req);
 				if (resp != null) {
@@ -218,6 +242,12 @@ public class ReportingServlet extends HttpServlet {
 				GetPalDetailsReq req = new GetPalDetailsReq();
 				GetPalDetailsRequestType reqType = new GetPalDetailsRequestType();
 				req.setGetPalDetailsRequest(reqType);
+				/*
+				 * Obtain your Pal ID, which is the PayPal-assigned merchant account number, 
+				 * and other informaton about your account. 
+				 * You need the account number when working with dynamic versions 
+				 * of PayPalbuttons and logos
+				 */
 				GetPalDetailsResponseType resp = service.getPalDetails(req);
 				if (resp != null) {
 					session.setAttribute("lastReq", service.getLastRequest());
@@ -225,6 +255,7 @@ public class ReportingServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						//ThePayPal-assigned merchant account number.
 						map.put("Pal ID", resp.getPal());
 						session.setAttribute("map", map);
 						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
@@ -235,6 +266,14 @@ public class ReportingServlet extends HttpServlet {
 				}
 			} else if (request.getRequestURI().contains("AddressVerify")) {
 				AddressVerifyReq req = new AddressVerifyReq();
+				/*
+				 * #. Email: (Required) Email address of a PayPal member to verify.
+				 * #. Street: (Required) First line of the billing or shipping postal address to verify. 
+				 * To pass verification, the value of Street must match the first 3 single-byte characters of a postal address on file for the PayPal member.
+				 * #. Zip: (Required) Postal code to verify. To pass verification, 
+				 * the value of Zip must match the first 5 single-byte characters of the postal 
+				 * code of the verified postal address for the verified PayPal member. 
+				 */
 				AddressVerifyRequestType reqType = new AddressVerifyRequestType(
 						request.getParameter("mail"),
 						request.getParameter("street"),
@@ -247,9 +286,41 @@ public class ReportingServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						/*
+						 * Indicates whether the address is a confirmed address on file at PayPal. 
+						 * It is one of the following values:
+    						None – The request value of the Email element does not match any email address on file at PayPal.
+    						Confirmed – If the response value of the StreetMatch element is Matched, the entire postal address is confirmed.
+    						Unconfirmed – PayPal responds that the postal address is unconfirmed.
+						 Note:
+							The values Confirmed and Unconfirmed both indicate that the member email address passed verification.
+
+						 */
 						map.put("Confirmation Code", resp.getConfirmationCode());
+						/*
+						 * The token contains encrypted information about the member's email address 
+						 * and postal address. If you pass the value of the token in the 
+						 * HTML variable address_api_token of Buy Now buttons, 
+						 * PayPal prevents the buyer from using an email address or 
+						 * postal address other than those that PayPal verified with this API call. 
+						 * The token is valid for 24 hours.
+						 */
 						map.put("PayPal Token", resp.getPayPalToken());
+						/*
+						 * Indicates whether the street address matches address information on file at PayPal. 
+						 * It is one of the following values:
+    						None – The request value of the Email element does not match any email address on file at PayPal. No comparison of other request values was made.
+    						Matched – The request value of the Street element matches the first 3 single-byte characters of a postal address on file for the PayPal member.
+    						Unmatched – The request value of the Street element does not match any postal address on file for the PayPal member.
+						 */
 						map.put("Street Match", resp.getStreetMatch());
+						/*
+						 * Indicates whether the ZIP address matches address information on file at PayPal. 
+						 * It is one of the following values:
+    						None – The request value of the Street element was unmatched. No comparison of the Zip element was made.
+    						Matched – The request value of the Zip element matches the ZIP code of the postal address on file for the PayPal member.
+    						Unmatched – The request value of the Zip element does not match the ZIP code of the postal address on file for the PayPal member.
+						 */
 						map.put("Zip Match", resp.getZipMatch());
 						session.setAttribute("map", map);
 						response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");

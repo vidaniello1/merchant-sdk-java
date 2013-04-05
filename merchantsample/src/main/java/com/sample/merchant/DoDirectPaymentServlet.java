@@ -160,9 +160,21 @@ public class DoDirectPaymentServlet extends HttpServlet {
 		
 		PayerInfoType payer = new PayerInfoType();
 		PersonNameType name = new PersonNameType();
+		/*
+		 *  (Required) Buyer's first name.
+			Character length and limitations: 25 single-byte characters
+		 */
 		name.setFirstName(req.getParameter("firstName"));
+		/*
+		 *  (Required) Buyer's last name.
+			Character length and limitations: 25 single-byte characters
+		 */
 		name.setLastName(req.getParameter("lastName"));
 		payer.setPayerName(name);
+		/*
+		 *  (Required) Country code.
+			Character length and limitations: 2 single-byte characters
+		 */
 		payer.setPayerCountry(CountryCodeType.fromValue(req.getParameter("countryCode")));
 		payer.setAddress(shipTo);
 

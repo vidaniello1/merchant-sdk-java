@@ -353,10 +353,9 @@ public class CheckoutServlet extends HttpServlet {
 				
 				BasicAmountType itemsTotal = new BasicAmountType();
 				itemsTotal.setValue(Double.toString(itemTotal));
-				itemsTotal.setCurrencyID(CurrencyCodeType.fromValue(request
-						.getParameter("currencyCode")));
-				paydtl.setOrderTotal(new BasicAmountType(CurrencyCodeType
-						.fromValue(request.getParameter("currencyCode")),
+				//(Optional) Search by 3-character, ISO 4217 currency code.
+				itemsTotal.setCurrencyID(CurrencyCodeType.fromValue(request.getParameter("currencyCode")));
+				paydtl.setOrderTotal(new BasicAmountType(CurrencyCodeType.fromValue(request.getParameter("currencyCode")),
 						Double.toString(orderTotal)));
 				paydtl.setPaymentDetailsItem(lineItems);
 
@@ -640,6 +639,7 @@ public class CheckoutServlet extends HttpServlet {
 				String quantity = request.getParameter("itemQuantity");
 				itemTotalAmt = Double.parseDouble(amt) * Double.parseDouble(quantity);
 				orderTotalAmt += itemTotalAmt;
+				
 				PaymentDetailsType paymentDetails = new PaymentDetailsType();
 				BasicAmountType orderTotal = new BasicAmountType();
 				orderTotal.setValue(Double.toString(orderTotalAmt));
@@ -654,10 +654,33 @@ public class CheckoutServlet extends HttpServlet {
 
 				List<PaymentDetailsItemType> paymentItems = new ArrayList<PaymentDetailsItemType>();
 				PaymentDetailsItemType paymentItem = new PaymentDetailsItemType();
+				/*
+				 * Item name. This field is required when you pass a value for ItemCategory.
+				   Character length and limitations: 127 single-byte characters
+				   This field is introduced in version 53.0. 
+				 */
 				paymentItem.setName(request.getParameter("itemName"));
+				/*
+				 * Item quantity. This field is required when you pass a value for ItemCategory. 
+				 * For digital goods (ItemCategory=Digital), this field is required.
+					Character length and limitations: Any positive integer
+					This field is introduced in version 53.0. 
+				 */
 				paymentItem.setQuantity(Integer.parseInt(request.getParameter("itemQuantity")));
 				BasicAmountType amount = new BasicAmountType();
+				/*
+				 * Cost of item. This field is required when you pass a value for ItemCategory.
+				Note:
+				You must set the currencyID attribute to one of the 3-character currency codes for
+				any of the supported PayPal currencies.
+				Character length and limitations: Value is a positive number which cannot 
+				exceed $10,000 USD in any currency. It includes no currency symbol.
+				It must have 2 decimal places, the decimal separator must be a period (.), 
+				and the optional thousands separator must be a comma (,).
+				This field is introduced in version 53.0.
+				 */
 				amount.setValue(request.getParameter("amt"));
+				//(Optional) Search by 3-character, ISO 4217 currency code.
 				amount.setCurrencyID(CurrencyCodeType.fromValue(request.getParameter("currencyCode")));
 				paymentItem.setAmount(amount);
 				paymentItems.add(paymentItem);
@@ -718,8 +741,7 @@ public class CheckoutServlet extends HttpServlet {
 					}
 				}
 
-			} else if (request.getRequestURI()
-					.contains("DoUATPExpressCheckout")) {
+			} else if (request.getRequestURI().contains("DoUATPExpressCheckout")) {
 				DoUATPExpressCheckoutPaymentReq req = new DoUATPExpressCheckoutPaymentReq();
 				DoUATPExpressCheckoutPaymentRequestType reqType = new DoUATPExpressCheckoutPaymentRequestType();
 
@@ -802,8 +824,7 @@ public class CheckoutServlet extends HttpServlet {
 						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
-			} else if (request.getRequestURI().contains(
-					"ExternalRememberMeOptOut")) {
+			} else if (request.getRequestURI().contains("ExternalRememberMeOptOut")) {
 				ExternalRememberMeOptOutReq req = new ExternalRememberMeOptOutReq();
 				ExternalRememberMeOptOutRequestType reqType = new ExternalRememberMeOptOutRequestType(
 						request.getParameter("externalRememberMeID"));
@@ -828,8 +849,7 @@ public class CheckoutServlet extends HttpServlet {
 						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
-			} else if (request.getRequestURI().contains(
-					"ExecuteCheckoutOperations")) {
+			} else if (request.getRequestURI().contains("ExecuteCheckoutOperations")) {
 				ExecuteCheckoutOperationsReq req = new ExecuteCheckoutOperationsReq();
 				SetDataRequestType setDataRequest = new SetDataRequestType();
 				List<BillingApprovalDetailsType> billingApprovalList = new ArrayList<BillingApprovalDetailsType>();

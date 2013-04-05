@@ -190,11 +190,17 @@ public class RecurringPaymentsServlet extends HttpServlet {
 		try {
 			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
 					.getClass().getResourceAsStream("/sdk_config.properties"));
-			if (request.getRequestURI().contains(
-					"GetBillingAgreementCustomerDetails")) {
+			if (request.getRequestURI().contains("GetBillingAgreementCustomerDetails")) {
 
 				GetBillingAgreementCustomerDetailsReq gReq = new GetBillingAgreementCustomerDetailsReq();
 				GetBillingAgreementCustomerDetailsRequestType gRequestType = new GetBillingAgreementCustomerDetailsRequestType();
+				/*
+				 *  (Required) The time-stamped token returned in the SetCustomerBillingAgreement 
+				 *   response.
+					Note:
+					 The token expires after 3 hours.
+					 Character length and limitations: 20 single-byte characters
+				 */
 				gRequestType.setToken(request.getParameter("token"));
 				gReq.setGetBillingAgreementCustomerDetailsRequest(gRequestType);
 				GetBillingAgreementCustomerDetailsResponseType txnresponse = service
@@ -263,15 +269,31 @@ public class RecurringPaymentsServlet extends HttpServlet {
 				DoReferenceTransactionReq doReq = new DoReferenceTransactionReq();
 				DoReferenceTransactionRequestType doRequestType = new DoReferenceTransactionRequestType();
 				DoReferenceTransactionRequestDetailsType doDetailsType = new DoReferenceTransactionRequestDetailsType();
-
-				doDetailsType.setPaymentAction(PaymentActionCodeType
-						.fromValue(request.getParameter("paymentAction")));
+				/*
+				 *  (Optional) How you want to obtain payment. It is one of the following values:
+    				  1. Authorization – This payment is a basic authorization subject to settlement 
+    					with PayPal Authorization and Capture.
+    				  2. Sale – This is a final sale for which you are requesting payment.
+				 */
+				doDetailsType.setPaymentAction(PaymentActionCodeType.fromValue(request.getParameter("paymentAction")));
+				/*
+				 * Indicates whether the payment is instant or delayed. 
+				 * It is one of the following values:
+    				1.none
+    				2.echeck
+    				3.instant
+					Character length and limitations: 7 single-byte characters
+				 */
 				String pt = request.getParameter("paymentType");
 				doDetailsType.setPaymentType(MerchantPullPaymentCodeType
 						.fromValue(pt));
 
 				PaymentDetailsType paymentDetails = new PaymentDetailsType();
-
+				/*
+				 *  (Optional) An identification code for use by third-party applications 
+				 *  to identify transactions.
+					Character length and limitations: 32 single-byte alphanumeric characters
+				 */
 				paymentDetails.setButtonSource("Java_SDK_JSP");
 				// The total cost of the transaction to the buyer. If shipping cost and
 				// tax charges are known, include them in this value. If not, this value
@@ -456,9 +478,17 @@ public class RecurringPaymentsServlet extends HttpServlet {
 							.equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", txnresponse.getAck());
+						/*
+						 * Unique transaction ID of the payment.
+						   Character length and limitations: 17 single-byte characters
+						 */
 						map.put("Transaction ID", txnresponse
 								.getDoReferenceTransactionResponseDetails()
 								.getTransactionID());
+						/*
+						 * Billing agreement identifier returned 
+						 * if the value of ReferenceID in the request is a billing agreement identification number.
+						 */
 						map.put("Billing Agreement ID", txnresponse
 								.getDoReferenceTransactionResponseDetails()
 								.getBillingAgreementID());
@@ -525,8 +555,7 @@ public class RecurringPaymentsServlet extends HttpServlet {
 					}
 				}
 			}
-			if (request.getRequestURI().contains(
-					"CreateRecurringPaymentsProfile")) {
+			if (request.getRequestURI().contains("CreateRecurringPaymentsProfile")) {
 
 				CreateRecurringPaymentsProfileReq req = new CreateRecurringPaymentsProfileReq();
 				CreateRecurringPaymentsProfileRequestType reqType = new CreateRecurringPaymentsProfileRequestType();
@@ -907,6 +936,14 @@ public class RecurringPaymentsServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						/*
+						 *  (Required) Recurring payments profile ID returned in the 
+						 *  CreateRecurringPaymentsProfile response.
+						    Note: The profile must have a status of either Active or Suspended.
+							Character length and limitations: 14 single-byte alphanumeric characters. 
+							19 character profile IDs are supported for compatibility with previous versions 
+							of the PayPal API.
+						 */
 						map.put("Profile ID",
 								resp.getCreateRecurringPaymentsProfileResponseDetails()
 										.getProfileID());
@@ -924,9 +961,15 @@ public class RecurringPaymentsServlet extends HttpServlet {
 					}
 				}
 
-			} else if (request.getRequestURI().contains(
-					"GetRecurringPaymentsProfileDetails")) {
+			} else if (request.getRequestURI().contains("GetRecurringPaymentsProfileDetails")) {
 				GetRecurringPaymentsProfileDetailsReq req = new GetRecurringPaymentsProfileDetailsReq();
+				/*
+				 *  (Required) Recurring payments profile ID returned in the 
+				 *  CreateRecurringPaymentsProfile response. 
+				 *  19-character profile IDs are supported for compatibility with 
+				 *  previous versions of the PayPal API.
+					Character length and limitations: 14 single-byte alphanumeric characters
+				 */
 				GetRecurringPaymentsProfileDetailsRequestType reqType = new GetRecurringPaymentsProfileDetailsRequestType(
 						request.getParameter("profileID"));
 				req.setGetRecurringPaymentsProfileDetailsRequest(reqType);
@@ -938,6 +981,14 @@ public class RecurringPaymentsServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						/*
+						 *  (Required) Recurring payments profile ID returned in the 
+						 *  CreateRecurringPaymentsProfile response.
+						    Note: The profile must have a status of either Active or Suspended.
+							Character length and limitations: 14 single-byte alphanumeric characters. 
+							19 character profile IDs are supported for compatibility with previous versions 
+							of the PayPal API.
+						 */
 						map.put("Profile ID",
 								resp.getGetRecurringPaymentsProfileDetailsResponseDetails()
 										.getProfileID());
@@ -952,14 +1003,32 @@ public class RecurringPaymentsServlet extends HttpServlet {
 					}
 				}
 
-			} else if (request.getRequestURI().contains(
-					"ManageRecurringPaymentsProfileStatus")) {
+			} else if (request.getRequestURI().contains("ManageRecurringPaymentsProfileStatus")) {
 				ManageRecurringPaymentsProfileStatusReq req = new ManageRecurringPaymentsProfileStatusReq();
 				ManageRecurringPaymentsProfileStatusRequestType reqType = new ManageRecurringPaymentsProfileStatusRequestType();
+				/*
+				 *  (Required) Recurring payments profile ID returned in the 
+				 *  CreateRecurringPaymentsProfile response.
+					Character length and limitations: 14 single-byte alphanumeric characters. 
+					19 character profile IDs are supported for compatibility with previous 
+					versions of the PayPal API.
+					------
+					(Required) The action to be performed to the recurring payments profile. Must be one of the following:
+    				Cancel – Only profiles in Active or Suspended state can be canceled.
+    				Suspend – Only profiles in Active state can be suspended.
+    				Reactivate – Only profiles in a suspended state can be reactivated.
+
+				 */
 				ManageRecurringPaymentsProfileStatusRequestDetailsType reqDetails = new ManageRecurringPaymentsProfileStatusRequestDetailsType(
 						request.getParameter("profileID"),
-						StatusChangeActionType.fromValue(request
-								.getParameter("action")));
+						StatusChangeActionType.fromValue(request.getParameter("action")));
+				/*
+				 * (Optional) The reason for the change in status. 
+				 * For profiles created using Express Checkout, this message is included 
+				 * in the email notification to the buyer when the status of the profile is 
+				 * successfully changed, and can also be seen by both you and the buyer on 
+				 * the Status History page of the PayPal account. 
+				 */
 				reqDetails.setNote("change");
 				reqType.setManageRecurringPaymentsProfileStatusRequestDetails(reqDetails);
 				req.setManageRecurringPaymentsProfileStatusRequest(reqType);
@@ -971,6 +1040,14 @@ public class RecurringPaymentsServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						/*
+						 *  (Required) Recurring payments profile ID returned in the 
+						 *  CreateRecurringPaymentsProfile response.
+						    Note: The profile must have a status of either Active or Suspended.
+							Character length and limitations: 14 single-byte alphanumeric characters. 
+							19 character profile IDs are supported for compatibility with previous versions 
+							of the PayPal API.
+						 */
 						map.put("Profile ID",
 								resp.getManageRecurringPaymentsProfileStatusResponseDetails()
 										.getProfileID());
@@ -981,25 +1058,62 @@ public class RecurringPaymentsServlet extends HttpServlet {
 						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
-			} else if (request.getRequestURI().contains(
-					"UpdateRecurringPaymentsProfile")) {
+			} else if (request.getRequestURI().contains("UpdateRecurringPaymentsProfile")) {
 				UpdateRecurringPaymentsProfileReq req = new UpdateRecurringPaymentsProfileReq();
 				UpdateRecurringPaymentsProfileRequestType reqType = new UpdateRecurringPaymentsProfileRequestType();
+				/*
+				 *  (Required) Recurring payments profile ID returned in the 
+				 *  CreateRecurringPaymentsProfile response.
+					Character length and limitations: 14 single-byte alphanumeric characters. 
+					19 character profile IDs are supported for compatibility with previous 
+					versions of the PayPal API.
+				 */
 				UpdateRecurringPaymentsProfileRequestDetailsType reqDetails = new UpdateRecurringPaymentsProfileRequestDetailsType(
 						request.getParameter("profileID"));
+				/*
+				 * (Optional) The reason for the change in status. 
+				 * For profiles created using Express Checkout, this message is included 
+				 * in the email notification to the buyer when the status of the profile is 
+				 * successfully changed, and can also be seen by both you and the buyer on 
+				 * the Status History page of the PayPal account. 
+				 */
 				reqDetails.setNote("change");
+				
 				if (request.getParameter("creditCardNumber") != "") {
 					CreditCardDetailsType cc = new CreditCardDetailsType();
-					cc.setCreditCardNumber(request
-							.getParameter("creditCardNumber"));
+					/*
+					 *  (Required) Credit card number.
+						Character length and limitations: Numeric characters only with no spaces 
+						or punctuation. The string must conform with modulo and length required 
+						by each credit card type.
+					 */
+					cc.setCreditCardNumber(request.getParameter("creditCardNumber"));
+					/*
+					 * Card Verification Value, version 2. Your Merchant Account settings 
+					 * determine whether this field is required. To comply with credit card 
+					 * processing regulations, you must not store this value after a transaction 
+					 * has been completed.
+						Character length and limitations: For Visa, MasterCard, and Discover, 
+						the value is exactly 3 digits. For American Express, the value is exactly 
+						4 digits.
+					 */
 					cc.setCVV2(request.getParameter("cvv"));
-					cc.setExpMonth(Integer.parseInt(request
-							.getParameter("expMonth")));
-					cc.setExpYear(Integer.parseInt(request
-							.getParameter("expYear")));
+					//(Required) Credit card expiration month.
+					cc.setExpMonth(Integer.parseInt(request.getParameter("expMonth")));
+					//(Required) Credit card expiration year.
+					cc.setExpYear(Integer.parseInt(request.getParameter("expYear")));
+					
 					PayerInfoType payerInfo= new PayerInfoType();
 					payerInfo.setPayer(request.getParameter("BuyerEmailId"));
 					cc.setCardOwner(payerInfo);
+					/*
+					 *  (Optional) Type of credit card. For UK, only Maestro, MasterCard, Discover, and Visa are allowable. For Canada, only MasterCard and Visa are allowable and Interac debit cards are not supported. It is one of the following values:
+	    			   [Visa,  MasterCard, Discover, Amex, Maestro: See note]
+					  Note:
+						If the credit card type is Maestro, you must set currencyId to GBP. 
+						In addition, you must specify either StartMonth and StartYear or IssueNumber.
+						Character length and limitations: Up to 10 single-byte alphabetic characters
+					 */
 					CreditCardTypeType type = CreditCardTypeType.fromValue(request.getParameter("creditCardType"));
 					switch(type){
 						case AMEX:
@@ -1019,29 +1133,81 @@ public class RecurringPaymentsServlet extends HttpServlet {
 				}
 				reqDetails.setBillingStartDate(request
 						.getParameter("billingStartDate") + "T00:00:00:000Z");
-
+					
 				if (request.getParameter("trialBillingAmount") != "") {
-					int frequency = Integer.parseInt(request
-							.getParameter("trialBillingFrequency"));
+					/*
+					 * Number of billing periods that make up one billing cycle; 
+					 * required if you specify an optional trial period.
+					   The combination of billing frequency and billing period must be 
+					   less than or equal to one year. For example, if the billing cycle is Month,
+					   the maximum value for billing frequency is 12. Similarly, 
+					   if the billing cycle is Week, the maximum value for billing frequency is 52.
+					   Note:
+					   If the billing period is SemiMonth, the billing frequency must be 1.
+
+					 */
+					int frequency = Integer.parseInt(request.getParameter("trialBillingFrequency"));
+					/*
+					 * Number of billing periods that make up one billing cycle; 
+					 * required if you specify an optional trial period.
+					   The combination of billing frequency and billing period must be 
+					   less than or equal to one year. For example, if the billing cycle is Month,
+					   the maximum value for billing frequency is 12. Similarly, 
+					   if the billing cycle is Week, the maximum value for billing frequency is 52.
+					   Note:
+					   If the billing period is SemiMonth, the billing frequency must be 1.
+
+					 */
 					BasicAmountType paymentAmount = new BasicAmountType(
-							currency,
-							request.getParameter("trialBillingAmount"));
+							currency,request.getParameter("trialBillingAmount"));
+					/*
+					 * Unit for billing during this subscription period; 
+					 * required if you specify an optional trial period. 
+					 * It is one of the following values: [Day, Week, SemiMonth, Month, Year]
+					   For SemiMonth, billing is done on the 1st and 15th of each month.
+					   Note:
+					   The combination of BillingPeriod and BillingFrequency cannot exceed one year.
+					 */
 					BillingPeriodType period = BillingPeriodType
 							.fromValue(request
 									.getParameter("trialBillingPeriod"));
-					int numCycles = Integer.parseInt(request
-							.getParameter("trialBillingCycles"));
+					/*
+					 * Number of billing periods that make up one billing cycle; 
+					 * required if you specify an optional trial period.
+					   The combination of billing frequency and billing period must be 
+					   less than or equal to one year. For example, if the billing cycle is Month,
+					   the maximum value for billing frequency is 12. Similarly, 
+					   if the billing cycle is Week, the maximum value for billing frequency is 52.
+					  Note:
+						If the billing period is SemiMonth, the billing frequency must be 1.
+					 */
+					int numCycles = Integer.parseInt(request.getParameter("trialBillingCycles"));
 
 					BillingPeriodDetailsType_Update trialPeriod = new BillingPeriodDetailsType_Update();
 					trialPeriod.setBillingPeriod(period);
 					trialPeriod.setBillingFrequency(frequency);
 					trialPeriod.setAmount(paymentAmount);
 					trialPeriod.setTotalBillingCycles(numCycles);
+					/*
+					 *  (Optional) Shipping amount for each billing cycle during this payment period.
+						Note:
+						All amounts in the request must have the same currency.
+					 */
 					if (request.getParameter("trialShippingAmount") != "") {
 						trialPeriod.setShippingAmount(new BasicAmountType(
 								currency, request
 										.getParameter("trialShippingAmount")));
 					}
+					/*
+					 *  (Optional) Tax amount for each billing cycle during this payment period.
+						Note:
+						All amounts in the request must have the same currency.
+						Character length and limitations: 
+						Value is a positive number which cannot exceed $10,000 USD in any currency.
+						It includes no currency symbol. It must have 2 decimal places, 
+						the decimal separator must be a period (.), and the optional 
+						thousands separator must be a comma (,).
+					 */
 					if (request.getParameter("trialTaxAmount") != "") {
 						trialPeriod.setTaxAmount(new BasicAmountType(currency,
 								request.getParameter("trialTaxAmount")));
@@ -1050,26 +1216,75 @@ public class RecurringPaymentsServlet extends HttpServlet {
 					reqDetails.setTrialPeriod(trialPeriod);
 				}
 				if (request.getParameter("billingAmount") != "") {
-					int frequency = Integer.parseInt(request
-							.getParameter("billingFrequency"));
+					/*
+					 *  (Required) Number of billing periods that make up one billing cycle.
+						The combination of billing frequency and billing period must be less than 
+						or equal to one year. For example, if the billing cycle is Month, 
+						the maximum value for billing frequency is 12. Similarly, 
+						if the billing cycle is Week, the maximum value for billing frequency is 52.
+						Note:
+						If the billing period is SemiMonth, the billing frequency must be 1.
+					 */
+					int frequency = Integer.parseInt(request.getParameter("billingFrequency"));
+					/*
+					 *  (Required) Number of billing periods that make up one billing cycle.
+						The combination of billing frequency and billing period must be less than 
+						or equal to one year. For example, if the billing cycle is Month, 
+						the maximum value for billing frequency is 12. Similarly, 
+						if the billing cycle is Week, the maximum value for billing frequency is 52.
+						Note:
+						If the billing period is SemiMonth, the billing frequency must be 1.
+					 */
 					BasicAmountType paymentAmount = new BasicAmountType(
 							currency, request.getParameter("billingAmount"));
-					BillingPeriodType period = BillingPeriodType
-							.fromValue(request.getParameter("billingPeriod"));
-
-					int numCycles = Integer.parseInt(request
-							.getParameter("totalBillingCycles"));
+					/*
+					 *  (Required) Unit for billing during this subscription period. 
+					 *  It is one of the following values:
+    					 [Day, Week, SemiMonth, Month, Year]
+						For SemiMonth, billing is done on the 1st and 15th of each month.
+						Note:
+						The combination of BillingPeriod and BillingFrequency cannot exceed one year.
+					 */
+					BillingPeriodType period = BillingPeriodType.fromValue(request.getParameter("billingPeriod"));
+					/*
+					 *  (Optional) Number of billing cycles for payment period.
+    					For the regular payment period, if no value is specified or the value is 0, 
+    					the regular payment period continues until the profile is canceled or deactivated.
+    					For the regular payment period, if the value is greater than 0, 
+    					the regular payment period will expire after the trial period is 
+    					finished and continue at the billing frequency for TotalBillingCycles cycles.
+	
+					 */
+					int numCycles = Integer.parseInt(request.getParameter("totalBillingCycles"));
 
 					BillingPeriodDetailsType_Update paymentPeriod = new BillingPeriodDetailsType_Update();
 					paymentPeriod.setBillingPeriod(period);
 					paymentPeriod.setBillingFrequency(frequency);
 					paymentPeriod.setAmount(paymentAmount);
 					paymentPeriod.setTotalBillingCycles(numCycles);
+					/*
+					 *  (Optional) Shipping amount for each billing cycle during this payment period.
+					Note:
+						All amounts in the request must have the same currency.
+						Character length and limitations: Value is a positive number which 
+						cannot exceed $10,000 USD in any currency. It includes no currency symbol. 
+						It must have 2 decimal places, the decimal separator must be a period (.), 
+						and the optional thousands separator must be a comma (,).
+					 */
 					if (request.getParameter("billingShippingAmount") != "") {
 						paymentPeriod.setShippingAmount(new BasicAmountType(
 								currency, request
 										.getParameter("billingShippingAmount")));
 					}
+					/*
+					 *  (Optional) Tax amount for each billing cycle during the regular payment period.
+					Note:
+						All amounts in the request must have the same currency.
+						Character length and limitations: Value is a positive number which 
+						cannot exceed $10,000 USD in any currency. It includes no currency symbol. 
+						It must have 2 decimal places, the decimal separator must be a period (.), 
+						and the optional thousands separator must be a comma (,). 
+					 */
 					if (request.getParameter("billingTaxAmount") != "") {
 						paymentPeriod.setTaxAmount(new BasicAmountType(
 								currency, request
@@ -1077,58 +1292,138 @@ public class RecurringPaymentsServlet extends HttpServlet {
 					}
 					reqDetails.setPaymentPeriod(paymentPeriod);
 				}
+				/*
+				 *  (Optional) The number of failed payments allowed before the profile is 
+				 *  automatically suspended. The specified value cannot be less than the 
+				 *  current number of failed payments for this profile.
+					Character length and limitations: Number string representing an integer
+				 */
 				if (request.getParameter("maxFailedPayments") != "") {
 					reqDetails.setMaxFailedPayments(Integer.parseInt(request
 							.getParameter("maxFailedPayments")));
 				}
+				/*
+				 *  (Optional) Description of the recurring payment.
+					Character length and limitations: 127 single-byte alphanumeric characters
+				 */
 				if (request.getParameter("profileDescription") != "") {
 					reqDetails.setDescription(request
 							.getParameter("profileDescription"));
 				}
+				//(Optional) The number of additional billing cycles to add to this profile.
 				if (request.getParameter("additionalBillingCycles") != "") {
 					reqDetails.setAdditionalBillingCycles(Integer
 							.parseInt(request
 									.getParameter("additionalBillingCycles")));
 				}
+				/*
+				 *  (Optional) This field indicates whether you would like PayPal to automatically 
+				 *  bill the outstanding balance amount in the next billing cycle. 
+				 *  It is one of the following values:
+    				  NoAutoBill – PayPal does not automatically bill the outstanding balance.
+    				  AddToNextBilling – PayPal automatically bills the outstanding balance
+
+				 */
 				if (request.getParameter("autoBillOutstandingAmount") != "") {
 					reqDetails
 							.setAutoBillOutstandingAmount(AutoBillType.fromValue(request
 									.getParameter("autoBillOutstandingAmount")));
 				}
-
+				/*
+				 *  (Optional) Billing amount for each cycle in the subscription period, 
+				 *  not including shipping and tax amounts.
+				Note:
+					For recurring payments with Express Checkout, the payment amount can be 
+					increased by no more than 20% every 180 days (starting when the profile is created).
+					Character length and limitations: Value is a positive number which cannot 
+					exceed $10,000 USD in any currency. It includes no currency symbol. 
+					It must have 2 decimal places, the decimal separator must be a period (.), 
+					and the optional thousands separator must be a comma (,). 
+				 */
 				if (request.getParameter("amount") != "") {
 					reqDetails.setAmount(new BasicAmountType(currency, request
 							.getParameter("amount")));
 				}
+				/*
+				 *  (Optional) Shipping amount for each billing cycle during the regular payment period.
+					Note:
+						All amounts in the request must have the same currency.
+						Character length and limitations: Value is a positive number which cannot 
+						exceed $10,000 USD in any currency. It includes no currency symbol. 
+						It must have 2 decimal places, the decimal separator must be a period (.), 
+						and the optional thousands separator must be a comma (,). 
+				 */
 				if (request.getParameter("shippingAmount") != "") {
 					reqDetails.setShippingAmount(new BasicAmountType(currency, request
 							.getParameter("shippingAmount")));
 				}
+				/*
+				 *  (Optional) Tax amount for each billing cycle during the regular payment period.
+				 Note:
+					All amounts in the request must have the same currency.
+					Character length and limitations: Value is a positive number which cannot 
+					exceed $10,000 USD in any currency. It includes no currency symbol. 
+					It must have 2 decimal places, the decimal separator must be a period (.), 
+					and the optional thousands separator must be a comma (,). 
+				 */
 				if (request.getParameter("taxAmount") != "") {
 					reqDetails.setTaxAmount(new BasicAmountType(currency, request
 							.getParameter("taxAmount")));
 				}
-
+				/*
+				 *  (Optional) Full name of the person receiving the product or service 
+				 *  paid for by the recurring payment. If not present, the name in the 
+				 *  buyer's PayPal account is used.
+					Character length and limitations: 32 single-byte characters
+				 */
 				if (request.getParameter("subscriberName") != "") {
-					reqDetails.setSubscriberName(request
-							.getParameter("subscriberName"));
+					reqDetails.setSubscriberName(request.getParameter("subscriberName"));
+					
 				} else if (request.getParameter("shippingName") != "") {
 					AddressType shippingAddr = new AddressType();
+					/*
+					 * Person's name associated with this shipping address. 
+					 * It is required if using a shipping address.
+						Character length and limitations: 32 single-byte characters
+					 */
 					shippingAddr.setName(request.getParameter("shippingName"));
-					shippingAddr.setStreet1(request
-							.getParameter("shippingStreet1"));
-					shippingAddr.setStreet2(request
-							.getParameter("shippingStreet2"));
-					shippingAddr
-							.setPhone(request.getParameter("shippingPhone"));
-					shippingAddr.setCityName(request
-							.getParameter("shippingCity"));
-					shippingAddr.setStateOrProvince(request
-							.getParameter("shippingState"));
-					shippingAddr.setCountryName(request
-							.getParameter("shippingCountry"));
-					shippingAddr.setPostalCode(request
-							.getParameter("shippingPostalCode"));
+					/*
+					 * First street address. It is required if using a shipping address.
+						Character length and limitations: 100 single-byte characters
+					 */
+					shippingAddr.setStreet1(request.getParameter("shippingStreet1"));
+					/*
+					 *  (Optional) Second street address.
+						Character length and limitations: 100 single-byte characters
+					 */
+					shippingAddr.setStreet2(request.getParameter("shippingStreet2"));
+					/*
+					 *  (Optional) Phone number.
+						Character length and limitations: 20 single-byte characters
+					 */
+					shippingAddr.setPhone(request.getParameter("shippingPhone"));
+					/*
+					 * Name of city. It is required if using a shipping address.
+						Character length and limitations: 40 single-byte characters
+					 */
+					shippingAddr.setCityName(request.getParameter("shippingCity"));
+					/*
+					 * State or province. It is required if using a shipping address.
+						Character length and limitations: 40 single-byte characters
+					 */
+					shippingAddr.setStateOrProvince(request.getParameter("shippingState"));
+					/*
+					 * Country code. It is required if using a shipping address.
+						Character length and limitations: 2 single-byte characters
+					 */
+					shippingAddr.setCountryName(request.getParameter("shippingCountry"));
+					/*
+					 * U.S. ZIP code or other country-specific postal code. 
+					 * It is required if using a U.S. shipping address; 
+					 * may be required for other countries.
+						Character length and limitations: 20 single-byte characters
+					 */
+					shippingAddr.setPostalCode(request.getParameter("shippingPostalCode"));
 					reqDetails.setSubscriberShippingAddress(shippingAddr);
 				}
 
@@ -1142,6 +1437,11 @@ public class RecurringPaymentsServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+						/*
+						 * Recurring payments profile ID returned in the CreateRecurringPaymentsProfile response. 
+						 * An error is returned if the profile specified in the BillOutstandingAmount request has 
+						 * a status of canceled or expired.
+						 */
 						map.put("Profile ID",
 								resp.getUpdateRecurringPaymentsProfileResponseDetails()
 										.getProfileID());
@@ -1152,12 +1452,29 @@ public class RecurringPaymentsServlet extends HttpServlet {
 						response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
 					}
 				}
-			} else if (request.getRequestURI()
-					.contains("BillOutstandingAmount")) {
+			} else if (request.getRequestURI().contains("BillOutstandingAmount")) {
 				BillOutstandingAmountReq req = new BillOutstandingAmountReq();
 				BillOutstandingAmountRequestType reqType = new BillOutstandingAmountRequestType();
+				/*
+				 *  (Required) Recurring payments profile ID returned in the 
+				 *  CreateRecurringPaymentsProfile response.
+				    Note: The profile must have a status of either Active or Suspended.
+					Character length and limitations: 14 single-byte alphanumeric characters. 
+					19 character profile IDs are supported for compatibility with previous versions 
+					of the PayPal API.
+				 */
 				BillOutstandingAmountRequestDetailsType reqDetails = new BillOutstandingAmountRequestDetailsType(
 						request.getParameter("profileID"));
+				/*
+				 *  (Optional) The amount to bill. 
+				 *  The amount must be less than or equal to the current outstanding balance 
+				 *  of the profile. If no value is specified, PayPal attempts to bill the entire 
+				 *  outstanding balance amount.
+					Character length and limitations: Value is a positive number which cannot 
+					exceed $10,000 USD in any currency. It includes no currency symbol. 
+					It must have 2 decimal places, the decimal separator must be a period (.), 
+					and the optional thousands separator must be a comma (,). 
+				 */
 				if (request.getParameter("amt") != "")
 					reqDetails.setAmount(new BasicAmountType(currency, request
 							.getParameter("amt")));
@@ -1172,6 +1489,11 @@ public class RecurringPaymentsServlet extends HttpServlet {
 					if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
 						Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 						map.put("Ack", resp.getAck());
+					/*
+					 * Recurring payments profile ID returned in the CreateRecurringPaymentsProfile response. 
+					 * An error is returned if the profile specified in the BillOutstandingAmount request 
+					 * has a status of canceled or expired.
+					 */
 						map.put("Profile ID", resp
 								.getBillOutstandingAmountResponseDetails()
 								.getProfileID());
