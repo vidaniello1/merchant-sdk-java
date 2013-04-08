@@ -141,9 +141,19 @@ public class CheckoutServlet extends HttpServlet {
 				"<ul><li><a href='EC/SetExpressCheckout'>SetExpressCheckout</a></li><li><a href='EC/GetExpressCheckout'>GetExpressCheckout</a></li><li><a href='EC/DoExpressCheckout'>DoExpressCheckout</a></li></ul>");
 		response.setContentType("text/html");
 		try {
+			
+			/* ## Creating service wrapper object
+			 Creating service wrapper object to make API call and loading
+			 configuration file for your credentials and endpoint
+			*/
 			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
 					.getClass().getResourceAsStream("/sdk_config.properties"));
 			
+			//# SetExpressCheckout API
+			// The SetExpressCheckout API operation initiates an Express Checkout
+			// transaction.
+			// This sample code uses Merchant Java SDK to make API call. You can
+			// download the SDKs [here](https://github.com/paypal/sdk-packages/tree/gh-pages/merchant-sdk/java)
 			if (request.getRequestURI().contains("SetExpressCheckout")) {
 				SetExpressCheckoutRequestType setExpressCheckoutReq = new SetExpressCheckoutRequestType();
 				SetExpressCheckoutRequestDetailsType details = new SetExpressCheckoutRequestDetailsType();
@@ -157,7 +167,16 @@ public class CheckoutServlet extends HttpServlet {
 
 				String returnURL = url.toString() + "/EC/GetExpressCheckout";
 				String cancelURL = url.toString() + "/index.html";
-
+				
+				/*
+				 *  (Required) URL to which the buyer's browser is returned after choosing 
+				 *  to pay with PayPal. For digital goods, you must add JavaScript to this 
+				 *  page to close the in-context experience.
+				  Note:
+					PayPal recommends that the value be the final review page on which the buyer 
+					confirms the order and payment or billing agreement.
+					Character length and limitations: 2048 single-byte characters
+				 */
 				details.setReturnURL(returnURL + "?currencyCodeType="
 						+ request.getParameter("currencyCode"));
 
@@ -205,8 +224,8 @@ public class CheckoutServlet extends HttpServlet {
 
 				PaymentDetailsItemType item = new PaymentDetailsItemType();
 				BasicAmountType amt = new BasicAmountType();
-				amt.setCurrencyID(CurrencyCodeType.fromValue(request
-						.getParameter("currencyCode")));
+				//PayPal uses 3-character ISO-4217 codes for specifying currencies in fields and variables. 
+				amt.setCurrencyID(CurrencyCodeType.fromValue(request.getParameter("currencyCode")));
 				amt.setValue(amountItems);
 				item.setQuantity(new Integer(qtyItems));
 				item.setName(names);
@@ -353,7 +372,7 @@ public class CheckoutServlet extends HttpServlet {
 				
 				BasicAmountType itemsTotal = new BasicAmountType();
 				itemsTotal.setValue(Double.toString(itemTotal));
-				//(Optional) Search by 3-character, ISO 4217 currency code.
+				//PayPal uses 3-character ISO-4217 codes for specifying currencies in fields and variables. 
 				itemsTotal.setCurrencyID(CurrencyCodeType.fromValue(request.getParameter("currencyCode")));
 				paydtl.setOrderTotal(new BasicAmountType(CurrencyCodeType.fromValue(request.getParameter("currencyCode")),
 						Double.toString(orderTotal)));
@@ -573,6 +592,11 @@ public class CheckoutServlet extends HttpServlet {
 					}
 				}
 			}
+			//# GetExpressCheckout API
+			// The GetExpressCheckoutDetails API operation obtains information about
+			// an Express Checkout transaction.
+			// This sample code uses Merchant Java SDK to make API call. You can
+			// download the SDKs [here](https://github.com/paypal/sdk-packages/tree/gh-pages/merchant-sdk/java)
 			if (request.getRequestURI().contains("GetExpressCheckout")) {
 				GetExpressCheckoutDetailsReq req = new GetExpressCheckoutDetailsReq();
 				/*
@@ -614,6 +638,13 @@ public class CheckoutServlet extends HttpServlet {
 					}
 				}
 			}
+			//# DoExpressCheckout API
+			// The DoExpressCheckoutPayment API operation completes an Express Checkout
+			// transaction. If you set up a billing agreement in your SetExpressCheckout
+			// API call, the billing agreement is created when you call the
+			// DoExpressCheckoutPayment API operation.
+			// This sample code uses Merchant Java SDK to make API call. You can
+			// download the SDKs [here](https://github.com/paypal/sdk-packages/tree/gh-pages/merchant-sdk/java)
 			if (request.getRequestURI().contains("DoExpressCheckout")) {
 				DoExpressCheckoutPaymentRequestType doCheckoutPaymentRequestType = new DoExpressCheckoutPaymentRequestType();
 				DoExpressCheckoutPaymentRequestDetailsType details = new DoExpressCheckoutPaymentRequestDetailsType();
@@ -656,13 +687,48 @@ public class CheckoutServlet extends HttpServlet {
 				PaymentDetailsType paymentDetails = new PaymentDetailsType();
 				BasicAmountType orderTotal = new BasicAmountType();
 				orderTotal.setValue(Double.toString(orderTotalAmt));
+				//PayPal uses 3-character ISO-4217 codes for specifying currencies in fields and variables.
 				orderTotal.setCurrencyID(CurrencyCodeType.fromValue(request.getParameter("currencyCode")));
+				/*
+				 *  (Required) The total cost of the transaction to the buyer. 
+				 *  If shipping cost (not applicable to digital goods) and tax charges are known, 
+				 *  include them in this value. If not, this value should be the current sub-total 
+				 *  of the order. If the transaction includes one or more one-time purchases, this 
+				 *  field must be equal to the sum of the purchases. Set this field to 0 if the 
+				 *  transaction does not include a one-time purchase such as when you set up a 
+				 *  billing agreement for a recurring payment that is not immediately charged. 
+				 *  When the field is set to 0, purchase-specific fields are ignored. 
+				 *  For digital goods, the following must be true:
+    				total cost > 0
+    				total cost <= total cost passed in the call to SetExpressCheckout
+				 Note:
+					You must set the currencyID attribute to one of the 3-character currency codes 
+					for any of the supported PayPal currencies.
+					When multiple payments are passed in one transaction, all of the payments must 
+					have the same currency code.
+					Character length and limitations: Value is a positive number which cannot 
+					exceed $10,000 USD in any currency. It includes no currency symbol. 
+					It must have 2 decimal places, the decimal separator must be a period (.), 
+					and the optional thousands separator must be a comma (,).
+				 */
 				paymentDetails.setOrderTotal(orderTotal);
 
 				BasicAmountType itemTotal = new BasicAmountType();
 				itemTotal.setValue(Double.toString(itemTotalAmt));
-
+				//PayPal uses 3-character ISO-4217 codes for specifying currencies in fields and variables.
 				itemTotal.setCurrencyID(CurrencyCodeType.fromValue(request.getParameter("currencyCode")));
+				/*
+				 *  Sum of cost of all items in this order. For digital goods, this field is 
+				 *  required. PayPal recommends that you pass the same value in the call to 
+				 *  DoExpressCheckoutPayment that you passed in the call to SetExpressCheckout.
+				 Note:
+					You must set the currencyID attribute to one of the 3-character currency 
+					codes for any of the supported PayPal currencies.
+					Character length and limitations: Value is a positive number which cannot 
+					exceed $10,000 USD in any currency. It includes no currency symbol. 
+					It must have 2 decimal places, the decimal separator must be a period (.), 
+					and the optional thousands separator must be a comma (,).
+				 */
 				paymentDetails.setItemTotal(itemTotal);
 
 				List<PaymentDetailsItemType> paymentItems = new ArrayList<PaymentDetailsItemType>();
@@ -693,7 +759,7 @@ public class CheckoutServlet extends HttpServlet {
 				This field is introduced in version 53.0.
 				 */
 				amount.setValue(request.getParameter("amt"));
-				//(Optional) Search by 3-character, ISO 4217 currency code.
+				//PayPal uses 3-character ISO-4217 codes for specifying currencies in fields and variables.
 				amount.setCurrencyID(CurrencyCodeType.fromValue(request.getParameter("currencyCode")));
 				paymentItem.setAmount(amount);
 				paymentItems.add(paymentItem);
@@ -711,6 +777,11 @@ public class CheckoutServlet extends HttpServlet {
 				
 				List<PaymentDetailsType> payDetailType = new ArrayList<PaymentDetailsType>();
 				payDetailType.add(paymentDetails);
+				/*
+				 * When implementing parallel payments, you can create up to 10 sets of payment 
+				 * details type parameter fields, each representing one payment you are hosting 
+				 * on your marketplace.
+				 */
 				details.setPaymentDetails(payDetailType);
 
 				doCheckoutPaymentRequestType

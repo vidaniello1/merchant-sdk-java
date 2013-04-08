@@ -53,7 +53,7 @@ public class DoDirectPaymentServlet extends HttpServlet {
 				.getRequestDispatcher("/DirectPayment/DoDirectPayment.jsp")
 				.forward(req, res);
 	}
-
+	
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 		HttpSession session = req.getSession();
