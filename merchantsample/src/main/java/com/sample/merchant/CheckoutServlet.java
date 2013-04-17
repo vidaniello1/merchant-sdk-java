@@ -389,6 +389,46 @@ public class CheckoutServlet extends HttpServlet {
 					Character length and limitations: 2,048 single-byte alphanumeric characters
 				 */
 				paydtl.setNotifyURL(request.getParameter("notifyURL"));
+						AddressType shipToAddress=new AddressType();
+				/*
+				 * Person's name associated with this shipping address.
+				 *  It is required if using a shipping address.
+				   Character length and limitations: 32 single-byte characters
+				 */
+				shipToAddress.setName(request.getParameter("name"));
+				/*
+				 * First street address. It is required if using a shipping address.
+				   Character length and limitations: 100 single-byte characters
+				 */
+				shipToAddress.setStreet1(request.getParameter("street1"));
+				/*
+				 *  (Optional) Second street address.
+					Character length and limitations: 100 single-byte characters
+				 */
+				shipToAddress.setStreet2(request.getParameter("street2"));
+				/*
+				 * Name of city. It is required if using a shipping address.
+				   Character length and limitations: 40 single-byte characters
+				 */
+				shipToAddress.setCityName(request.getParameter("city"));
+				/*
+				 * State or province. It is required if using a shipping address.
+				   Character length and limitations: 40 single-byte characters
+				 */
+				shipToAddress.setStateOrProvince(request.getParameter("state"));
+				/*
+				 * U.S. ZIP code or other country-specific postal code. 
+				 * It is required if using a U.S. shipping address and may be
+				 *  required for other countries.
+				   Character length and limitations: 20 single-byte characters
+				 */
+				shipToAddress.setPostalCode(request.getParameter("postalCode"));
+				/*
+				 * Country code. It is required if using a shipping address.
+				   Character length and limitations: 2 single-byte characters
+				 */
+				shipToAddress.setCountry(CountryCodeType.fromValue(request.getParameter("countryCode")));
+				paydtl.setShipToAddress(shipToAddress);
 				payDetails.add(paydtl);
 				details.setPaymentDetails(payDetails);
 				if (request.getParameter("billingAgreementText") != "") {
@@ -448,46 +488,7 @@ public class CheckoutServlet extends HttpServlet {
 					Character length and limitations: 1 single-byte numeric character
 				 */
 				details.setAddressOverride(request.getParameter("addressoverride"));
-				AddressType shipToAddress=new AddressType();
-				/*
-				 * Person's name associated with this shipping address.
-				 *  It is required if using a shipping address.
-				   Character length and limitations: 32 single-byte characters
-				 */
-				shipToAddress.setName(request.getParameter("name"));
-				/*
-				 * First street address. It is required if using a shipping address.
-				   Character length and limitations: 100 single-byte characters
-				 */
-				shipToAddress.setStreet1(request.getParameter("street1"));
-				/*
-				 *  (Optional) Second street address.
-					Character length and limitations: 100 single-byte characters
-				 */
-				shipToAddress.setStreet2(request.getParameter("street2"));
-				/*
-				 * Name of city. It is required if using a shipping address.
-				   Character length and limitations: 40 single-byte characters
-				 */
-				shipToAddress.setCityName(request.getParameter("city"));
-				/*
-				 * State or province. It is required if using a shipping address.
-				   Character length and limitations: 40 single-byte characters
-				 */
-				shipToAddress.setStateOrProvince(request.getParameter("state"));
-				/*
-				 * U.S. ZIP code or other country-specific postal code. 
-				 * It is required if using a U.S. shipping address and may be
-				 *  required for other countries.
-				   Character length and limitations: 20 single-byte characters
-				 */
-				shipToAddress.setPostalCode(request.getParameter("postalCode"));
-				/*
-				 * Country code. It is required if using a shipping address.
-				   Character length and limitations: 2 single-byte characters
-				 */
-				shipToAddress.setCountry(CountryCodeType.fromValue(request.getParameter("countryCode")));
-				details.setAddress(shipToAddress);
+		
 				
 				/*
 				 * Determines where or not PayPal displays shipping address fields on the PayPal pages. 
