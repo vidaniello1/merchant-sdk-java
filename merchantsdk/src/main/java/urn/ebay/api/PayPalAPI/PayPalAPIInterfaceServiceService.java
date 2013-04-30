@@ -130,7 +130,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService {
 	private static final String SDK_NAME = "merchant-java-sdk";
 	
 	//SDK Version
-	private static final String SDK_VERSION = "2.3.100";
+	private static final String SDK_VERSION = "2.3.101";
 
 
 	/**
