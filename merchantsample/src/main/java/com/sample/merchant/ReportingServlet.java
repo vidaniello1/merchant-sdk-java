@@ -82,9 +82,7 @@ public class ReportingServlet extends HttpServlet {
 				"<ul><li><a href='Report/GetTransactionDetails'>GetTransactionDetails</a></li><li><a href='Report/TransactionSearch'>TransactionSearch</a></li><li><a href='Report/GetBalance'>GetBalance</a></li><li><a href='Report/GetPalDetails'>GetPalDetails</a></li><li><a href='Report/AddressVerify'>AddressVerify</a></li></ul>");
 		response.setContentType("text/html");
 		try {
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(
-					this.getClass().getResourceAsStream(
-							"/sdk_config.properties"));
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Utility.getSignatureConfig());
 			if (request.getRequestURI().contains("TransactionSearch")) {
 				TransactionSearchReq txnreq = new TransactionSearchReq();
 				TransactionSearchRequestType type = new TransactionSearchRequestType();

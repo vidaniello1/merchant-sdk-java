@@ -132,8 +132,7 @@ public class PermissionsMassPayServlet extends HttpServlet {
 		reqType.setReceiverType(ReceiverInfoCodeType.fromValue(request
 				.getParameter("receiverInfoCode")));
 		req.setMassPayRequest(reqType);
-		PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(
-				this.getClass().getResourceAsStream("/sdk_config.properties"));
+		PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Utility.getSignatureConfig());
 		try {
 			response.setContentType("text/html");
 			MassPayResponseType resp = null;

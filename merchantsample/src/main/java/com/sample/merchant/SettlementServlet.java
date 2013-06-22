@@ -150,8 +150,7 @@ public class SettlementServlet extends HttpServlet {
 			// ## Creating service wrapper object
 			// Creating service wrapper object to make API call and loading
 			// configuration file for your credentials and endpoint
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
-					.getClass().getResourceAsStream("/sdk_config.properties"));
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Utility.getSignatureConfig());
 			if (request.getRequestURI().contains("DoAuthorization")) {
 				// ## DoAuthorizationReq
 				DoAuthorizationReq req = new DoAuthorizationReq();

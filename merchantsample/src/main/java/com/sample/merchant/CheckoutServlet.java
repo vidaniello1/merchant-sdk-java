@@ -146,8 +146,7 @@ public class CheckoutServlet extends HttpServlet {
 			 Creating service wrapper object to make API call and loading
 			 configuration file for your credentials and endpoint
 			*/
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
-					.getClass().getResourceAsStream("/sdk_config.properties"));
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Utility.getSignatureConfig());
 			
 			//# SetExpressCheckout API
 			// The SetExpressCheckout API operation initiates an Express Checkout
