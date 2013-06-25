@@ -188,7 +188,7 @@ public class RecurringPaymentsServlet extends HttpServlet {
 		response.setContentType("text/html");
 		CurrencyCodeType currency = CurrencyCodeType.fromValue("USD");
 		try {
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Utility.getSignatureConfig());
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Configuration.getSignatureConfig());
 			if (request.getRequestURI().contains("GetBillingAgreementCustomerDetails")) {
 
 				GetBillingAgreementCustomerDetailsReq gReq = new GetBillingAgreementCustomerDetailsReq();

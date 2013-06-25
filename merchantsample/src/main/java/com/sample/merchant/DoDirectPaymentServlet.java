@@ -197,7 +197,7 @@ public class DoDirectPaymentServlet extends HttpServlet {
 		doPaymentReq.setDoDirectPaymentRequest(pprequest);
 
 		try {
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Utility.getSignatureConfig());
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Configuration.getSignatureConfig());
 			DoDirectPaymentResponseType ddresponse = service
 					.doDirectPayment(doPaymentReq);
 			res.setContentType("text/html");

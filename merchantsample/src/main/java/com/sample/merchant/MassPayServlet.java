@@ -117,7 +117,7 @@ public class MassPayServlet extends HttpServlet {
 		reqType.setReceiverType(ReceiverInfoCodeType.fromValue(request
 				.getParameter("receiverInfoCode")));
 		req.setMassPayRequest(reqType);
-		PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Utility.getSignatureConfig());
+		PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Configuration.getSignatureConfig());
 		try {
 			response.setContentType("text/html");
 			MassPayResponseType resp = service.massPay(req);
