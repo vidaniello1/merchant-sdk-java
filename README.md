@@ -85,9 +85,7 @@ SDK Logging:
 		  
 SDK Configuration:
 ------------------
-The SDK uses .properties format configuration file. Sample of this file is at 
- 
-'merchantsample/src/main/resources/'. You can use the 'sdk_config.properties' configuration file to configure
+The SDK uses dynamic configuration map or '*.properties' format configuration file as shown in code snippet above, to configure
 
 *	Mode is specified using the parameter name 'mode' with values 'sandbox' or 'live', if specified 'service.EndPoint' parameter is not required and the SDK chooses the sandbox or live endpoints automatically.
 
