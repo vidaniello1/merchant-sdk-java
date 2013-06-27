@@ -188,7 +188,15 @@ public class RecurringPaymentsServlet extends HttpServlet {
 		response.setContentType("text/html");
 		CurrencyCodeType currency = CurrencyCodeType.fromValue("USD");
 		try {
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Configuration.getSignatureConfig());
+			
+			// Configuration map containing signature credentials and other required configuration.
+			// For a full list of configuration parameters refer at 
+			// [https://github.com/paypal/merchant-sdk-java/wiki/SDK-Configuration-Parameters]
+			Map<String,String> configurationMap =  Configuration.getSignatureConfig();
+			
+			// Creating service wrapper object to make an API call by loading configuration map.
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(configurationMap);
+			
 			if (request.getRequestURI().contains("GetBillingAgreementCustomerDetails")) {
 
 				GetBillingAgreementCustomerDetailsReq gReq = new GetBillingAgreementCustomerDetailsReq();

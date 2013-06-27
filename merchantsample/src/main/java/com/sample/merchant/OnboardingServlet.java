@@ -90,7 +90,14 @@ public class OnboardingServlet extends HttpServlet {
 				"<ul><li><a href='Onboard/EnterBoarding'>EnterBoarding</a></li><li><a href='Onboard/GetBoardingDetails'>GetBoardingDetails</a></li></ul>");
 		response.setContentType("text/html");
 		try {
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Configuration.getSignatureConfig());
+			// Configuration map containing signature credentials and other required configuration.
+			// For a full list of configuration parameters refer at 
+			// [https://github.com/paypal/merchant-sdk-java/wiki/SDK-Configuration-Parameters]
+			Map<String,String> configurationMap =  Configuration.getSignatureConfig();
+			
+			// Creating service wrapper object to make an API call by loading configuration map.
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(configurationMap);
+			
 			if (request.getRequestURI().contains("EnterBoarding")) {
 				EnterBoardingReq req = new EnterBoardingReq();
 				EnterBoardingRequestDetailsType reqDetails = new EnterBoardingRequestDetailsType();

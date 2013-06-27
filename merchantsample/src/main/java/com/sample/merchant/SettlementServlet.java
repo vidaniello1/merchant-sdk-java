@@ -147,10 +147,15 @@ public class SettlementServlet extends HttpServlet {
 				"<ul><li><a href='Settlement/DoAuthorization'>DoAuthorization</a></li><li><a href='Settlement/DoCapture'>DoCapture</a></li><li><a href='Settlement/DoVoid'>DoVoid</a></li><li><a href='Settlement/DoReauthorization'>DoReauthorization</a></li><li><a href='Settlement/Refund'>Refund</a></li><li><a href='Settlement/ReverseTransaction'>ReverseTransaction</a></li><li><a href='Settlement/DoNonReferencedCredit'>DoNonReferencedCredit</a></li><li><a href='Settlement/ManagePendingTransactionStatus'>ManagePendingTransactionStatus</a></li></ul>");
 		response.setContentType("text/html");
 		try {
-			// ## Creating service wrapper object
-			// Creating service wrapper object to make API call and loading
-			// configuration file for your credentials and endpoint
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(Configuration.getSignatureConfig());
+			
+			// Configuration map containing signature credentials and other required configuration.
+			// For a full list of configuration parameters refer at 
+			// [https://github.com/paypal/merchant-sdk-java/wiki/SDK-Configuration-Parameters]
+			Map<String,String> configurationMap =  Configuration.getSignatureConfig();
+			
+			// Creating service wrapper object to make an API call by loading configuration map.
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(configurationMap);
+			
 			if (request.getRequestURI().contains("DoAuthorization")) {
 				// ## DoAuthorizationReq
 				DoAuthorizationReq req = new DoAuthorizationReq();
