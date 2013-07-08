@@ -1,0 +1,49 @@
+package com.sample.usecase;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ *  For a full list of configuration parameters refer at [https://github.com/paypal/merchant-sdk-java/wiki/SDK-Configuration-Parameters] 
+ */
+public class Configuration {
+	
+	// Creates a configuration map containing signature credentials and other required configuration parameters.
+	public static final Map<String,String> getSignatureConfig(){
+		
+		Map<String,String> configMap = new HashMap<String,String>();
+		
+		// Endpoints are varied depending on whether sandbox OR live is chosen for mode
+		configMap.put("mode", "sandbox");
+				
+		// Account Credential
+		configMap.put("acct1.UserName", "platfo_1255077030_biz_api1.gmail.com");
+		configMap.put("acct1.Password", "1255077037");
+		configMap.put("acct1.Signature", "Abg0gYcQyxQvnf2HDJkKtA-p6pqhA1k-KTYE0Gcy1diujFio4io5Vqjf ");
+		configMap.put("acct1.AppId", "APP-80W284485P519543T");
+		// Subject is optional, only required in case of third party permission
+		//configMap.put("acct1.Subject", "");
+		
+		return configMap;
+	}
+	
+	//Creates a configuration map containing certificate credentials and other required configuration parameters.
+	public static final Map<String,String> getCertificateConfig(){
+		
+		Map<String,String> configMap = new HashMap<String,String>();
+		
+		// Endpoints are varied depending on whether sandbox OR live is chosen for mode
+		configMap.put("mode", "sandbox");
+		
+		//Account Credential
+		configMap.put("acct2.UserName", "certuser_biz_api1.paypal.com");
+		configMap.put("acct2.Password", "D6JNKKULHN3G5B8A");
+		configMap.put("acct2.CertKey", "password");
+		configMap.put("acct2.CertPath", "resource/sdk-cert.p12");
+		configMap.put("acct2.AppId", "APP-80W284485P519543T");
+		// Subject is optional, only required in case of third party permission
+		//configMap.put("acct2.Subject", "");
+		
+		return configMap;
+	}
+}

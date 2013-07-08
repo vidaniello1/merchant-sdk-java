@@ -124,4 +124,24 @@
 		<servlet-name>IPNListenerServlet</servlet-name>
 		<url-pattern>/IPNListener</url-pattern>
 	</servlet-mapping>
+	
+	<!-- UseCase Recurring Payment Servlet Sample  -->
+	<servlet>
+		<description></description>
+		<display-name>RecurringPaymentServlet</display-name>
+		<servlet-name>RecurringPaymentServlet</servlet-name>
+		<servlet-class>com.sample.usecase.RecurringPaymentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RecurringPaymentServlet</servlet-name>
+		<url-pattern>/SetExpressCheckoutForRecurringPayments</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RecurringPaymentServlet</servlet-name>
+		<url-pattern>/RecurringPaymentsUsingPayPal</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RecurringPaymentServlet</servlet-name>
+		<url-pattern>/RecurringPaymentsUsingCreditCard</url-pattern>
+	</servlet-mapping>
 </web-app>

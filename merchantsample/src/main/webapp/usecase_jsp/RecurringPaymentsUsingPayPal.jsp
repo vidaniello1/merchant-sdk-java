@@ -16,84 +16,33 @@
 <body>
 	<div id="wrapper">
 		<div id="header">
-			<h3>CreateRecurringPaymentsProfile</h3>
+			<h3>CreateRecurringPaymentsProfile Using PayPal SetExpressCheckout api</h3>
 			<div id="apidetails">
-				<p>CreateRecurringPaymentsProfile API operation creates a
-					recurring payments profile. You must invoke the
-					CreateRecurringPaymentsProfile API operation for each profile you
-					want to create. The API operation creates a profile and an
-					associated billing agreement.</p>
+				<p>The CreateRecurringPaymentsProfile API operation creates a
+					recurring payments profile.There is a one-to-one correspondence
+					between billing agreements and recurring payments profiles. To
+					associate a recurring payments profile with its billing agreement,
+					you must ensure that the description in the recurring payments
+					profile matches the description of a billing agreement. For version
+					54.0 and later, use SetExpressCheckout to initiate creation of a
+					billing agreement.</p>
 			</div>
 		</div>
 		<form method="POST">
 			<div id="request_form">
-				<div class="note">You must set either Token or Credit Card
-					number</div>
+				<div class="note">You must set ExpressCheckout Token</div>
 				<div class="params">
-					<div class="param_name">
-						Express Checkout Token *(Get Token via <a
-							href="../EC/SetExpressCheckout">ExpressCheckout</a>)
-					</div>
+					<div class="param_name">Express Checkout Token *(Token
+						generated via ExpressCheckout)</div>
 					<div class="param_value">
-						<input type="text" name="token" id="token" value="" />
+						<input type="text" name="token" id="token"
+							value="<%=(session.getAttribute("ecToken") != null) ? ((String) session
+					.getAttribute("ecToken")) : ""%>" />
+						<%
+							session.removeAttribute("ecToken");
+						%>
 					</div>
 				</div>
-				<div class="params">
-					<div class="param_name">Credit Card *</div>
-				</div>
-				<table class="params">
-					<tr>
-						<th class="param_name">Credit Card number</th>
-						<th class="param_name">Expiry date</th>
-						<th class="param_name">Buyer Email Id</th>
-						<th class="param_name">Credit Card type</th>
-						<th class="param_name">CVV</th>
-					</tr>
-					<tr>
-						<td><div class="param_value">
-								<input type="text" name="creditCardNumber" id="creditCardNumber"
-									value="" />
-							</div></td>
-						<td><div class="param_value">
-								<select name="expMonth">
-									<option value="1">Jan</option>
-									<option value="2">Feb</option>
-									<option value="3">Mar</option>
-									<option value="4">Apr</option>
-									<option value="5">May</option>
-									<option value="6">Jun</option>
-									<option value="7">Jul</option>
-									<option value="8">Aug</option>
-									<option value="9">Sep</option>
-									<option value="10">Oct</option>
-									<option value="11">Nov</option>
-									<option value="12">Dec</option>
-								</select> <select name="expYear">
-									<option value="2011">2011</option>
-									<option value="2012">2012</option>
-									<option value="2013">2013</option>
-									<option value="2014">2014</option>
-									<option value="2015">2015</option>
-									<option value="2016">2016</option>
-								</select>
-							</div></td>
-						<td><div class="param_value">
-								<input type="text" name="BuyerEmailId" id="BuyerEmailId"
-									value="" />
-							</div></td>
-						<td><div class="param_value">
-								<select name="creditCardType">
-									<option value="Visa">Visa</option>
-									<option value="MasterCard">MasterCard</option>
-									<option value="Discover">Discover</option>
-									<option value="Amex">Amex</option>
-								</select>
-							</div></td>
-						<td><div class="param_value">
-								<input type="text" name="cvv" id="cvv" />
-							</div></td>
-					</tr>
-				</table>
 
 				<div class="section_header">Recurring payments profile details</div>
 				<div class="param_name">Subscriber Name</div>
@@ -123,32 +72,28 @@
 					</tr>
 					<tr>
 						<td><span class="param_value"> <input type="text"
-								id="shippingName" name="shippingName" value="" /> </span>
-						</td>
+								id="shippingName" name="shippingName" value="" /> </span></td>
 						<td><span class="param_value"> <input type="text"
-								id="shippingStreet1" name="shippingStreet1" value="" /> </span>
-						</td>
+								id="shippingStreet1" name="shippingStreet1" value="" /> </span></td>
 						<td><span class="param_value"> <input type="text"
-								id="shippingStreet2" name="shippingStreet2" value="" /> </span>
-						</td>
+								id="shippingStreet2" name="shippingStreet2" value="" /> </span></td>
 						<td><span class="param_value"> <input type="text"
-								id="shippingCity" name="shippingCity" value="" /> </span>
-						</td>
+								id="shippingCity" name="shippingCity" value="" /> </span></td>
 						<td><span class="param_value"> <input type="text"
-								id="shippingState" name="shippingState" value="" /> </span>
-						</td>
+								id="shippingState" name="shippingState" value="" /> </span></td>
 						<td><span class="param_value"> <input type="text"
 								id="shippingPostalCode" name="shippingPostalCode" value="" /> </span>
 						</td>
 						<td><span class="param_value"> <input type="text"
-								id="shippingCountry" name="shippingCountry" value="" /> </span>
-						</td>
+								id="shippingCountry" name="shippingCountry" value="" /> </span></td>
 						<td><span class="param_value"> <input type="text"
-								id="shippingPhone" name="shippingPhone" value="" /> </span>
-						</td>
+								id="shippingPhone" name="shippingPhone" value="" /> </span></td>
 					</tr>
 				</table>
-				<div class="section_header">Schedule details</div>
+				<div class="section_header">
+					<b><u>Schedule Details:</u>
+					</b>
+				</div>
 				<div class="params">
 					<div class="param_name">Description* (must match billing
 						agreement if using Express Checkout token)</div>
@@ -164,18 +109,18 @@
 					</tr>
 					<tr>
 						<td><span class="param_value"> <input
-								id="initialAmount" name="initialAmount" /> </span>
-						</td>
+								id="initialAmount" name="initialAmount" /> </span></td>
 						<td><span class="param_value"> <select
 								name="failedInitialAmountAction">
 									<option value="ContinueOnFailure">Continue On Failure</option>
 									<option value="CancelOnFailure">Cancel On Failure</option>
-							</select> </span>
-						</td>
+							</select> </span></td>
 					</tr>
 				</table>
 
-				<div class="section_header">Trial Period</div>
+				<div class="section_header">
+					<b>Trial Period</b>
+				</div>
 				<table class="params">
 					<tr>
 						<th>Billing frequency</th>
@@ -188,7 +133,8 @@
 					<tr>
 						<td><span class="param_value"> <input type="text"
 								id="trialBillingFrequency" name="trialBillingFrequency"
-								value="10" /> </span></td>
+								value="10" /> </span>
+						</td>
 						<td><span class="param_value"> <select
 								name="trialBillingPeriod">
 									<option value="Day">Day</option>
@@ -196,22 +142,29 @@
 									<option value="SemiMonth">SemiMonth</option>
 									<option value="Month">Month</option>
 									<option value="Year">Year</option>
-							</select> </span></td>
+							</select> </span>
+						</td>
 						<td><span class="param_value"> <input type="text"
 								id="trialBillingCycles" name="trialBillingCycles" value="2" />
-						</span></td>
+						</span>
+						</td>
 						<td><span class="param_value"> <input type="text"
 								id="trialBillingAmount" name="trialBillingAmount" value="2.0" />
-						</span></td>
+						</span>
+						</td>
 						<td><span class="param_value"> <input type="text"
 								id="trialShippingAmount" name="trialShippingAmount" value="0.0" />
-						</span></td>
+						</span>
+						</td>
 						<td><span class="param_value"> <input type="text"
-								id="trialTaxAmount" name="trialTaxAmount" value="0.0" /> </span></td>
+								id="trialTaxAmount" name="trialTaxAmount" value="0.0" /> </span>
+						</td>
 					</tr>
 				</table>
 
-				<div class="section_header">Payment Period *</div>
+				<div class="section_header">
+					<b>Payment Period *</b>
+				</div>
 				<table class="params_name">
 					<tr>
 						<th>Billing frequency</th>
@@ -223,7 +176,8 @@
 					</tr>
 					<tr>
 						<td><span class="param_value"> <input type="text"
-								id="billingFrequency" name="billingFrequency" value="10" /> </span></td>
+								id="billingFrequency" name="billingFrequency" value="10" /> </span>
+						</td>
 						<td><span class="param_value"> <select
 								name="billingPeriod">
 									<option value="Day">Day</option>
@@ -231,16 +185,21 @@
 									<option value="SemiMonth">SemiMonth</option>
 									<option value="Month">Month</option>
 									<option value="Year">Year</option>
-							</select> </span></td>
+							</select> </span>
+						</td>
 						<td><span class="param_value"> <input type="text"
 								id="totalBillingCycles" name="totalBillingCycles" value="8" />
-						</span></td>
+						</span>
+						</td>
 						<td><span class="param_value"> <input type="text"
-								id="billingAmount" name="billingAmount" value="5.0" /> </span></td>
+								id="billingAmount" name="billingAmount" value="5.0" /> </span>
+						</td>
 						<td><span class="param_value"> <input type="text"
-								id="shippingAmount" name="shippingAmount" value="1.0" /> </span></td>
+								id="shippingAmount" name="shippingAmount" value="1.0" /> </span>
+						</td>
 						<td><span class="param_value"> <input type="text"
-								id="taxAmount" name="taxAmount" value="0.0" /> </span></td>
+								id="taxAmount" name="taxAmount" value="0.0" /> </span>
+						</td>
 					</tr>
 				</table>
 				<div class="params">
@@ -266,18 +225,6 @@
 				<a href="../index.html">Home</a> <br /> <br />
 			</div>
 		</form>
-		<div id="relatedcalls">
-			See also
-			<ul>
-				<li><a href="GetRecurringPaymentsProfileDetails">GetRecurringPaymentsProfileDetails</a>
-				</li>
-				<li><a href="ManageRecurringPaymentsProfileStatus">ManageRecurringPaymentsProfileStatus</a>
-				</li>
-				<li><a href="UpdateRecurringPaymentsProfile">UpdateRecurringPaymentsProfile</a>
-				</li>
-				<li><a href="BillOutstandingAmount">BillOutstandingAmount</a></li>
-			</ul>
-		</div>
 	</div>
 </body>
 </html>
