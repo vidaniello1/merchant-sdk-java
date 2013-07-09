@@ -17,9 +17,9 @@ public class Configuration {
 		configMap.put("mode", "sandbox");
 				
 		// Account Credential
-		configMap.put("acct1.UserName", "platfo_1255077030_biz_api1.gmail.com");
-		configMap.put("acct1.Password", "1255077037");
-		configMap.put("acct1.Signature", "Abg0gYcQyxQvnf2HDJkKtA-p6pqhA1k-KTYE0Gcy1diujFio4io5Vqjf ");
+		configMap.put("acct1.UserName", "jb-us-seller_api1.paypal.com");
+		configMap.put("acct1.Password", "WX4WTU3S8MY44S7F");
+		configMap.put("acct1.Signature", "AFcWxV21C7fd0v3bYYYRCpSSRl31A7yDhhsPUU2XhtMoZXsWHFxu-RWy");
 		configMap.put("acct1.AppId", "APP-80W284485P519543T");
 		// Subject is optional, only required in case of third party permission
 		//configMap.put("acct1.Subject", "");

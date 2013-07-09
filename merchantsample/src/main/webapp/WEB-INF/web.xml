@@ -144,4 +144,35 @@
 		<servlet-name>RecurringPaymentServlet</servlet-name>
 		<url-pattern>/RecurringPaymentsUsingCreditCard</url-pattern>
 	</servlet-mapping>
+	<!-- UseCase Payment capture Servlet Sample  -->
+	<servlet>
+		<description></description>
+		<display-name>PaymentCapture</display-name>
+		<servlet-name>PaymentCapture</servlet-name>
+		<servlet-class>com.sample.usecase.PaymentCapture</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PaymentCapture</servlet-name>
+		<url-pattern>/AuthorizedPaymentCapture</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PaymentCapture</servlet-name>
+		<url-pattern>/DoExpressCheckout</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PaymentCapture</servlet-name>
+		<url-pattern>/SetExpressCheckoutPaymentAuthorization</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PaymentCapture</servlet-name>
+		<url-pattern>/DoAuthoricationForOrderPayment</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PaymentCapture</servlet-name>
+		<url-pattern>/OrderPaymentCapture</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PaymentCapture</servlet-name>
+		<url-pattern>/SetExpressCheckoutPaymentOrder</url-pattern>
+	</servlet-mapping>
 </web-app>

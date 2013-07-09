@@ -52,6 +52,7 @@
 	<div id="related_calls">
 		See also
 		<%=session.getAttribute("relatedUrl")%>
+		<%=session.removeAttribute("relatedUrl")%>
 	</div>
 
 </body>
