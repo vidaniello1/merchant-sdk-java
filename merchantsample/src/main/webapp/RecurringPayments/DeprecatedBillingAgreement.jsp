@@ -7,6 +7,7 @@
 <title>PayPal SDK - Billing Agreement</title>
 </head>
 <body>
+	<img src="https://devtools-paypal.com/image/bdg_payments_by_pp_2line.png" alt="PAYMENTS BY PayPal" />
 	<p>
 		It is recommended to Use the <a href="../EC/SetExpressCheckout">ExpressCheckout</a>
 		API for creating billing agreement instead of using
