@@ -148,32 +148,44 @@
 	<!-- UseCase Payment capture Servlet Sample  -->
 	<servlet>
 		<description></description>
-		<display-name>PaymentCapture</display-name>
-		<servlet-name>PaymentCapture</servlet-name>
-		<servlet-class>com.sample.usecase.PaymentCapture</servlet-class>
+		<display-name>PaymentCaptureServlet</display-name>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
+		<servlet-class>com.sample.usecase.PaymentCaptureServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>PaymentCapture</servlet-name>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
 		<url-pattern>/AuthorizedPaymentCapture</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>PaymentCapture</servlet-name>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
 		<url-pattern>/DoExpressCheckout</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>PaymentCapture</servlet-name>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
 		<url-pattern>/SetExpressCheckoutPaymentAuthorization</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>PaymentCapture</servlet-name>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
 		<url-pattern>/DoAuthoricationForOrderPayment</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>PaymentCapture</servlet-name>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
 		<url-pattern>/OrderPaymentCapture</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>PaymentCapture</servlet-name>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
 		<url-pattern>/SetExpressCheckoutPaymentOrder</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Parallel payment usecase sample -->
+	<servlet>
+		<description></description>
+		<display-name>ParallelPaymentServlet</display-name>
+		<servlet-name>ParallelPaymentServlet</servlet-name>
+		<servlet-class>com.sample.usecase.ParallelPaymentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ParallelPaymentServlet</servlet-name>
+		<url-pattern>/ParallelPayment</url-pattern>
 	</servlet-mapping>
 </web-app>

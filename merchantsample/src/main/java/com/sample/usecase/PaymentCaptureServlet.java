@@ -39,7 +39,7 @@ import urn.ebay.apis.eBLBaseComponents.SetExpressCheckoutRequestDetailsType;
 
 import com.sample.merchant.Configuration;
 
-public class PaymentCapture extends HttpServlet{
+public class PaymentCaptureServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 34096986986994L;
 
