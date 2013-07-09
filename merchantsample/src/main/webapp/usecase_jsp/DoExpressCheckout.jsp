@@ -14,8 +14,8 @@
 	<div id="wrapper">
 		<div id="header">
 			<h3>DoExpressCheckout</h3>
-			<div id="apidetails">Used to make checkout payment</div>
-		</div>
+			<div id="apidetails">Used to make checkout payment. Select the appropriate PaymentType below, as what you set in SetExpressCheckout.</div>
+		</div><br>
 		<form method="POST">
 			<div id="request_form">
 				<div class="params">
@@ -77,6 +77,7 @@
 						<input type=text size="50"  name="notifyURL" value="">
 					</div>
 				</div>
+				<br>
 				<div class="submit">
 					<input type="submit" name="DoExpressCheckoutBtn"
 						value="DoExpressCheckout" /> <br />
@@ -84,16 +85,6 @@
 				<a href="../index.html">Home</a>
 			</div>
 		</form>
-	</div>
-	<div id="relatedcalls">
-		See also
-		<ul>
-			<li><a href="SetExpressCheckout">SetExpressCheckout</a></li>
-			<li><a href="GetExpressCheckout">GetExpressCheckout</a></li>
-			
-			
-		</ul>
-	</div>
 	</div>
 </body>
 </html>

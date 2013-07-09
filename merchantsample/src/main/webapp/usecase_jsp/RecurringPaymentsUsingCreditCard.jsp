@@ -43,7 +43,7 @@
 					<tr>
 						<td><div class="param_value">
 								<input type="text" name="creditCardNumber" id="creditCardNumber"
-									value="" />
+									value="4917760970795152" />
 							</div>
 						</td>
 						<td><div class="param_value">
@@ -64,7 +64,7 @@
 									<option value="2011">2011</option>
 									<option value="2012">2012</option>
 									<option value="2013">2013</option>
-									<option value="2014">2014</option>
+									<option value="2014" selected="selected">2014</option>
 									<option value="2015">2015</option>
 									<option value="2016">2016</option>
 								</select>
@@ -85,7 +85,7 @@
 							</div>
 						</td>
 						<td><div class="param_value">
-								<input type="text" name="cvv" id="cvv" />
+								<input type="text" name="cvv" id="cvv" value="962"/>
 							</div>
 						</td>
 					</tr>

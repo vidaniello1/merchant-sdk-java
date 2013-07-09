@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import urn.ebay.api.PayPalAPI.DoAuthorizationReq;
+import urn.ebay.api.PayPalAPI.DoAuthorizationRequestType;
+import urn.ebay.api.PayPalAPI.DoAuthorizationResponseType;
 import urn.ebay.api.PayPalAPI.DoCaptureReq;
 import urn.ebay.api.PayPalAPI.DoCaptureRequestType;
 import urn.ebay.api.PayPalAPI.DoCaptureResponseType;
@@ -52,11 +55,11 @@ public class PaymentCapture extends HttpServlet{
 			.forward(request, response);
 		}else if(request.getRequestURI().contains("AuthorizedPaymentCapture")){
 			getServletConfig().getServletContext()
-			.getRequestDispatcher("/usecase_jsp/AuthorizedPaymentCapture.jsp")
+			.getRequestDispatcher("/usecase_jsp/PaymentCapture.jsp")
 			.forward(request, response);
 		}else if(request.getRequestURI().contains("OrderPaymentCapture")){
 			getServletConfig().getServletContext()
-			.getRequestDispatcher("/usecase_jsp/OrderPaymentCapture.jsp")
+			.getRequestDispatcher("/usecase_jsp/PaymentCapture.jsp")
 			.forward(request, response);
 		}else if(request.getRequestURI().contains("DoAuthoricationForOrderPayment")){
 			getServletConfig().getServletContext()
@@ -89,7 +92,7 @@ public class PaymentCapture extends HttpServlet{
 		// This sample code uses Merchant Java SDK to make API call. You can
 		// download the SDKs [here](https://github.com/paypal/sdk-packages/tree/gh-pages/merchant-sdk/java)
 		
-		if(request.getRequestURI().contains("SetExpressCheckoutPaymentAuthorization")){
+		if(request.getRequestURI().contains("SetExpressCheckoutPaymentAuthorization") || request.getRequestURI().contains("SetExpressCheckoutPaymentOrder")){
 
 			SetExpressCheckoutRequestType setExpressCheckoutReq = new SetExpressCheckoutRequestType();
 			SetExpressCheckoutRequestDetailsType details = new SetExpressCheckoutRequestDetailsType();
@@ -102,7 +105,14 @@ public class PaymentCapture extends HttpServlet{
 			url.append(request.getContextPath());
 
 			String returnURL = url.toString() + "/DoExpressCheckout";
-			String cancelURL = url.toString() + "/SetExpressCheckoutPaymentAuthorization";
+			String cancelURL = null;
+			if(request.getRequestURI().contains("SetExpressCheckoutPaymentAuthorization")){
+				cancelURL = url.toString() + "/SetExpressCheckoutPaymentAuthorization";
+			}else if(request.getRequestURI().contains("SetExpressCheckoutPaymentOrder")){
+				cancelURL = url.toString() + "/SetExpressCheckoutPaymentOrder";
+			}
+			
+			
 			
 			/*
 			 *  (Required) URL to which the buyer's browser is returned after choosing 
@@ -351,8 +361,7 @@ public class PaymentCapture extends HttpServlet{
 				}
 			}
 		
-		}else if(request.getRequestURI().contains("SetExpressCheckoutPaymentOrder")){
-		}else if(request.getRequestURI().contains("AuthorizedPaymentCapture")){
+		}else if(request.getRequestURI().contains("AuthorizedPaymentCapture") || request.getRequestURI().contains("OrderPaymentCapture")){
 
 			// ## DoCaptureReq
 			DoCaptureReq req = new DoCaptureReq();
@@ -393,8 +402,9 @@ public class PaymentCapture extends HttpServlet{
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			session.setAttribute("relatedUrl","<ul> The payment capture is completed.</ul>");
+			
 			if (resp != null) {
+				session.setAttribute("relatedUrl","<ul> The payment capture is completed.</ul>");
 				session.setAttribute("lastReq", service.getLastRequest());
 				session.setAttribute("lastResp", service.getLastResponse());
 				if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
@@ -434,7 +444,6 @@ public class PaymentCapture extends HttpServlet{
 				}
 			}
 		
-		}else if(request.getRequestURI().contains("OrderPaymentCapture")){
 		}else if(request.getRequestURI().contains("DoExpressCheckout")){ // *************** DoExpressCheckout api call ************************
 
 			DoExpressCheckoutPaymentRequestType doCheckoutPaymentRequestType = new DoExpressCheckoutPaymentRequestType();
@@ -586,10 +595,14 @@ public class PaymentCapture extends HttpServlet{
 				e.printStackTrace();
 			}
 			response.setContentType("text/html");
-			session.setAttribute(
-					"relatedUrl",
-					"<ul> The payment is authorized using SetExpressCheckout. Now you can capture the payment using DoCapture api. Click the link to initiate DoCapture.<li><a href='AuthorizedPaymentCapture'>Capture Authorized Payment</a></li></ul>");
+			
 			if (doCheckoutPaymentResponseType != null) {
+				session.setAttribute(
+						"relatedUrl",
+						"<ul>If  paymentType is <b>Authorization</b> .you can capture the payment directly using DoCapture api" +
+						" <li><a href='AuthorizedPaymentCapture'>DoCapture</a></li>" +
+						"If  paymentType is <b>Order</b> .you need to call DoAuthorization api, before you can capture the payment using DoCapture api." +
+						"<li><a href='DoAuthoricationForOrderPayment'>DoAuthorization</a></li></ul>");
 				session.setAttribute("lastReq", service.getLastRequest());
 				session.setAttribute("lastResp", service.getLastResponse());
 				if (doCheckoutPaymentResponseType.getAck().toString()
@@ -614,7 +627,7 @@ public class PaymentCapture extends HttpServlet{
 								result.getTransactionID());
 						index++;
 					}
-					session.setAttribute("authorizationId", doCheckoutPaymentResponseType.getDoExpressCheckoutPaymentResponseDetails().getPaymentInfo().get(0).getTransactionID());
+					session.setAttribute("transactionId", doCheckoutPaymentResponseType.getDoExpressCheckoutPaymentResponseDetails().getPaymentInfo().get(0).getTransactionID());
 					session.setAttribute("map", map);
 					response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
 				} else {
@@ -625,6 +638,82 @@ public class PaymentCapture extends HttpServlet{
 				}
 			}
 
+		
+		}else if(request.getRequestURI().contains("DoAuthoricationForOrderPayment")){
+
+			// ## DoAuthorizationReq
+			DoAuthorizationReq req = new DoAuthorizationReq();
+
+			// `Amount` which takes mandatory params:
+			//
+			// * `currencyCode`
+			// * `amount
+			BasicAmountType amount = new BasicAmountType(
+					CurrencyCodeType.fromValue(request.getParameter("currencyCode")),
+					request.getParameter("amt"));
+			
+			// `DoAuthorizationRequest` which takes mandatory params:
+			//
+			// * `Transaction ID` - Value of the order's transaction identification
+			// number returned by PayPal.
+			// * `Amount` - Amount to authorize.
+			DoAuthorizationRequestType reqType = new DoAuthorizationRequestType(
+					request.getParameter("transID"), amount);
+
+			req.setDoAuthorizationRequest(reqType);
+			DoAuthorizationResponseType resp = null;
+			try{
+				resp = service.doAuthorization(req);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			session.setAttribute(
+					"relatedUrl",
+					"<ul>The payment order is autorized , now you can capture the payment using DoCapture api" +
+					" <li><a href='OrderPaymentCapture'>DoCapture</a></li>" );
+			if (resp != null) {
+				session.setAttribute("lastReq", service.getLastRequest());
+				session.setAttribute("lastResp", service.getLastResponse());
+				if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
+					Map<Object, Object> map = new LinkedHashMap<Object, Object>();
+					map.put("Ack", resp.getAck());
+					/*
+					 *  Amount you specified in the request.
+						Character length and limitations: Value is a positive number which 
+						cannot exceed $10,000 USD in any currency. It includes no currency symbol. 
+						It must have 2 decimal places, the decimal separator must be a period (.), 
+						and the optional thousands separator must be a comma (,).
+					 */
+					map.put("Amount", resp.getAmount().getValue() + " "
+							+ resp.getAmount().getCurrencyID());
+					/*
+					 * Status of the payment. It is one of the following values:
+					    None – No status.
+					    Canceled-Reversal – A reversal has been canceled. For example, when you win a dispute, PayPal returns the funds for the reversal to you.
+					    Completed – The payment has been completed, and the funds have been added successfully to your account balance.
+					    Denied – You denied the payment. This happens only if the payment was previously pending because of possible reasons described for the PendingReason element.
+					    Expired – The authorization period for this payment has been reached.
+					    Failed – The payment has failed. This happens only if the payment was made from the buyer's bank account.
+					    In-Progress – The transaction has not terminated. For example, an authorization may be awaiting completion.
+					    Partially-Refunded – The payment has been partially refunded.
+					    Pending – The payment is pending. See the PendingReason field for more information.
+					    Refunded – You refunded the payment.
+					    Reversed– A payment was reversed due to a chargeback or other type of reversal. PayPal removes the funds from your account balance and returns them to the buyer. The ReasonCode element specifies the reason for the reversal.
+					    Processed – A payment has been accepted.
+					    Voided – An authorization for this transaction has been voided.
+					 */
+					map.put("Payment Status", resp.getAuthorizationInfo()
+							.getPaymentStatus());
+					session.setAttribute("map", map);
+					response.sendRedirect(this.getServletContext().getContextPath()+"/Response.jsp");
+
+				} else {
+
+					session.setAttribute("Error", resp.getErrors());
+					response.sendRedirect(this.getServletContext().getContextPath()+"/Error.jsp");
+				}
+			}
 		
 		}
 	}

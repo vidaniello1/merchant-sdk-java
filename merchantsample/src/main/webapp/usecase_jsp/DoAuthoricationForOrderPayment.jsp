@@ -4,22 +4,25 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>PayPal SDK - DoCapture</title>
+<title>PayPal SDK - DoAuthorization</title>
 
 </head>
 <body>
 	<div id="wrapper">
 		<div id="header">
-			<h3>DoCapture</h3>
-			<div id="apidetails">Used to captures an authorized payment.</div>
+			<h3>DoAuthorization</h3>
+			<div id="apidetails">Used to authorize an Order payment, created using ExpressCheckout using Order PaymentType </div>
 		</div>
+		<br>
 		<form method="POST">
 			<div id="request_form">
 				<div class="params">
-					<div class="param_name">AuthorizationID*</div>
+					<div class="param_name">
+						TransactionID*(Transaction ID via ExpressCheckout with PaymentType "Order")
+					</div>
 					<div class="param_value">
-						<input type="text" name="authID" value="<%=(session.getAttribute("authorizationId")!=null)?((String)session.getAttribute("authorizationId")):"" %>" size="50"	maxlength="260" />
-						<%session.removeAttribute("authorizationId"); %>
+						<input type="text" name="transID" value="<%=(session.getAttribute("transactionId")!=null)?((String)session.getAttribute("transactionId")):"" %>" size="50"
+							maxlength="260" />
 					</div>
 				</div>
 				<div class="params">
@@ -36,17 +39,9 @@
 							maxlength="260" />
 					</div>
 				</div>
-				<div class="params">
-					<div class="param_name">CompleteCodeType*</div>
-					<div class="param_value">
-						<select name="completeCodeType">
-							<option value="Complete">Complete</option>
-							<option value="NotComplete">NotComplete</option>
-						</select>
-					</div>
-				</div>
 				<div class="submit">
-					<input type="submit" name="DoCaptureBtn" value="DoCapture" /><br />
+					<input type="submit" name="DoAuthorizationBtn"
+						value="DoAuthorization" /><br />
 				</div>
 				<a href="../index.html">Home</a>
 			</div>

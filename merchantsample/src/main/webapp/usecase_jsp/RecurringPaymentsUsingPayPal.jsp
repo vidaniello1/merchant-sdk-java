@@ -16,7 +16,7 @@
 <body>
 	<div id="wrapper">
 		<div id="header">
-			<h3>CreateRecurringPaymentsProfile Using PayPal SetExpressCheckout api</h3>
+			<h3>CreateRecurringPaymentsProfile Using PayPal ExpressCheckout Token</h3>
 			<div id="apidetails">
 				<p>The CreateRecurringPaymentsProfile API operation creates a
 					recurring payments profile.There is a one-to-one correspondence

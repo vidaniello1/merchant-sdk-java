@@ -49,11 +49,13 @@
 
 	<a href="index.html">Home</a>
 	<a href="<%=session.getAttribute("url")%>">Back</a>
+	<br>
+	<%if(session.getAttribute("relatedUrl") != null){ %>
 	<div id="related_calls">
 		See also
 		<%=session.getAttribute("relatedUrl")%>
-		<%=session.removeAttribute("relatedUrl")%>
+		<%session.removeAttribute("relatedUrl");%>
 	</div>
-
+	<% }%>
 </body>
 </html>

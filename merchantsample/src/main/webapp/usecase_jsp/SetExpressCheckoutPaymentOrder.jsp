@@ -9,16 +9,20 @@
 <body>
 	<div id="wrapper">
 		<div id="header">
-			<h3>SetExpressCheckout for creating a billing agreement for recurring payments</h3>
-			<div id="apidetails">Set the details for express checkout,You can
-				set up billing agreements for reference transactions and recurring
-				payments.</div>
+			<h3>SetExpressCheckout for Order payments</h3>
+			<div id="apidetails">
+				Set the details for express checkout. PaymentType should be set to <b>Order</b>
+				to create a payment Order. It should be authorized using <b>DoAuthorize</b>
+				api, before it can be captured using <b>DoCapture</b> api.
+			</div>
 		</div>
 		<br>
 		<form method="POST">
 			<div id="request_form">
 				<div class="params">
-					<div class="param_name"><b>BuyerMail</b></div>
+					<div class="param_name">
+						<b>BuyerMail</b>
+					</div>
 					<div class="param_value">
 						<input type="text" name="buyerMail"
 							value="platfo_1255077030_biz@gmail.com" size="50" maxlength="260" />
@@ -26,8 +30,10 @@
 				</div>
 				<br>
 				<div class="section_header">
-					<b><u>Payment Details:</u></b>
-				</div><br>
+					<b><u>Payment Details:</u>
+					</b>
+				</div>
+				<br>
 				<div class="params">
 					<div class="param_name">Total Shipping costs</div>
 					<div class="param_value">
@@ -72,9 +78,9 @@
 					<div class="param_name">PaymentType</div>
 					<div class="param_value">
 						<select name="paymentType">
-							<option value="Sale">Sale</option>
 							<option value="Authorization">Authorization</option>
-							<option value="Order">Order</option>
+							<option value="Sale">Sale</option>
+							<option value="Order" selected="true">Order</option>
 						</select>
 					</div>
 				</div>
@@ -93,33 +99,39 @@
 						<td><div class="param_value">
 								<input type="text" name="itemName" id="itemName"
 									value="Item Name" />
-							</div></td>
+							</div>
+						</td>
 
 						<td><div class="param_value">
 								<input type="text" name="itemAmount" id="itemAmount"
 									value="5.27" />
-							</div></td>
+							</div>
+						</td>
 
 						<td><div class="param_value">
 								<input type="text" name="itemQuantity" id="itemQuantity"
 									value="2" />
-							</div></td>
+							</div>
+						</td>
 
 						<td><div class="param_value">
 								<input type="text" name="salesTax" id="salesTax" value="" />
-							</div></td>
+							</div>
+						</td>
 
 						<td><div class="param_value">
 								<select name="itemCategory">
 									<option Value="Physical">Physical</option>
 									<option Value="Digital">Digital</option>
 								</select>
-							</div></td>
+							</div>
+						</td>
 
 						<td><div class="param_value">
 								<input type="text" name="itemDescription" id="itemDescription"
 									value="" />
-							</div></td>
+							</div>
+						</td>
 					</tr>
 				</table>
 				<div class="params">
@@ -130,29 +142,13 @@
 					</div>
 				</div>
 				<br>
-				<div class="section_header">
-					<b><u>Billing Agreement (Required for Recurring payments/Reference
-						transactions only):</u></b>
-				</div><br>
-				<div class="param_name">Billing Agreement Description *</div>
-				<div class="param_value">
-					<textarea cols="80" rows="10" name="billingAgreementText"></textarea>
-				</div>
-				<div class="param_name">Billing type *</div>
-				<div class="param_value">
-					<select name="billingType">
-						<option value="RecurringPayments">Recurring Payments</option>
-					</select>
-				</div>
-
-				<br>
 				<div class="submit">
-					<input type="submit" name="SetExpressCheckoutBtn"	value="SetExpressCheckout" /> <br />
+					<input type="submit" name="SetExpressCheckoutBtn"
+						value="SetExpressCheckout" /> <br />
 				</div>
 				<a href="../index.html">Home</a>
 			</div>
 		</form>
-
 	</div>
 </body>
 </html>
