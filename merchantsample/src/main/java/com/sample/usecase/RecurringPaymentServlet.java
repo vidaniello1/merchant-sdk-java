@@ -41,6 +41,8 @@ import urn.ebay.apis.eBLBaseComponents.RecurringPaymentsProfileDetailsType;
 import urn.ebay.apis.eBLBaseComponents.ScheduleDetailsType;
 import urn.ebay.apis.eBLBaseComponents.SetExpressCheckoutRequestDetailsType;
 
+import com.sample.util.Configuration;
+
 public class RecurringPaymentServlet extends HttpServlet {
 	private static final long serialVersionUID = 3409273409234L;
 

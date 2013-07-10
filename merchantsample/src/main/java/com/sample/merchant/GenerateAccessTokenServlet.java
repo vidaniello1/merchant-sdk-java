@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
-
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
 import com.paypal.exception.InvalidCredentialException;
@@ -23,6 +21,7 @@ import com.paypal.svcs.services.PermissionsService;
 import com.paypal.svcs.types.common.RequestEnvelope;
 import com.paypal.svcs.types.perm.GetAccessTokenRequest;
 import com.paypal.svcs.types.perm.GetAccessTokenResponse;
+import com.sample.util.Configuration;
 
 public class GenerateAccessTokenServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

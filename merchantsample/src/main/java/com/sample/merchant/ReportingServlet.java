@@ -41,6 +41,7 @@ import com.paypal.exception.InvalidResponseDataException;
 import com.paypal.exception.MissingCredentialException;
 import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
+import com.sample.util.Configuration;
 
 public class ReportingServlet extends HttpServlet {
 	private static final long serialVersionUID = 2212442342452L;

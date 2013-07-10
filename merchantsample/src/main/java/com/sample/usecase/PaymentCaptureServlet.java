@@ -37,7 +37,7 @@ import urn.ebay.apis.eBLBaseComponents.PaymentDetailsType;
 import urn.ebay.apis.eBLBaseComponents.PaymentInfoType;
 import urn.ebay.apis.eBLBaseComponents.SetExpressCheckoutRequestDetailsType;
 
-import com.sample.merchant.Configuration;
+import com.sample.util.Configuration;
 
 public class PaymentCaptureServlet extends HttpServlet{
 

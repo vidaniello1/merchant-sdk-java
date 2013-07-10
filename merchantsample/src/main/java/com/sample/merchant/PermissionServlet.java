@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
-
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
 import com.paypal.exception.InvalidCredentialException;
@@ -25,6 +23,7 @@ import com.paypal.svcs.services.PermissionsService;
 import com.paypal.svcs.types.common.RequestEnvelope;
 import com.paypal.svcs.types.perm.RequestPermissionsRequest;
 import com.paypal.svcs.types.perm.RequestPermissionsResponse;
+import com.sample.util.Configuration;
 
 public class PermissionServlet extends HttpServlet {
 	/**
