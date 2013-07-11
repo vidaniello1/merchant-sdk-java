@@ -124,19 +124,6 @@ public class RecurringPaymentServlet extends HttpServlet {
 			 */
 			details.setBuyerEmail(request.getParameter("buyerMail"));
 			
-			/*
-			 * How you want to obtain payment. When implementing parallel payments, 
-			 * this field is required and must be set to Order.
-			 *  When implementing digital goods, this field is required and must be set to Sale.
-			 *   If the transaction does not include a one-time purchase, this field is ignored. 
-			 *   It is one of the following values:
-
-				Sale – This is a final sale for which you are requesting payment (default).
-				Authorization – This payment is a basic authorization subject to settlement with PayPal Authorization and Capture.
-				Order – This payment is an order authorization subject to settlement with PayPal Authorization and Capture.
-			 */
-			request.getSession().setAttribute("paymentType",request.getParameter("paymentType"));
-
 			double itemTotal = 0.00;
 			double orderTotal = 0.00;
 			// populate line item details

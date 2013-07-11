@@ -147,7 +147,7 @@
 					<input type="submit" name="SetExpressCheckoutBtn"
 						value="SetExpressCheckout" /> <br />
 				</div>
-				<a href="../index.html">Home</a>
+				<a href="index.html">Home</a>
 			</div>
 		</form>
 	</div>

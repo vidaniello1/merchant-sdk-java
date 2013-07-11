@@ -49,7 +49,7 @@
 				<div class="submit">
 					<input type="submit" name="DoCaptureBtn" value="DoCapture" /><br />
 				</div>
-				<a href="../index.html">Home</a>
+				<a href="index.html">Home</a>
 			</div>
 		</form>
 		

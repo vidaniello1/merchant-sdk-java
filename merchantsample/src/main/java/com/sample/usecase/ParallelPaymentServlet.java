@@ -18,6 +18,7 @@ import urn.ebay.api.PayPalAPI.SetExpressCheckoutRequestType;
 import urn.ebay.api.PayPalAPI.SetExpressCheckoutResponseType;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+import urn.ebay.apis.eBLBaseComponents.PaymentActionCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentDetailsType;
 import urn.ebay.apis.eBLBaseComponents.SellerDetailsType;
 import urn.ebay.apis.eBLBaseComponents.SetExpressCheckoutRequestDetailsType;
@@ -110,6 +111,7 @@ public class ParallelPaymentServlet extends HttpServlet{
 		orderTotal_1.setCurrencyID(CurrencyCodeType.fromValue(request.getParameter("currencyCode")));
 		orderTotal_1.setValue(request.getParameter("orderTotal"));
 		paymentDetails_1.setOrderTotal(orderTotal_1);
+		paymentDetails_1.setPaymentAction(PaymentActionCodeType.fromValue(request.getParameter("paymentType")));
 		
 		SellerDetailsType seller_2 = new SellerDetailsType();
 		seller_2.setPayPalAccountID(request.getParameter("receiverEmail_1"));
@@ -120,6 +122,7 @@ public class ParallelPaymentServlet extends HttpServlet{
 		orderTotal_2.setCurrencyID(CurrencyCodeType.fromValue(request.getParameter("currencyCode")));
 		orderTotal_2.setValue(request.getParameter("orderTotal"));
 		paymentDetails_2.setOrderTotal(orderTotal_2);
+		paymentDetails_2.setPaymentAction(PaymentActionCodeType.fromValue(request.getParameter("paymentType")));
 		
 		
 		List<PaymentDetailsType> payDetails = new ArrayList<PaymentDetailsType>();

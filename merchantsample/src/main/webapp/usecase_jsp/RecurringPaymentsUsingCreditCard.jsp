@@ -268,7 +268,7 @@
 					<input type="submit" name="CreateRecurringPaymentsProfileBtn"
 						value="CreateRecurringPaymentsProfile" /><br />
 				</div>
-				<a href="../index.html">Home</a> <br /> <br />
+				<a href="index.html">Home</a> <br /> <br />
 			</div>
 		</form>
 	</div>
