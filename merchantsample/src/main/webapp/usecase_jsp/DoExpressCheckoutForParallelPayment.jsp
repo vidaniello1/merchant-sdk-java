@@ -15,7 +15,7 @@
 	<div id="wrapper">
 		<div id="header">
 			<h3>DoExpressCheckout</h3>
-			<div id="apidetails">Used to complete checkout payment. Select the right paymentAction below, as what you set in SetExpressCheckout.</div>
+			<div id="apidetails">Used to make checkout payment. Select the appropriate paymentAction below, as what you set in SetExpressCheckout.</div>
 		</div><br>
 		<form method="POST">
 			<div id="request_form">
@@ -35,43 +35,49 @@
 					</div>
 				</div>
 				<div class="params">
-					<div class="param_name">paymentAction* (The paymentAction that you had set in SetExpressCheckout)</div>
+					<div class="param_name">paymentAction* (Select the paymentAction that you had set in SetExpressCheckout)</div>
 					<div class="param_value">
 						<select name="paymentAction">
-							<option value="Sale">Sale</option>
+							<option value="Sale" selected="selected">Sale</option>
 							<option value="Authorization">Authorization</option>
 							<option value="Order">Order</option>
 						</select>
 					</div>
 				</div>
-				<div class="section_header">Payment Details*</div>
-				<table class="params">
-					<tr>
-						<th class="param_name">Name</th>
-						<th class="param_name">Cost</th>
-						<th class="param_name">Currency Code</th>
-						<th class="param_name">Quantity</th>
-					</tr>
-					<tr>
-						<td><div class="param_value">
-								<input type="text" name="itemName" id="itemName"
-									value="Item Name" />
-							</div></td>
+				<div class="section_header">Payment Details</div>
+				<div class="params"></div>
 
-						<td><div class="param_value">
-								<input type="text" name="amt" id="amt" value="5.27" />
-							</div></td>
-						<td><div class="param_value">
-								<input type="text" name="currencyCode" id="currencyCode"
-									value="USD" />
-							</div></td>
-
-						<td><div class="param_value">
-								<input type="text" name="itemQuantity" id="itemQuantity"
-									value="2" />
-							</div></td>
-					</tr>
-				</table>
+				<div class="params">
+					<div class="param_name">CurrencyCode</div>
+					<div class="param_value">
+						<input type="text" name="currencyCode" value="USD" size="50"
+							maxlength="260" />
+					</div>
+				</div>
+				<div class="params">
+					<div class="param_name">Order Total</div>
+					<div class="param_value">
+						<input type="text" name="orderTotal" id="orderTotal" value="1.00" />
+					</div>
+				</div>
+				<div class="param_name">
+					<table>
+						<tr>
+							<th>Receiver Emails</th>
+							<th>Request Id</th>
+						</tr>
+						<tr>
+						    <td><input type="text" name="receiverEmail_0" value="platfo_1255170694_biz@gmail.com" size="50" maxlength="260" /></td>
+							<td><input type="text" name="requestId_0" value="CART286-PAYMENT0" size="50" maxlength="260" /></td> 
+						</tr>
+						<tr>
+						    <td><input type="text" name="receiverEmail_1" value="platfo_1255170694_biz@gmail.com" size="50" maxlength="260" /></td>
+							<td><input type="text" name="requestId_1" value="CART286-PAYMENT1" size="50" maxlength="260" /></td> 
+						</tr>
+					</table>	
+				
+				
+				</div>
 				<div class="params">
 					<div class="param_name">IPN Notification Url (Receive IPN call back from PayPal)</div>
 					<div class="param_value">

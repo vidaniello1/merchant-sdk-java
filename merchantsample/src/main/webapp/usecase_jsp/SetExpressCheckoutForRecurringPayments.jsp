@@ -70,9 +70,9 @@
 					</div>
 				</div>
 				<div class="params">
-					<div class="param_name">PaymentType</div>
+					<div class="param_name">PaymentAction</div>
 					<div class="param_value">
-						<select name="paymentType">
+						<select name="paymentAction">
 							<option value="Sale">Sale</option>
 							<option value="Authorization">Authorization</option>
 							<option value="Order">Order</option>

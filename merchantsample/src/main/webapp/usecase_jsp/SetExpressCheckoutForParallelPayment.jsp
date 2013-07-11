@@ -26,9 +26,9 @@
 					</div>
 				</div>
 				<div class="params">
-					<div class="param_name">Payment Type</div>
+					<div class="param_name">PaymentAction</div>
 					<div class="param_value">
-						<select name="paymentType">
+						<select name="paymentAction">
 							<option value="Sale">Sale</option>
 							<option value="Authorization">Authorization</option>
 							<option value="Order">Order</option>
@@ -52,16 +52,24 @@
 					</div>
 				</div>
 				<b/>
-				<div class="param_name">Receiver emails.</div>
-				<div class="param_value">
-					1.<input type="text" name="receiverEmail_0"
-						value="platfo_1255170694_biz@gmail.com" size="50" maxlength="260" />
+				<div class="param_name">
+					<table>
+						<tr>
+							<th>Receiver Emails</th>
+							<th>Request Id</th>
+						</tr>
+						<tr>
+						    <td><input type="text" name="receiverEmail_0" value="platfo_1255170694_biz@gmail.com" size="50" maxlength="260" /></td>
+							<td><input type="text" name="requestId_0" value="CART286-PAYMENT0" size="50" maxlength="260" /></td> 
+						</tr>
+						<tr>
+						    <td><input type="text" name="receiverEmail_1" value="platfo_1255170694_biz@gmail.com" size="50" maxlength="260" /></td>
+							<td><input type="text" name="requestId_1" value="CART286-PAYMENT1" size="50" maxlength="260" /></td> 
+						</tr>
+					</table>	
+				
+				
 				</div>
-				<div class="param_value">
-					2.<input type="text" name="receiverEmail_1"
-						value="platfo_1255611349_biz@gmail.com" size="50" maxlength="260" />
-				</div>
-
 				<div class="submit">
 					<input type="submit" name="SetExpressCheckoutBtn"
 						value="SetExpressCheckout" /> <br />

@@ -12,14 +12,14 @@
 	<div id="wrapper">
 		<div id="header">
 			<h3>DoAuthorization</h3>
-			<div id="apidetails">Used to authorize an Order payment, created using ExpressCheckout using Order PaymentType </div>
+			<div id="apidetails">Used to authorize an Order payment, created using ExpressCheckout using Order paymentAction </div>
 		</div>
 		<br>
 		<form method="POST">
 			<div id="request_form">
 				<div class="params">
 					<div class="param_name">
-						TransactionID*(Transaction ID via ExpressCheckout with PaymentType "Order")
+						TransactionID*(Transaction ID via ExpressCheckout with paymentAction "Order")
 					</div>
 					<div class="param_value">
 						<input type="text" name="transID" value="<%=(session.getAttribute("transactionId")!=null)?((String)session.getAttribute("transactionId")):"" %>" size="50"

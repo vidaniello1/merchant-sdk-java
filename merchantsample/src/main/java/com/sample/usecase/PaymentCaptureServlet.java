@@ -108,6 +108,7 @@ public class PaymentCaptureServlet extends HttpServlet{
 			String cancelURL = null;
 			if(request.getRequestURI().contains("SetExpressCheckoutPaymentAuthorization")){
 				cancelURL = url.toString() + "/SetExpressCheckoutPaymentAuthorization";
+				
 			}else if(request.getRequestURI().contains("SetExpressCheckoutPaymentOrder")){
 				cancelURL = url.toString() + "/SetExpressCheckoutPaymentOrder";
 			}
@@ -207,7 +208,7 @@ public class PaymentCaptureServlet extends HttpServlet{
 				Authorization – This payment is a basic authorization subject to settlement with PayPal Authorization and Capture.
 				Order – This payment is an order authorization subject to settlement with PayPal Authorization and Capture.
 			 */
-			paydtl.setPaymentAction(PaymentActionCodeType.fromValue(request.getParameter("paymentType")));
+			paydtl.setPaymentAction(PaymentActionCodeType.fromValue(request.getParameter("paymentAction")));
 			/*
 			 *  (Optional) Total shipping costs for this order.
 				Note:
@@ -586,9 +587,9 @@ public class PaymentCaptureServlet extends HttpServlet{
 			if (doCheckoutPaymentResponseType != null) {
 				session.setAttribute(
 						"relatedUrl",
-						"<ul>If  paymentType is <b>Authorization</b> .you can capture the payment directly using DoCapture api" +
+						"<ul>If  paymentAction is <b>Authorization</b> .you can capture the payment directly using DoCapture api" +
 						" <li><a href='AuthorizedPaymentCapture'>DoCapture</a></li>" +
-						"If  paymentType is <b>Order</b> .you need to call DoAuthorization api, before you can capture the payment using DoCapture api." +
+						"If  paymentAction is <b>Order</b> .you need to call DoAuthorization api, before you can capture the payment using DoCapture api." +
 						"<li><a href='DoAuthoricationForOrderPayment'>DoAuthorization</a></li></ul>");
 				session.setAttribute("lastReq", service.getLastRequest());
 				session.setAttribute("lastResp", service.getLastResponse());

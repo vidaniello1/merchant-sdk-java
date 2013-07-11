@@ -186,6 +186,10 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ParallelPaymentServlet</servlet-name>
-		<url-pattern>/ParallelPayment</url-pattern>
+		<url-pattern>/SetExpressCheckoutForParallelPayment</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ParallelPaymentServlet</servlet-name>
+		<url-pattern>/DoExpressCheckoutForParallelPayment</url-pattern>
 	</servlet-mapping>
 </web-app>

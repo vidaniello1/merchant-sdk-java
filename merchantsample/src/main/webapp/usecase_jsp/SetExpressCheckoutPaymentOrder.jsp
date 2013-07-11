@@ -12,7 +12,7 @@
 		<div id="header">
 			<h3>SetExpressCheckout for Order payments</h3>
 			<div id="apidetails">
-				Set the details for express checkout. PaymentType should be set to <b>Order</b>
+				Set the details for express checkout. paymentAction should be set to <b>Order</b>
 				to create a payment Order. It should be authorized using <b>DoAuthorize</b>
 				api, before it can be captured using <b>DoCapture</b> api.
 			</div>
@@ -76,13 +76,9 @@
 					</div>
 				</div>
 				<div class="params">
-					<div class="param_name">PaymentType</div>
+					<div class="param_name">paymentAction</div>
 					<div class="param_value">
-						<select name="paymentType">
-							<option value="Authorization">Authorization</option>
-							<option value="Sale">Sale</option>
-							<option value="Order" selected="true">Order</option>
-						</select>
+						<input type="text" name="paymentAction" value="Order"  readonly/>
 					</div>
 				</div>
 				<div class="param_name">Item Details</div>

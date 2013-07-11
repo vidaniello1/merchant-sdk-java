@@ -11,7 +11,7 @@
 	<div id="wrapper">
 		<div id="header">
 			<h3>SetExpressCheckout for Authorizing payments</h3>
-			<div id="apidetails">Set the details for express checkout. PaymentType should be set to <b>Authorization</b> 
+			<div id="apidetails">Set the details for express checkout. paymentAction should be set to <b>Authorization</b> 
 			to create a payment authorization. Authorized payment can be captured directly using DoCapture api.</div>
 		</div>
 		<br>
@@ -69,13 +69,9 @@
 					</div>
 				</div>
 				<div class="params">
-					<div class="param_name">PaymentType</div>
+					<div class="param_name">paymentAction</div>
 					<div class="param_value">
-						<select name="paymentType">
-							<option value="Authorization" selected="true">Authorization</option>
-							<option value="Sale">Sale</option>
-							<option value="Order">Order</option>
-						</select>
+						<input type="text" name="paymentAction" value="Authorization"  readonly/>
 					</div>
 				</div>
 				<div class="param_name">Item Details</div>
