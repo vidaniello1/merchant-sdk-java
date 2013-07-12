@@ -31,66 +31,24 @@
 		</div>
 		<form method="POST">
 			<div id="request_form">
-				<div class="note">You must set ExpressCheckout Token</div>
+				<div class="note">You must set ExpressCheckout Token</div><br>
 				<div class="params">
 					<div class="param_name">Express Checkout Token *(Token
 						generated via ExpressCheckout)</div>
 					<div class="param_value">
 						<input type="text" name="token" id="token"
-							value="<%=(session.getAttribute("ecToken") != null) ? ((String) session
-					.getAttribute("ecToken")) : ""%>" />
-						<%
-							session.removeAttribute("ecToken");
-						%>
+							value="<%=(session.getAttribute("ecToken") != null) ? ((String) session.getAttribute("ecToken")) : ""%>" />
+						<%	session.removeAttribute("ecToken");	%>
 					</div>
 				</div>
 
 				<div class="section_header">Recurring payments profile details</div>
-				<div class="param_name">Subscriber Name</div>
-				<div class="param_value">
-					<input type="text" name="subscriberName" id="subscriberName"
-						value="" value="" />
-				</div>
 				<div class="param_name">Billing start date</div>
 				<div class="param_value">
-
-
 					<input type="text" name="billingStartDate" id="billingStartDate"
 						value=<%=df.format(startDate.getTime())%> />
 				</div>
-				<div class="param_name">Subscriber shipping address (if
-					different from buyer's PayPal account address)</div>
-				<table class="line_item">
-					<tr>
-						<th>Name</th>
-						<th>Street 1</th>
-						<th>Street 2</th>
-						<th>City</th>
-						<th>State</th>
-						<th>Postal Code</th>
-						<th>Country</th>
-						<th>Phone</th>
-					</tr>
-					<tr>
-						<td><span class="param_value"> <input type="text"
-								id="shippingName" name="shippingName" value="" /> </span></td>
-						<td><span class="param_value"> <input type="text"
-								id="shippingStreet1" name="shippingStreet1" value="" /> </span></td>
-						<td><span class="param_value"> <input type="text"
-								id="shippingStreet2" name="shippingStreet2" value="" /> </span></td>
-						<td><span class="param_value"> <input type="text"
-								id="shippingCity" name="shippingCity" value="" /> </span></td>
-						<td><span class="param_value"> <input type="text"
-								id="shippingState" name="shippingState" value="" /> </span></td>
-						<td><span class="param_value"> <input type="text"
-								id="shippingPostalCode" name="shippingPostalCode" value="" /> </span>
-						</td>
-						<td><span class="param_value"> <input type="text"
-								id="shippingCountry" name="shippingCountry" value="" /> </span></td>
-						<td><span class="param_value"> <input type="text"
-								id="shippingPhone" name="shippingPhone" value="" /> </span></td>
-					</tr>
-				</table>
+				
 				<div class="section_header">
 					<b><u>Schedule Details:</u>
 					</b>
@@ -102,66 +60,6 @@
 						<textarea rows="5" cols="60" name="profileDescription"></textarea>
 					</div>
 				</div>
-				<div class="section_header">Activation Details</div>
-				<table class="params">
-					<tr>
-						<th>Initial Amount</th>
-						<th>Failed Payment Action</th>
-					</tr>
-					<tr>
-						<td><span class="param_value"> <input
-								id="initialAmount" name="initialAmount" /> </span></td>
-						<td><span class="param_value"> <select
-								name="failedInitialAmountAction">
-									<option value="ContinueOnFailure">Continue On Failure</option>
-									<option value="CancelOnFailure">Cancel On Failure</option>
-							</select> </span></td>
-					</tr>
-				</table>
-
-				<div class="section_header">
-					<b>Trial Period</b>
-				</div>
-				<table class="params">
-					<tr>
-						<th>Billing frequency</th>
-						<th>Billing period</th>
-						<th>Total billing cycles</th>
-						<th>Per billing cycle amount</th>
-						<th>Shipping amount</th>
-						<th>Tax</th>
-					</tr>
-					<tr>
-						<td><span class="param_value"> <input type="text"
-								id="trialBillingFrequency" name="trialBillingFrequency"
-								value="10" /> </span>
-						</td>
-						<td><span class="param_value"> <select
-								name="trialBillingPeriod">
-									<option value="Day">Day</option>
-									<option value="Week">Week</option>
-									<option value="SemiMonth">SemiMonth</option>
-									<option value="Month">Month</option>
-									<option value="Year">Year</option>
-							</select> </span>
-						</td>
-						<td><span class="param_value"> <input type="text"
-								id="trialBillingCycles" name="trialBillingCycles" value="2" />
-						</span>
-						</td>
-						<td><span class="param_value"> <input type="text"
-								id="trialBillingAmount" name="trialBillingAmount" value="2.0" />
-						</span>
-						</td>
-						<td><span class="param_value"> <input type="text"
-								id="trialShippingAmount" name="trialShippingAmount" value="0.0" />
-						</span>
-						</td>
-						<td><span class="param_value"> <input type="text"
-								id="trialTaxAmount" name="trialTaxAmount" value="0.0" /> </span>
-						</td>
-					</tr>
-				</table>
 
 				<div class="section_header">
 					<b>Payment Period *</b>
@@ -203,22 +101,7 @@
 						</td>
 					</tr>
 				</table>
-				<div class="params">
-					<div class="param_name">Maximum failed payments before
-						profile suspension</div>
-					<div class="param_value">
-						<input type="text" name="maxFailedPayments" id="maxFailedPayments"
-							value="3" />
-					</div>
-				</div>
-				<div class="param_name">Auto billing of outstanding amount</div>
-				<div class="param_value">
-					<select name="autoBillOutstandingAmount">
-						<option value="NoAutoBill">No Auto billing</option>
-						<option value="AddToNextBilling">Add to next billing</option>
-					</select>
-				</div>
-
+				
 				<div class="submit">
 					<input type="submit" name="CreateRecurringPaymentsProfileBtn"
 						value="CreateRecurringPaymentsProfile" /><br />

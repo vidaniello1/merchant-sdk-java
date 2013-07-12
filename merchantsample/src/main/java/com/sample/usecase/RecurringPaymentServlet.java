@@ -20,9 +20,6 @@ import urn.ebay.api.PayPalAPI.SetExpressCheckoutReq;
 import urn.ebay.api.PayPalAPI.SetExpressCheckoutRequestType;
 import urn.ebay.api.PayPalAPI.SetExpressCheckoutResponseType;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
-import urn.ebay.apis.eBLBaseComponents.ActivationDetailsType;
-import urn.ebay.apis.eBLBaseComponents.AddressType;
-import urn.ebay.apis.eBLBaseComponents.AutoBillType;
 import urn.ebay.apis.eBLBaseComponents.BillingAgreementDetailsType;
 import urn.ebay.apis.eBLBaseComponents.BillingCodeType;
 import urn.ebay.apis.eBLBaseComponents.BillingPeriodDetailsType;
@@ -31,7 +28,6 @@ import urn.ebay.apis.eBLBaseComponents.CreateRecurringPaymentsProfileRequestDeta
 import urn.ebay.apis.eBLBaseComponents.CreditCardDetailsType;
 import urn.ebay.apis.eBLBaseComponents.CreditCardTypeType;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-import urn.ebay.apis.eBLBaseComponents.FailedPaymentActionType;
 import urn.ebay.apis.eBLBaseComponents.ItemCategoryType;
 import urn.ebay.apis.eBLBaseComponents.PayerInfoType;
 import urn.ebay.apis.eBLBaseComponents.PaymentActionCodeType;
@@ -197,7 +193,7 @@ public class RecurringPaymentServlet extends HttpServlet {
 				Authorization – This payment is a basic authorization subject to settlement with PayPal Authorization and Capture.
 				Order – This payment is an order authorization subject to settlement with PayPal Authorization and Capture.
 			 */
-			paydtl.setPaymentAction(PaymentActionCodeType.fromValue(request.getParameter("paymentType")));
+			paydtl.setPaymentAction(PaymentActionCodeType.fromValue(request.getParameter("paymentAction")));
 			/*
 			 *  (Optional) Total shipping costs for this order.
 				Note:
@@ -388,62 +384,6 @@ public class RecurringPaymentServlet extends HttpServlet {
 			RecurringPaymentsProfileDetailsType profileDetails = new RecurringPaymentsProfileDetailsType(
 					request.getParameter("billingStartDate")
 							+ "T00:00:00:000Z");
-			/*
-			 *  (Optional) Full name of the person receiving the product or service paid for
-			 *   by the recurring payment. If not present, the name in the buyer's PayPal
-			 *   account is used.
-				Character length and limitations: 32 single-byte characters
-			 */
-			if (request.getParameter("subscriberName") != "") {
-				profileDetails.setSubscriberName(request
-						.getParameter("subscriberName"));
-			} else if (request.getParameter("shippingName") != "") {
-				AddressType shippingAddr = new AddressType();
-				/*
-				 * Person's name associated with this shipping address. 
-				 * It is required if using a shipping address.
-				   Character length and limitations: 32 single-byte characters
-				 */
-				shippingAddr.setName(request.getParameter("shippingName"));
-				/*
-				 * First street address. It is required if using a shipping address.
-				   Character length and limitations: 100 single-byte characters
-				 */
-				shippingAddr.setStreet1(request.getParameter("shippingStreet1"));
-				/*
-				 *  (Optional) Second street address.
-					Character length and limitations: 100 single-byte characters
-				 */
-				shippingAddr.setStreet2(request.getParameter("shippingStreet2"));
-				/*
-				 * Optional) Phone number.
-				   Character length and limitations: 20 single-byte characters
-				 */
-				shippingAddr.setPhone(request.getParameter("shippingPhone"));
-				/*
-				 * Name of city. It is required if using a shipping address.
-				   Character length and limitations: 40 single-byte characters
-				 */
-				shippingAddr.setCityName(request.getParameter("shippingCity"));
-				/*
-				 * State or province. It is required if using a shipping address.
-				   Character length and limitations: 40 single-byte characters
-				 */
-				shippingAddr.setStateOrProvince(request.getParameter("shippingState"));
-				/*
-				 * Country code. It is required if using a shipping address.
-				  Character length and limitations: 2 single-byte characters
-				 */
-				shippingAddr.setCountryName(request.getParameter("shippingCountry"));
-				/*
-				 * U.S. ZIP code or other country-specific postal code. 
-				 * It is required if using a U.S. shipping address; may be required 
-				 * for other countries.
-				   Character length and limitations: 20 single-byte characters
-				 */
-				shippingAddr.setPostalCode(request.getParameter("shippingPostalCode"));
-				profileDetails.setSubscriberShippingAddress(shippingAddr);
-			}
 
 			// Populate schedule details
 			ScheduleDetailsType scheduleDetails = new ScheduleDetailsType();
@@ -455,149 +395,6 @@ public class RecurringPaymentServlet extends HttpServlet {
 				Character length and limitations: 127 single-byte alphanumeric characters
 			 */
 			scheduleDetails.setDescription(request.getParameter("profileDescription"));
-			/*
-			 *  (Optional) Number of scheduled payments that can fail before the profile 
-			 *  is automatically suspended. An IPN message is sent to the merchant when the 
-			 *  specified number of failed payments is reached.
-				 Character length and limitations: Number string representing an integer
-			 */
-			if (request.getParameter("maxFailedPayments") != "") {
-				scheduleDetails.setMaxFailedPayments(Integer.parseInt(request
-								.getParameter("maxFailedPayments")));
-			}
-			/*
-			 *  (Optional) Indicates whether you would like PayPal to automatically bill 
-			 *  the outstanding balance amount in the next billing cycle. 
-			 *  The outstanding balance is the total amount of any previously failed 
-			 *  scheduled payments that have yet to be successfully paid. 
-			 *  It is one of the following values:
-				NoAutoBill – PayPal does not automatically bill the outstanding balance.
-				AddToNextBilling – PayPal automatically bills the outstanding balance.
-			 */
-			if (request.getParameter("autoBillOutstandingAmount") != "") {
-				scheduleDetails.setAutoBillOutstandingAmount(AutoBillType.fromValue(request
-								.getParameter("autoBillOutstandingAmount")));
-			}
-			/*
-			 *  (Optional) Initial non-recurring payment amount due immediately upon profile creation.
-			 *   Use an initial amount for enrolment or set-up fees.
-				 Note:
-				 All amounts included in the request must have the same currency.
-				 Character length and limitations:
-				  Value is a positive number which cannot exceed $10,000 USD in any currency.
-				  It includes no currency symbol. 
-				  It must have 2 decimal places, the decimal separator must be a period (.),
-				  and the optional thousands separator must be a comma (,). 
-			 */
-			if (request.getParameter("initialAmount") != "") {
-				ActivationDetailsType activationDetails = new ActivationDetailsType(
-						new BasicAmountType(currency,request.getParameter("initialAmount")));
-				/*
-				 *  (Optional) Action you can specify when a payment fails. 
-				 *  It is one of the following values:
-					1. ContinueOnFailure – By default, PayPal suspends the pending profile in the event that
-					 the initial payment amount fails. You can override this default behavior by setting 
-					 this field to ContinueOnFailure. Then, if the initial payment amount fails, 
-					 PayPal adds the failed payment amount to the outstanding balance for this 
-					 recurring payment profile. When you specify ContinueOnFailure, a success code is
-					 returned to you in the CreateRecurringPaymentsProfile response and the recurring
-					 payments profile is activated for scheduled billing immediately. 
-					 You should check your IPN messages or PayPal account for updates of the
-					 payment status.
-					2. CancelOnFailure – If this field is not set or you set it to CancelOnFailure,
-					 PayPal creates the recurring payment profile, but places it into a pending status
-					 until the initial payment completes. If the initial payment clears, 
-					 PayPal notifies you by IPN that the pending profile has been activated. 
-					 If the payment fails, PayPal notifies you by IPN that the pending profile 
-					 has been canceled.
-
-				 */
-				if (request.getParameter("failedInitialAmountAction") != "") {
-					activationDetails.setFailedInitialAmountAction(FailedPaymentActionType.fromValue(request
-									.getParameter("failedInitialAmountAction")));
-				}
-				scheduleDetails.setActivationDetails(activationDetails);
-			}
-			if (request.getParameter("trialBillingAmount") != "") {
-				/*
-				 * Number of billing periods that make up one billing cycle; 
-				 * required if you specify an optional trial period.
-				   The combination of billing frequency and billing period must be 
-				   less than or equal to one year. For example, if the billing cycle is Month,
-				   the maximum value for billing frequency is 12. Similarly, 
-				   if the billing cycle is Week, the maximum value for billing frequency is 52.
-				   Note:
-				   If the billing period is SemiMonth, the billing frequency must be 1.
-
-				 */
-				int frequency = Integer.parseInt(request.getParameter("trialBillingFrequency"));
-				/*
-				 * Billing amount for each billing cycle during this payment period; 
-				 * required if you specify an optional trial period. 
-				 * This amount does not include shipping and tax amounts.
-				   Note:
-					All amounts in the CreateRecurringPaymentsProfile request must have 
-					the same currency.
-					Character length and limitations: 
-					Value is a positive number which cannot exceed $10,000 USD in any currency. 
-					It includes no currency symbol. 
-					It must have 2 decimal places, the decimal separator must be a period (.),
-					and the optional thousands separator must be a comma (,).
-				 */
-				BasicAmountType paymentAmount = new BasicAmountType(
-						currency,request.getParameter("trialBillingAmount"));
-				/*
-				 * Unit for billing during this subscription period; 
-				 * required if you specify an optional trial period. 
-				 * It is one of the following values: [Day, Week, SemiMonth, Month, Year]
-				   For SemiMonth, billing is done on the 1st and 15th of each month.
-				   Note:
-				   The combination of BillingPeriod and BillingFrequency cannot exceed one year.
-				 */
-				BillingPeriodType period = BillingPeriodType
-						.fromValue(request.getParameter("trialBillingPeriod"));
-				/*
-				 * Number of billing periods that make up one billing cycle; 
-				 * required if you specify an optional trial period.
-				   The combination of billing frequency and billing period must be 
-				   less than or equal to one year. For example, if the billing cycle is Month,
-				   the maximum value for billing frequency is 12. Similarly, 
-				   if the billing cycle is Week, the maximum value for billing frequency is 52.
-				  Note:
-					If the billing period is SemiMonth, the billing frequency must be 1.
-				 */
-				int numCycles = Integer.parseInt(request.getParameter("trialBillingCycles"));
-
-				BillingPeriodDetailsType trialPeriod = new BillingPeriodDetailsType(
-						period, frequency, paymentAmount);
-				trialPeriod.setTotalBillingCycles(numCycles);
-				/*
-				 *  (Optional) Shipping amount for each billing cycle during this payment period.
-					Note:
-					All amounts in the request must have the same currency.
-				 */
-				if (request.getParameter("trialShippingAmount") != "") {
-					trialPeriod.setShippingAmount(new BasicAmountType(
-							currency, request
-									.getParameter("trialShippingAmount")));
-				}
-				/*
-				 *  (Optional) Tax amount for each billing cycle during this payment period.
-					Note:
-					All amounts in the request must have the same currency.
-					Character length and limitations: 
-					Value is a positive number which cannot exceed $10,000 USD in any currency.
-					It includes no currency symbol. It must have 2 decimal places, 
-					the decimal separator must be a period (.), and the optional 
-					thousands separator must be a comma (,).
-				 */
-				if (request.getParameter("trialTaxAmount") != "") {
-					trialPeriod.setTaxAmount(new BasicAmountType(currency,
-							request.getParameter("trialTaxAmount")));
-				}
-
-				scheduleDetails.setTrialPeriod(trialPeriod);
-			}
 			
 			if (request.getParameter("billingAmount") != "") {
 				/*
@@ -746,63 +543,6 @@ public class RecurringPaymentServlet extends HttpServlet {
 			RecurringPaymentsProfileDetailsType profileDetails = new RecurringPaymentsProfileDetailsType(
 					request.getParameter("billingStartDate")
 							+ "T00:00:00:000Z");
-			/*
-			 *  (Optional) Full name of the person receiving the product or service paid for
-			 *   by the recurring payment. If not present, the name in the buyer's PayPal
-			 *   account is used.
-				Character length and limitations: 32 single-byte characters
-			 */
-			if (request.getParameter("subscriberName") != "") {
-				profileDetails.setSubscriberName(request
-						.getParameter("subscriberName"));
-			} else if (request.getParameter("shippingName") != "") {
-				AddressType shippingAddr = new AddressType();
-				/*
-				 * Person's name associated with this shipping address. 
-				 * It is required if using a shipping address.
-				   Character length and limitations: 32 single-byte characters
-				 */
-				shippingAddr.setName(request.getParameter("shippingName"));
-				/*
-				 * First street address. It is required if using a shipping address.
-				   Character length and limitations: 100 single-byte characters
-				 */
-				shippingAddr.setStreet1(request.getParameter("shippingStreet1"));
-				/*
-				 *  (Optional) Second street address.
-					Character length and limitations: 100 single-byte characters
-				 */
-				shippingAddr.setStreet2(request.getParameter("shippingStreet2"));
-				/*
-				 * Optional) Phone number.
-				   Character length and limitations: 20 single-byte characters
-				 */
-				shippingAddr.setPhone(request.getParameter("shippingPhone"));
-				/*
-				 * Name of city. It is required if using a shipping address.
-				   Character length and limitations: 40 single-byte characters
-				 */
-				shippingAddr.setCityName(request.getParameter("shippingCity"));
-				/*
-				 * State or province. It is required if using a shipping address.
-				   Character length and limitations: 40 single-byte characters
-				 */
-				shippingAddr.setStateOrProvince(request.getParameter("shippingState"));
-				/*
-				 * Country code. It is required if using a shipping address.
-				  Character length and limitations: 2 single-byte characters
-				 */
-				shippingAddr.setCountryName(request.getParameter("shippingCountry"));
-				/*
-				 * U.S. ZIP code or other country-specific postal code. 
-				 * It is required if using a U.S. shipping address; may be required 
-				 * for other countries.
-				   Character length and limitations: 20 single-byte characters
-				 */
-				shippingAddr.setPostalCode(request.getParameter("shippingPostalCode"));
-				profileDetails.setSubscriberShippingAddress(shippingAddr);
-			}
-
 			// Populate schedule details
 			ScheduleDetailsType scheduleDetails = new ScheduleDetailsType();
 			/*
@@ -813,149 +553,8 @@ public class RecurringPaymentServlet extends HttpServlet {
 				Character length and limitations: 127 single-byte alphanumeric characters
 			 */
 			scheduleDetails.setDescription(request.getParameter("profileDescription"));
-			/*
-			 *  (Optional) Number of scheduled payments that can fail before the profile 
-			 *  is automatically suspended. An IPN message is sent to the merchant when the 
-			 *  specified number of failed payments is reached.
-				 Character length and limitations: Number string representing an integer
-			 */
-			if (request.getParameter("maxFailedPayments") != "") {
-				scheduleDetails.setMaxFailedPayments(Integer.parseInt(request
-								.getParameter("maxFailedPayments")));
-			}
-			/*
-			 *  (Optional) Indicates whether you would like PayPal to automatically bill 
-			 *  the outstanding balance amount in the next billing cycle. 
-			 *  The outstanding balance is the total amount of any previously failed 
-			 *  scheduled payments that have yet to be successfully paid. 
-			 *  It is one of the following values:
-				NoAutoBill – PayPal does not automatically bill the outstanding balance.
-				AddToNextBilling – PayPal automatically bills the outstanding balance.
-			 */
-			if (request.getParameter("autoBillOutstandingAmount") != "") {
-				scheduleDetails.setAutoBillOutstandingAmount(AutoBillType.fromValue(request
-								.getParameter("autoBillOutstandingAmount")));
-			}
-			/*
-			 *  (Optional) Initial non-recurring payment amount due immediately upon profile creation.
-			 *   Use an initial amount for enrolment or set-up fees.
-				 Note:
-				 All amounts included in the request must have the same currency.
-				 Character length and limitations:
-				  Value is a positive number which cannot exceed $10,000 USD in any currency.
-				  It includes no currency symbol. 
-				  It must have 2 decimal places, the decimal separator must be a period (.),
-				  and the optional thousands separator must be a comma (,). 
-			 */
-			if (request.getParameter("initialAmount") != "") {
-				ActivationDetailsType activationDetails = new ActivationDetailsType(
-						new BasicAmountType(currency,request.getParameter("initialAmount")));
-				/*
-				 *  (Optional) Action you can specify when a payment fails. 
-				 *  It is one of the following values:
-					1. ContinueOnFailure – By default, PayPal suspends the pending profile in the event that
-					 the initial payment amount fails. You can override this default behavior by setting 
-					 this field to ContinueOnFailure. Then, if the initial payment amount fails, 
-					 PayPal adds the failed payment amount to the outstanding balance for this 
-					 recurring payment profile. When you specify ContinueOnFailure, a success code is
-					 returned to you in the CreateRecurringPaymentsProfile response and the recurring
-					 payments profile is activated for scheduled billing immediately. 
-					 You should check your IPN messages or PayPal account for updates of the
-					 payment status.
-					2. CancelOnFailure – If this field is not set or you set it to CancelOnFailure,
-					 PayPal creates the recurring payment profile, but places it into a pending status
-					 until the initial payment completes. If the initial payment clears, 
-					 PayPal notifies you by IPN that the pending profile has been activated. 
-					 If the payment fails, PayPal notifies you by IPN that the pending profile 
-					 has been canceled.
-
-				 */
-				if (request.getParameter("failedInitialAmountAction") != "") {
-					activationDetails.setFailedInitialAmountAction(FailedPaymentActionType.fromValue(request
-									.getParameter("failedInitialAmountAction")));
-				}
-				scheduleDetails.setActivationDetails(activationDetails);
-			}
-			if (request.getParameter("trialBillingAmount") != "") {
-				/*
-				 * Number of billing periods that make up one billing cycle; 
-				 * required if you specify an optional trial period.
-				   The combination of billing frequency and billing period must be 
-				   less than or equal to one year. For example, if the billing cycle is Month,
-				   the maximum value for billing frequency is 12. Similarly, 
-				   if the billing cycle is Week, the maximum value for billing frequency is 52.
-				   Note:
-				   If the billing period is SemiMonth, the billing frequency must be 1.
-
-				 */
-				int frequency = Integer.parseInt(request.getParameter("trialBillingFrequency"));
-				/*
-				 * Billing amount for each billing cycle during this payment period; 
-				 * required if you specify an optional trial period. 
-				 * This amount does not include shipping and tax amounts.
-				   Note:
-					All amounts in the CreateRecurringPaymentsProfile request must have 
-					the same currency.
-					Character length and limitations: 
-					Value is a positive number which cannot exceed $10,000 USD in any currency. 
-					It includes no currency symbol. 
-					It must have 2 decimal places, the decimal separator must be a period (.),
-					and the optional thousands separator must be a comma (,).
-				 */
-				BasicAmountType paymentAmount = new BasicAmountType(
-						currency,request.getParameter("trialBillingAmount"));
-				/*
-				 * Unit for billing during this subscription period; 
-				 * required if you specify an optional trial period. 
-				 * It is one of the following values: [Day, Week, SemiMonth, Month, Year]
-				   For SemiMonth, billing is done on the 1st and 15th of each month.
-				   Note:
-				   The combination of BillingPeriod and BillingFrequency cannot exceed one year.
-				 */
-				BillingPeriodType period = BillingPeriodType
-						.fromValue(request.getParameter("trialBillingPeriod"));
-				/*
-				 * Number of billing periods that make up one billing cycle; 
-				 * required if you specify an optional trial period.
-				   The combination of billing frequency and billing period must be 
-				   less than or equal to one year. For example, if the billing cycle is Month,
-				   the maximum value for billing frequency is 12. Similarly, 
-				   if the billing cycle is Week, the maximum value for billing frequency is 52.
-				  Note:
-					If the billing period is SemiMonth, the billing frequency must be 1.
-				 */
-				int numCycles = Integer.parseInt(request.getParameter("trialBillingCycles"));
-
-				BillingPeriodDetailsType trialPeriod = new BillingPeriodDetailsType(
-						period, frequency, paymentAmount);
-				trialPeriod.setTotalBillingCycles(numCycles);
-				/*
-				 *  (Optional) Shipping amount for each billing cycle during this payment period.
-					Note:
-					All amounts in the request must have the same currency.
-				 */
-				if (request.getParameter("trialShippingAmount") != "") {
-					trialPeriod.setShippingAmount(new BasicAmountType(
-							currency, request
-									.getParameter("trialShippingAmount")));
-				}
-				/*
-				 *  (Optional) Tax amount for each billing cycle during this payment period.
-					Note:
-					All amounts in the request must have the same currency.
-					Character length and limitations: 
-					Value is a positive number which cannot exceed $10,000 USD in any currency.
-					It includes no currency symbol. It must have 2 decimal places, 
-					the decimal separator must be a period (.), and the optional 
-					thousands separator must be a comma (,).
-				 */
-				if (request.getParameter("trialTaxAmount") != "") {
-					trialPeriod.setTaxAmount(new BasicAmountType(currency,
-							request.getParameter("trialTaxAmount")));
-				}
-
-				scheduleDetails.setTrialPeriod(trialPeriod);
-			}
+			
+			
 			
 			if (request.getParameter("billingAmount") != "") {
 				/*
