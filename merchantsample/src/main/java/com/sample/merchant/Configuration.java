@@ -44,3 +44,4 @@ public class Configuration {
 		// configMap.put("http.MaxConnection", "100");
 		return configMap;
 	}
+}
