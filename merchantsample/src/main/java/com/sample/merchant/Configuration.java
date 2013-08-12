@@ -17,7 +17,6 @@ public class Configuration {
 		configMap.put("acct1.UserName", "jb-us-seller_api1.paypal.com");
 		configMap.put("acct1.Password", "WX4WTU3S8MY44S7F");
 		configMap.put("acct1.Signature", "AFcWxV21C7fd0v3bYYYRCpSSRl31A7yDhhsPUU2XhtMoZXsWHFxu-RWy");
-		configMap.put("acct1.AppId", "APP-80W284485P519543T");
 		// Subject is optional, only required in case of third party permission
 		//configMap.put("acct1.Subject", "");
 		
@@ -37,6 +36,7 @@ public class Configuration {
 		// Endpoints are varied depending on whether sandbox OR live is chosen for mode
 		configMap.put("mode", "sandbox");
 		
+
 		// These values are defaulted in SDK. If you want to override default values, uncomment it and add your value.
 		// configMap.put("http.ConnectionTimeOut", "5000");
 		// configMap.put("http.Retry", "2");
@@ -44,5 +44,3 @@ public class Configuration {
 		// configMap.put("http.MaxConnection", "100");
 		return configMap;
 	}
-	
-}
