@@ -145,7 +145,7 @@ public class CheckoutServlet extends HttpServlet {
 			// Configuration map containing signature credentials and other required configuration.
 			// For a full list of configuration parameters refer at 
 			// [https://github.com/paypal/merchant-sdk-java/wiki/SDK-Configuration-Parameters]
-			Map<String,String> configurationMap =  Configuration.getSignatureConfig();
+			Map<String,String> configurationMap =  Configuration.getAcctAndConfig();
 			
 			// Creating service wrapper object to make an API call by loading configuration map.
 			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(configurationMap);
