@@ -1,4 +1,4 @@
-package com.sample.merchant;
+package com.sample.util;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -19,8 +19,8 @@
 				<div class="params">
 					<div class="param_name">AuthorizationID*</div>
 					<div class="param_value">
-						<input type="text" name="authID" value="" size="50"
-							maxlength="260" />
+						<input type="text" name="authID" value="<%=(session.getAttribute("transactionId")!=null)?((String)session.getAttribute("transactionId")):"" %>" size="50"	maxlength="260" />
+						<%session.removeAttribute("transactionId"); %>
 					</div>
 				</div>
 				<div class="params">
@@ -49,27 +49,10 @@
 				<div class="submit">
 					<input type="submit" name="DoCaptureBtn" value="DoCapture" /><br />
 				</div>
-				<a href="../index.html">Home</a>
+				<a href="index.html">Home</a>
 			</div>
 		</form>
-		<div id="relatedcalls">
-			See also
-			<ul>
-				<li><a href="DoAuthorization">DoAuthorization</a>
-				</li>
-				<li><a href="DoVoid">DoVoid</a>
-				</li>
-				<li><a href="DoReauthorization">DoReauthorization</a>
-				</li>
-				<li><a href="Refund">Refund</a></li>
-			
-				<li><a href="ReverseTransaction">ReverseTransaction</a>
-				</li>
-				<li><a href="DoNonReferencedCredit">DoNonReferencedCredit</a></li>
-				<li><a href="ManagePendingTransactionStatus">ManagePendingTransactionStatus</a>
-				</li>
-			</ul>
-		</div>
+		
 	</div>
 </body>
 </html>

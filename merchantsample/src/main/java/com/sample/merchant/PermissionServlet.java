@@ -23,6 +23,7 @@ import com.paypal.svcs.services.PermissionsService;
 import com.paypal.svcs.types.common.RequestEnvelope;
 import com.paypal.svcs.types.perm.RequestPermissionsRequest;
 import com.paypal.svcs.types.perm.RequestPermissionsResponse;
+import com.sample.util.Configuration;
 
 public class PermissionServlet extends HttpServlet {
 	/**

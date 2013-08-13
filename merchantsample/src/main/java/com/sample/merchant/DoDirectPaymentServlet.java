@@ -38,6 +38,7 @@ import com.paypal.exception.InvalidResponseDataException;
 import com.paypal.exception.MissingCredentialException;
 import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
+import com.sample.util.Configuration;
 
 public class DoDirectPaymentServlet extends HttpServlet {
 

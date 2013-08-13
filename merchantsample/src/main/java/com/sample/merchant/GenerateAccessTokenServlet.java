@@ -21,6 +21,7 @@ import com.paypal.svcs.services.PermissionsService;
 import com.paypal.svcs.types.common.RequestEnvelope;
 import com.paypal.svcs.types.perm.GetAccessTokenRequest;
 import com.paypal.svcs.types.perm.GetAccessTokenResponse;
+import com.sample.util.Configuration;
 
 public class GenerateAccessTokenServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

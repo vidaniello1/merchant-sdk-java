@@ -8,30 +8,34 @@
 </head>
 <body>
 	<img src="https://devtools-paypal.com/image/bdg_payments_by_pp_2line.png" alt="PAYMENTS BY PayPal" />
+	<%
+		String token = request.getParameter("token");
+		String payerId = request.getParameter("PayerID");
+	%>
 	<div id="wrapper">
 		<div id="header">
 			<h3>DoExpressCheckout</h3>
-			<div id="apidetails">Used to make checkout payment</div>
-		</div>
+			<div id="apidetails">Used to complete checkout payment. Select the right paymentAction below, as what you set in SetExpressCheckout.</div>
+		</div><br>
 		<form method="POST">
 			<div id="request_form">
 				<div class="params">
 					<div class="param_name">
-						Token*(Get Token via <a href="SetExpressCheckout">SetExpressCheckout</a>)
+						Token*(Get Token via SetExpressCheckout)
 					</div>
 					<div class="param_value">
-						<input type="text" name="token" value="" size="50" maxlength="260" />
+						<input type="text" name="token" value="<%= token %>" size="50" maxlength="260" />
 					</div>
 				</div>
 				<div class="params">
 					<div class="param_name">Payer ID*</div>
 					<div class="param_value">
-						<input type="text" name="payerID" value="" size="50"
+						<input type="text" name="payerID" value="<%= payerId %>" size="50"
 							maxlength="260" />
 					</div>
 				</div>
 				<div class="params">
-					<div class="param_name">PaymentType*</div>
+					<div class="param_name">PaymentAction* (The paymentAction that you had set in SetExpressCheckout)</div>
 					<div class="param_value">
 						<select name="paymentAction">
 							<option value="Sale">Sale</option>
@@ -74,23 +78,14 @@
 						<input type=text size="50"  name="notifyURL" value="">
 					</div>
 				</div>
+				<br>
 				<div class="submit">
 					<input type="submit" name="DoExpressCheckoutBtn"
 						value="DoExpressCheckout" /> <br />
 				</div>
-				<a href="../index.html">Home</a>
+				<a href="index.html">Home</a>
 			</div>
 		</form>
-	</div>
-	<div id="relatedcalls">
-		See also
-		<ul>
-			<li><a href="SetExpressCheckout">SetExpressCheckout</a></li>
-			<li><a href="GetExpressCheckout">GetExpressCheckout</a></li>
-			
-			
-		</ul>
-	</div>
 	</div>
 </body>
 </html>
