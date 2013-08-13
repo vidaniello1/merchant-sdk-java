@@ -188,8 +188,15 @@ public class RecurringPaymentsServlet extends HttpServlet {
 		response.setContentType("text/html");
 		CurrencyCodeType currency = CurrencyCodeType.fromValue("USD");
 		try {
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
-					.getClass().getResourceAsStream("/sdk_config.properties"));
+			
+			// Configuration map containing signature credentials and other required configuration.
+			// For a full list of configuration parameters refer at 
+			// [https://github.com/paypal/merchant-sdk-java/wiki/SDK-Configuration-Parameters]
+			Map<String,String> configurationMap =  Configuration.getAcctAndConfig();
+			
+			// Creating service wrapper object to make an API call by loading configuration map.
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(configurationMap);
+			
 			if (request.getRequestURI().contains("GetBillingAgreementCustomerDetails")) {
 
 				GetBillingAgreementCustomerDetailsReq gReq = new GetBillingAgreementCustomerDetailsReq();
@@ -295,7 +302,7 @@ public class RecurringPaymentsServlet extends HttpServlet {
 				 *  to identify transactions.
 					Character length and limitations: 32 single-byte alphanumeric characters
 				 */
-				paymentDetails.setButtonSource("Java_SDK_JSP");
+				paymentDetails.setButtonSource("PayPal_SDK");
 				// The total cost of the transaction to the buyer. If shipping cost and
 				// tax charges are known, include them in this value. If not, this value
 				// should be the current subtotal of the order.
@@ -922,6 +929,8 @@ public class RecurringPaymentsServlet extends HttpServlet {
 						case MASTERCARD:
 							cc.setCreditCardType(CreditCardTypeType.MASTERCARD);
 							break;
+						default:
+							break;
 					}
 					
 					reqDetails.setCreditCard(cc);
@@ -1141,6 +1150,8 @@ public class RecurringPaymentsServlet extends HttpServlet {
 							break;
 						case MASTERCARD:
 							cc.setCreditCardType(CreditCardTypeType.MASTERCARD);
+							break;
+						default:
 							break;
 					}
 					reqDetails.setCreditCard(cc);
