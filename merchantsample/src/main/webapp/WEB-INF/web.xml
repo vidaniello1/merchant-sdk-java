@@ -166,7 +166,7 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>PaymentCaptureServlet</servlet-name>
-		<url-pattern>/DoAuthoricationForOrderPayment</url-pattern>
+		<url-pattern>/DoAuthorizationForOrderPayment</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>PaymentCaptureServlet</servlet-name>

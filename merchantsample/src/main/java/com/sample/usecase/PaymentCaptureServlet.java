@@ -61,9 +61,9 @@ public class PaymentCaptureServlet extends HttpServlet{
 			getServletConfig().getServletContext()
 			.getRequestDispatcher("/usecase_jsp/PaymentCapture.jsp")
 			.forward(request, response);
-		}else if(request.getRequestURI().contains("DoAuthoricationForOrderPayment")){
+		}else if(request.getRequestURI().contains("DoAuthorizationForOrderPayment")){
 			getServletConfig().getServletContext()
-			.getRequestDispatcher("/usecase_jsp/DoAuthoricationForOrderPayment.jsp")
+			.getRequestDispatcher("/usecase_jsp/DoAuthorizationForOrderPayment.jsp")
 			.forward(request, response);
 		}else if(request.getRequestURI().contains("DoExpressCheckout")){
 			getServletConfig().getServletContext()
@@ -366,9 +366,9 @@ public class PaymentCaptureServlet extends HttpServlet{
 			//
 			// * `Authorization ID` - Authorization identification number of the
 			// payment you want to capture. This is the transaction ID returned from
-			// DoExpressCheckoutPayment, DoDirectPayment, or CheckOut. For
+			// DoExpressCheckoutPayment, DoDirectPayment, or Checkout. For
 			// point-of-sale transactions, this is the transaction ID returned by
-			// the CheckOut call when the payment action is Authorization.
+			// the Checkout call when the payment action is Authorization.
 			// * `amount` - Amount to capture
 			// * `CompleteCode` - Indicates whether or not this is your last capture.
 			// It is one of the following values:
@@ -392,7 +392,7 @@ public class PaymentCaptureServlet extends HttpServlet{
 			}
 			
 			if (resp != null) {
-				session.setAttribute("relatedUrl","<ul> The payment capture is completed.</ul>");
+				//session.setAttribute("nextDescription","<ul> The payment capture is completed.</ul>");
 				session.setAttribute("lastReq", service.getLastRequest());
 				session.setAttribute("lastResp", service.getLastResponse());
 				if (resp.getAck().toString().equalsIgnoreCase("SUCCESS")) {
@@ -586,11 +586,11 @@ public class PaymentCaptureServlet extends HttpServlet{
 			
 			if (doCheckoutPaymentResponseType != null) {
 				session.setAttribute(
-						"relatedUrl",
+						"nextDescription",
 						"<ul>If  paymentAction is <b>Authorization</b> .you can capture the payment directly using DoCapture api" +
 						" <li><a href='AuthorizedPaymentCapture'>DoCapture</a></li>" +
 						"If  paymentAction is <b>Order</b> .you need to call DoAuthorization api, before you can capture the payment using DoCapture api." +
-						"<li><a href='DoAuthoricationForOrderPayment'>DoAuthorization</a></li></ul>");
+						"<li><a href='DoAuthorizationForOrderPayment'>DoAuthorization</a></li></ul>");
 				session.setAttribute("lastReq", service.getLastRequest());
 				session.setAttribute("lastResp", service.getLastResponse());
 				if (doCheckoutPaymentResponseType.getAck().toString()
@@ -627,7 +627,7 @@ public class PaymentCaptureServlet extends HttpServlet{
 			}
 
 		
-		}else if(request.getRequestURI().contains("DoAuthoricationForOrderPayment")){
+		}else if(request.getRequestURI().contains("DoAuthorizationForOrderPayment")){
 
 			// ## DoAuthorizationReq
 			DoAuthorizationReq req = new DoAuthorizationReq();
@@ -657,8 +657,8 @@ public class PaymentCaptureServlet extends HttpServlet{
 			}
 			
 			session.setAttribute(
-					"relatedUrl",
-					"<ul>The payment order is autorized , now you can capture the payment using DoCapture api" +
+					"nextDescription",
+					"<ul>The payment order is authorized , now you can capture the payment using DoCapture api" +
 					" <li><a href='OrderPaymentCapture'>DoCapture</a></li>" );
 			if (resp != null) {
 				session.setAttribute("lastReq", service.getLastRequest());

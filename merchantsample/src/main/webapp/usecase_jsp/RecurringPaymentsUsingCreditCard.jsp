@@ -106,7 +106,7 @@
 				<div class="params">
 					<div class="param_name">Description* </div>
 					<div class="param_value">
-						<textarea rows="5" cols="60" name="profileDescription"></textarea>
+						<textarea rows="5" cols="60" name="profileDescription">Recurring Payments Using Credit Card</textarea>
 					</div>
 				</div>
 

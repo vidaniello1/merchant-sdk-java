@@ -57,7 +57,7 @@
 					<div class="param_name">Description* (must match billing
 						agreement if using Express Checkout token)</div>
 					<div class="param_value">
-						<textarea rows="5" cols="60" name="profileDescription"></textarea>
+						<textarea rows="5" cols="60" name="profileDescription">Recurring Payments Using Express Checkout</textarea>
 					</div>
 				</div>
 

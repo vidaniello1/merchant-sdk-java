@@ -689,6 +689,8 @@ public class RecurringPaymentServlet extends HttpServlet {
 					case MASTERCARD:
 						cc.setCreditCardType(CreditCardTypeType.MASTERCARD);
 						break;
+					default:
+						break;
 				}
 				
 				reqDetails.setCreditCard(cc);

@@ -137,7 +137,7 @@
 				</div><br>
 				<div class="param_name">Billing Agreement Description *</div>
 				<div class="param_value">
-					<textarea cols="80" rows="10" name="billingAgreementText"></textarea>
+					<textarea cols="80" rows="10" name="billingAgreementText">Recurring Payments Using Express Checkout</textarea>
 				</div>
 				<div class="param_name">Billing type *</div>
 				<div class="param_value">

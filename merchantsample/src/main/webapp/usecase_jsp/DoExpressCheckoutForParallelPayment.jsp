@@ -35,7 +35,7 @@
 					</div>
 				</div>
 				<div class="params">
-					<div class="param_name">paymentAction* (Select the paymentAction that you had set in SetExpressCheckout)</div>
+					<div class="param_name">PaymentAction* (Select the paymentAction that you had set in SetExpressCheckout)</div>
 					<div class="param_value">
 						<select name="paymentAction">
 							<option value="Sale" selected="selected">Sale</option>

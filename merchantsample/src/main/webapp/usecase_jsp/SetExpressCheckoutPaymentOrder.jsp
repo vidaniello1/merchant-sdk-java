@@ -12,7 +12,7 @@
 		<div id="header">
 			<h3>SetExpressCheckout for Order payments</h3>
 			<div id="apidetails">
-				Set the details for express checkout. paymentAction should be set to <b>Order</b>
+				Set the details for express checkout. PaymentAction should be set to <b>Order</b>
 				to create a payment Order. It should be authorized using <b>DoAuthorize</b>
 				api, before it can be captured using <b>DoCapture</b> api.
 			</div>
@@ -65,7 +65,7 @@
 				<div class="params">
 					<div class="param_name">Order description</div>
 					<div class="param_value">
-						<textarea cols="40" rows="5" name="orderDescription"></textarea>
+						<textarea cols="40" rows="5" name="orderDescription">Express Checkout</textarea>
 					</div>
 				</div>
 				<div class="params">
@@ -76,7 +76,7 @@
 					</div>
 				</div>
 				<div class="params">
-					<div class="param_name">paymentAction</div>
+					<div class="param_name">PaymentAction</div>
 					<div class="param_value">
 						<input type="text" name="paymentAction" value="Order"  readonly/>
 					</div>

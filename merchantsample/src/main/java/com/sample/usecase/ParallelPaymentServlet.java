@@ -255,7 +255,7 @@ public class ParallelPaymentServlet extends HttpServlet {
 				response.setContentType("text/html");
 
 				if (doCheckoutPaymentResponseType != null) {
-					session.setAttribute("relatedUrl"," \n Parallel Payment completed");
+					//session.setAttribute("nextDescription"," \n Parallel Payment completed");
 					session.setAttribute("lastReq", service.getLastRequest());
 					session.setAttribute("lastResp", service.getLastResponse());
 					if (doCheckoutPaymentResponseType.getAck().toString()

@@ -58,5 +58,11 @@
 		<%session.removeAttribute("relatedUrl");%>
 	</div>
 	<% }%>
+	<%if(session.getAttribute("nextDescription") != null){ %>
+	<div id="related_calls">
+		<%=session.getAttribute("nextDescription")%>
+		<%session.removeAttribute("nextDescription");%>
+	</div>
+	<% }%>
 </body>
 </html>
