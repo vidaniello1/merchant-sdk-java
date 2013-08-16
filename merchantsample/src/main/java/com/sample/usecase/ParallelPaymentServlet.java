@@ -60,7 +60,7 @@ public class ParallelPaymentServlet extends HttpServlet {
 		// For a full list of configuration parameters refer at
 		// [https://github.com/paypal/merchant-sdk-java/wiki/SDK-Configuration-Parameters]
 		Map<String, String> configurationMap = Configuration
-				.getSignatureConfig();
+				.getAcctAndConfig();
 
 		// Creating service wrapper object to make an API call by loading
 		// configuration map.
