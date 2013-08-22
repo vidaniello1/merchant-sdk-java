@@ -89,6 +89,8 @@ import urn.ebay.api.PayPalAPI.DoVoidReq;
 import urn.ebay.api.PayPalAPI.DoVoidResponseType;
 import urn.ebay.api.PayPalAPI.DoAuthorizationReq;
 import urn.ebay.api.PayPalAPI.DoAuthorizationResponseType;
+import urn.ebay.api.PayPalAPI.UpdateAuthorizationReq;
+import urn.ebay.api.PayPalAPI.UpdateAuthorizationResponseType;
 import urn.ebay.api.PayPalAPI.SetCustomerBillingAgreementReq;
 import urn.ebay.api.PayPalAPI.SetCustomerBillingAgreementResponseType;
 import urn.ebay.api.PayPalAPI.GetBillingAgreementCustomerDetailsReq;
@@ -121,7 +123,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService {
 
 
 	// Service Version
-	public static final String SERVICE_VERSION = "98.0";
+	public static final String SERVICE_VERSION = "106.0";
 
 	// Service Name
 	public static final String SERVICE_NAME = "PayPalAPIInterfaceService";
@@ -130,7 +132,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService {
 	private static final String SDK_NAME = "merchant-java-sdk";
 	
 	//SDK Version
-	private static final String SDK_VERSION = "2.4.103";
+	private static final String SDK_VERSION = "2.5.106";
 
 
 	/**
@@ -2854,6 +2856,79 @@ public class PayPalAPIInterfaceServiceService extends BaseService {
 		try {
 			Node node = (Node) XPathFactory.newInstance().newXPath().evaluate("Envelope/Body/DoAuthorizationResponse", DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inStream), XPathConstants.NODE);
 			return new DoAuthorizationResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
+	 }
+
+	/** 
+	 * 
+	 * @throws SSLConfigurationException
+	 * @throws InvalidCredentialException
+	 * @throws UnsupportedEncodingException
+	 * @throws IOException
+	 * @throws HttpErrorException
+	 * @throws InvalidResponseDataException
+	 * @throws ClientActionRequiredException
+	 * @throws MissingCredentialException
+	 * @throws InterruptedException
+	 * @throws OAuthException
+	 */
+	 public UpdateAuthorizationResponseType updateAuthorization(UpdateAuthorizationReq updateAuthorizationReq) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
+	 	return updateAuthorization(updateAuthorizationReq, (String) null);
+	 }
+
+	/** 
+	 * 
+	 * @throws SSLConfigurationException
+	 * @throws InvalidCredentialException
+	 * @throws UnsupportedEncodingException
+	 * @throws IOException
+	 * @throws HttpErrorException
+	 * @throws InvalidResponseDataException
+	 * @throws ClientActionRequiredException
+	 * @throws MissingCredentialException
+	 * @throws InterruptedException
+	 * @throws OAuthException
+	 */
+	 public UpdateAuthorizationResponseType updateAuthorization(UpdateAuthorizationReq updateAuthorizationReq, ICredential credential) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException  {
+		setStandardParams(updateAuthorizationReq.getUpdateAuthorizationRequest());
+		DefaultSOAPAPICallHandler defaultHandler = new DefaultSOAPAPICallHandler(updateAuthorizationReq.toXMLString(null, "UpdateAuthorizationReq"), null, null, this.configurationMap);
+		APICallPreHandler apiCallPreHandler = new MerchantAPICallPreHandler(defaultHandler, credential, SDK_NAME, SDK_VERSION, "PayPalAPIAA", this.configurationMap);
+	 	String response = call(apiCallPreHandler);
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		try {
+			Node node = (Node) XPathFactory.newInstance().newXPath().evaluate("Envelope/Body/UpdateAuthorizationResponse", DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inStream), XPathConstants.NODE);
+			return new UpdateAuthorizationResponseType(node);
+		} catch (XPathExpressionException exe) {
+			throw new RuntimeException("Unable to parse response", exe);
+		}
+	}
+	
+	/**	
+	 * 
+	 * @throws SSLConfigurationException
+	 * @throws InvalidCredentialException
+	 * @throws UnsupportedEncodingException
+	 * @throws IOException
+	 * @throws HttpErrorException
+	 * @throws InvalidResponseDataException
+	 * @throws ClientActionRequiredException
+	 * @throws MissingCredentialException
+	 * @throws InterruptedException
+	 * @throws OAuthException
+	 */
+	 public UpdateAuthorizationResponseType updateAuthorization(UpdateAuthorizationReq updateAuthorizationReq, String apiUsername) throws SSLConfigurationException, InvalidCredentialException, IOException, HttpErrorException, InvalidResponseDataException, ClientActionRequiredException, MissingCredentialException, InterruptedException, OAuthException, ParserConfigurationException, SAXException, IOException {
+		setStandardParams(updateAuthorizationReq.getUpdateAuthorizationRequest());
+		DefaultSOAPAPICallHandler defaultHandler = new DefaultSOAPAPICallHandler(updateAuthorizationReq.toXMLString(null, "UpdateAuthorizationReq"), null, null, this.configurationMap);
+		APICallPreHandler apiCallPreHandler = new MerchantAPICallPreHandler(defaultHandler, apiUsername, getAccessToken(), getTokenSecret(), SDK_NAME, SDK_VERSION, "PayPalAPIAA", this.configurationMap);
+	 	String response = call(apiCallPreHandler);
+		InputSource inStream = new InputSource();
+		inStream.setCharacterStream(new StringReader((String) response));
+		try {
+			Node node = (Node) XPathFactory.newInstance().newXPath().evaluate("Envelope/Body/UpdateAuthorizationResponse", DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inStream), XPathConstants.NODE);
+			return new UpdateAuthorizationResponseType(node);
 		} catch (XPathExpressionException exe) {
 			throw new RuntimeException("Unable to parse response", exe);
 		}
