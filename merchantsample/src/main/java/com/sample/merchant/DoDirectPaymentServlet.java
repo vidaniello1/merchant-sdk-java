@@ -38,6 +38,7 @@ import com.paypal.exception.InvalidResponseDataException;
 import com.paypal.exception.MissingCredentialException;
 import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
+import com.sample.util.Configuration;
 
 public class DoDirectPaymentServlet extends HttpServlet {
 
@@ -197,8 +198,14 @@ public class DoDirectPaymentServlet extends HttpServlet {
 		doPaymentReq.setDoDirectPaymentRequest(pprequest);
 
 		try {
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
-					.getClass().getResourceAsStream("/sdk_config.properties"));
+			// Configuration map containing signature credentials and other required configuration.
+			// For a full list of configuration parameters refer in wiki page.
+			// (https://github.com/paypal/sdk-core-java/wiki/SDK-Configuration-Parameters)
+			Map<String,String> configurationMap =  Configuration.getAcctAndConfig();
+			
+			// Creating service wrapper object to make an API call by loading configuration map.
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(configurationMap);
+			
 			DoDirectPaymentResponseType ddresponse = service
 					.doDirectPayment(doPaymentReq);
 			res.setContentType("text/html");

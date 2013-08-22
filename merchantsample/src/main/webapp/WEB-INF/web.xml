@@ -124,4 +124,72 @@
 		<servlet-name>IPNListenerServlet</servlet-name>
 		<url-pattern>/IPNListener</url-pattern>
 	</servlet-mapping>
+	
+	<!-- UseCase Recurring Payment Servlet Sample  -->
+	<servlet>
+		<description></description>
+		<display-name>RecurringPaymentServlet</display-name>
+		<servlet-name>RecurringPaymentServlet</servlet-name>
+		<servlet-class>com.sample.usecase.RecurringPaymentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RecurringPaymentServlet</servlet-name>
+		<url-pattern>/SetExpressCheckoutForRecurringPayments</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RecurringPaymentServlet</servlet-name>
+		<url-pattern>/RecurringPaymentsUsingPayPal</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RecurringPaymentServlet</servlet-name>
+		<url-pattern>/RecurringPaymentsUsingCreditCard</url-pattern>
+	</servlet-mapping>
+	
+	<!-- UseCase Payment capture Servlet Sample  -->
+	<servlet>
+		<description></description>
+		<display-name>PaymentCaptureServlet</display-name>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
+		<servlet-class>com.sample.usecase.PaymentCaptureServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
+		<url-pattern>/AuthorizedPaymentCapture</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
+		<url-pattern>/DoExpressCheckout</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
+		<url-pattern>/SetExpressCheckoutPaymentAuthorization</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
+		<url-pattern>/DoAuthorizationForOrderPayment</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
+		<url-pattern>/OrderPaymentCapture</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PaymentCaptureServlet</servlet-name>
+		<url-pattern>/SetExpressCheckoutPaymentOrder</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Parallel payment usecase sample -->
+	<servlet>
+		<description></description>
+		<display-name>ParallelPaymentServlet</display-name>
+		<servlet-name>ParallelPaymentServlet</servlet-name>
+		<servlet-class>com.sample.usecase.ParallelPaymentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ParallelPaymentServlet</servlet-name>
+		<url-pattern>/SetExpressCheckoutForParallelPayment</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ParallelPaymentServlet</servlet-name>
+		<url-pattern>/DoExpressCheckoutForParallelPayment</url-pattern>
+	</servlet-mapping>
 </web-app>

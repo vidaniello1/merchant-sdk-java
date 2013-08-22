@@ -15,14 +15,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import com.paypal.exception.ClientActionRequiredException;
-import com.paypal.exception.HttpErrorException;
-import com.paypal.exception.InvalidCredentialException;
-import com.paypal.exception.InvalidResponseDataException;
-import com.paypal.exception.MissingCredentialException;
-import com.paypal.exception.SSLConfigurationException;
-import com.paypal.sdk.exceptions.OAuthException;
-
 import urn.ebay.api.PayPalAPI.EnterBoardingReq;
 import urn.ebay.api.PayPalAPI.EnterBoardingRequestType;
 import urn.ebay.api.PayPalAPI.EnterBoardingResponseType;
@@ -45,6 +37,15 @@ import urn.ebay.apis.eBLBaseComponents.MarketingCategoryType;
 import urn.ebay.apis.eBLBaseComponents.PayerInfoType;
 import urn.ebay.apis.eBLBaseComponents.PercentageRevenueFromOnlineSalesType;
 import urn.ebay.apis.eBLBaseComponents.PersonNameType;
+
+import com.paypal.exception.ClientActionRequiredException;
+import com.paypal.exception.HttpErrorException;
+import com.paypal.exception.InvalidCredentialException;
+import com.paypal.exception.InvalidResponseDataException;
+import com.paypal.exception.MissingCredentialException;
+import com.paypal.exception.SSLConfigurationException;
+import com.paypal.sdk.exceptions.OAuthException;
+import com.sample.util.Configuration;
 
 /**
  * Servlet implementation class OnboardingServlet
@@ -90,8 +91,14 @@ public class OnboardingServlet extends HttpServlet {
 				"<ul><li><a href='Onboard/EnterBoarding'>EnterBoarding</a></li><li><a href='Onboard/GetBoardingDetails'>GetBoardingDetails</a></li></ul>");
 		response.setContentType("text/html");
 		try {
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
-					.getClass().getResourceAsStream("/sdk_config.properties"));
+			// Configuration map containing signature credentials and other required configuration.
+			// For a full list of configuration parameters refer in wiki page.
+			// (https://github.com/paypal/sdk-core-java/wiki/SDK-Configuration-Parameters)
+			Map<String,String> configurationMap =  Configuration.getAcctAndConfig();
+			
+			// Creating service wrapper object to make an API call by loading configuration map.
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(configurationMap);
+			
 			if (request.getRequestURI().contains("EnterBoarding")) {
 				EnterBoardingReq req = new EnterBoardingReq();
 				EnterBoardingRequestDetailsType reqDetails = new EnterBoardingRequestDetailsType();

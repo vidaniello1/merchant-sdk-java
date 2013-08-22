@@ -14,6 +14,7 @@
 %>
 </head>
 <body>
+	<img src="https://devtools-paypal.com/image/bdg_payments_by_pp_2line.png" alt="PAYMENTS BY PayPal" />
 	<div id="wrapper">
 		<div id="header">
 			<h3>CreateRecurringPaymentsProfile</h3>
@@ -78,7 +79,8 @@
 								</select>
 							</div></td>
 						<td><div class="param_value">
-								<input type="text" name="BuyerEmailId" id="BuyerEmailId" value="" />
+								<input type="text" name="BuyerEmailId" id="BuyerEmailId"
+									value="" />
 							</div></td>
 						<td><div class="param_value">
 								<select name="creditCardType">

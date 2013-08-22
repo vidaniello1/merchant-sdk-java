@@ -73,6 +73,7 @@ import com.paypal.exception.InvalidResponseDataException;
 import com.paypal.exception.MissingCredentialException;
 import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
+import com.sample.util.Configuration;
 
 /**
  * Servlet implementation class CheckoutServlet
@@ -142,12 +143,13 @@ public class CheckoutServlet extends HttpServlet {
 		response.setContentType("text/html");
 		try {
 			
-			/* ## Creating service wrapper object
-			 Creating service wrapper object to make API call and loading
-			 configuration file for your credentials and endpoint
-			*/
-			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(this
-					.getClass().getResourceAsStream("/sdk_config.properties"));
+			// Configuration map containing signature credentials and other required configuration.
+			// For a full list of configuration parameters refer in wiki page. 
+			// (https://github.com/paypal/sdk-core-java/wiki/SDK-Configuration-Parameters)
+			Map<String,String> configurationMap =  Configuration.getAcctAndConfig();
+			
+			// Creating service wrapper object to make an API call by loading configuration map.
+			PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(configurationMap);
 			
 			//# SetExpressCheckout API
 			// The SetExpressCheckout API operation initiates an Express Checkout

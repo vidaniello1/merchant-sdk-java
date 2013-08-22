@@ -24,7 +24,6 @@ import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.ReceiverInfoCodeType;
 
-import com.paypal.core.credential.ICredential;
 import com.paypal.core.credential.SignatureCredential;
 import com.paypal.core.credential.ThirdPartyAuthorization;
 import com.paypal.core.credential.TokenAuthorization;
@@ -35,6 +34,7 @@ import com.paypal.exception.InvalidResponseDataException;
 import com.paypal.exception.MissingCredentialException;
 import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
+import com.sample.util.Configuration;
 
 /**
  * Servlet implementation class MassPayServlet
@@ -132,8 +132,15 @@ public class PermissionsMassPayServlet extends HttpServlet {
 		reqType.setReceiverType(ReceiverInfoCodeType.fromValue(request
 				.getParameter("receiverInfoCode")));
 		req.setMassPayRequest(reqType);
-		PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(
-				this.getClass().getResourceAsStream("/sdk_config.properties"));
+		
+		// Configuration map containing signature credentials and other required configuration.
+		// For a full list of configuration parameters refer in wiki page.
+		// (https://github.com/paypal/sdk-core-java/wiki/SDK-Configuration-Parameters)
+		Map<String,String> configurationMap =  Configuration.getAcctAndConfig();
+		
+		// Creating service wrapper object to make an API call by loading configuration map.
+		PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(configurationMap);
+		
 		try {
 			response.setContentType("text/html");
 			MassPayResponseType resp = null;

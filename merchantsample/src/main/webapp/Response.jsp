@@ -8,6 +8,7 @@
 <title>Response Page</title>
 </head>
 <body>
+	<img src="https://devtools-paypal.com/image/bdg_payments_by_pp_2line.png" alt="PAYMENTS BY PayPal" />
 	<h2>Response Page</h2>
 	<div class="section_header">
 		<h3>Key values from the response</h3>
@@ -49,10 +50,19 @@
 
 	<a href="index.html">Home</a>
 	<a href="<%=session.getAttribute("url")%>">Back</a>
+	<br>
+	<%if(session.getAttribute("relatedUrl") != null){ %>
 	<div id="related_calls">
 		See also
 		<%=session.getAttribute("relatedUrl")%>
+		<%session.removeAttribute("relatedUrl");%>
 	</div>
-
+	<% }%>
+	<%if(session.getAttribute("nextDescription") != null){ %>
+	<div id="related_calls">
+		<%=session.getAttribute("nextDescription")%>
+		<%session.removeAttribute("nextDescription");%>
+	</div>
+	<% }%>
 </body>
 </html>

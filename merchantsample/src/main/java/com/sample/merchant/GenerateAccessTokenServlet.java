@@ -21,6 +21,7 @@ import com.paypal.svcs.services.PermissionsService;
 import com.paypal.svcs.types.common.RequestEnvelope;
 import com.paypal.svcs.types.perm.GetAccessTokenRequest;
 import com.paypal.svcs.types.perm.GetAccessTokenResponse;
+import com.sample.util.Configuration;
 
 public class GenerateAccessTokenServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -43,8 +44,14 @@ public class GenerateAccessTokenServlet extends HttpServlet {
 		session.setAttribute("url", request.getRequestURI());
 		response.setContentType("text/html");
 		try {
-			PermissionsService service = new PermissionsService(this
-					.getClass().getResourceAsStream("/sdk_config.properties"));
+			// Configuration map containing signature credentials and other required configuration.
+			// For a full list of configuration parameters refer in wiki page.
+			// (https://github.com/paypal/sdk-core-java/wiki/SDK-Configuration-Parameters)
+			Map<String,String> configurationMap =  Configuration.getAcctAndConfig();
+			
+			// Creating service wrapper object to make an API call by loading configuration map.
+			PermissionsService service = new PermissionsService(configurationMap);
+			
 			GetAccessTokenRequest tokenReq = new GetAccessTokenRequest();
 			RequestEnvelope env = new RequestEnvelope("en_US");
 			tokenReq.setRequestEnvelope(env);
