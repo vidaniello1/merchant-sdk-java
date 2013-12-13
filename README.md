@@ -13,6 +13,20 @@ To build sdk and samples:
 
 SDK Integration:
 ----------------
+For Non-Maven Users:
+--------------------
+*   Create a new application.
+
+*   Copy  all the jar files present inside 'lib' folder to your application.
+
+For Maven Users:
+----------------
+*   Install all the jar files present inside 'lib' folder manually to local repository. 
+
+        mvn install:install-file -Dfile=commons-codec-1.3.jar -DgroupId=commons-codec -DartifactId=commons-codec -Dversion=1.3 -Dpackaging=jar
+        mvn install:install-file -Dfile=paypal-core-1.0.jar -DgroupId=com.paypal.sdk -DartifactId=paypal-core -Dversion=1.0 -Dpackaging=jar
+		mvn install:install-file -Dfile=merchantsdk-2.6.109.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.6.109 -Dpackaging=jar	
+
 *	Create a new maven application.
 
 *	Add dependency to sdk in your application's pom.xml as below.
@@ -21,7 +35,7 @@ SDK Integration:
     <dependency>
         <groupId>com.paypal.sdk</groupId>
         <artifactId>merchantsdk</artifactId>
-        <version>2.5.106</version>
+        <version>2.6.109</version>
     </dependency>
     ```
 		
@@ -105,7 +119,7 @@ one for each service used, The existing service.EndPoint property is still suppo
 a single SDK). The list below specifies endpoints for different services, in SANDBOX and PRODUCTION, with their 
 property keys and end-point as property values.
 
-For additional information on Merchant API, please refer to https://www.x.com/developers/paypal/documentation-tools/api
+For additional information on Merchant API, please refer to https://developer.paypal.com/webapps/developer/docs/classic/api/
 
 Instant Payment Notification(IPN) 
 ---------------------------------
