@@ -150,7 +150,16 @@ public class DoExpressCheckoutPaymentRequestDetailsType{
 	 */ 
 	private List<CoupledBucketsType> coupledBuckets = new ArrayList<CoupledBucketsType>();
 
-	
+	/**
+	 * Merchant specified flag which indicates whether to use the payment
+	 * details information provided in SetExpressCheckoutDetails or in
+	 * DoExpressCheckoutPayment. Possible values are true, false, 1, 0. If this
+	 * is set to true or 1, the payment details information would be used from
+	 * what was passed in SetExpressCheckoutDetails. Any change in the
+	 * paymentdetails passed in DoExpressCheckoutPayment will be ignored if this
+	 * field is set to true.
+	 */
+	private String useSessionPaymentDetails;
 
 	/**
 	 * Default Constructor
@@ -437,7 +446,21 @@ public class DoExpressCheckoutPaymentRequestDetailsType{
 	 public void setCoupledBuckets(List<CoupledBucketsType> coupledBuckets) {
 	 	this.coupledBuckets = coupledBuckets;
 	 }
+
+	/**
+	 * Getter for useSessionPaymentDetails
+	 */
+	 public String getUseSessionPaymentDetails() {
+	 	return useSessionPaymentDetails;
+	 }
 	 
+	/**
+	 * Setter for useSessionPaymentDetails
+	 */
+	 public void setUseSessionPaymentDetails(String useSessionPaymentDetails) {
+	 	this.useSessionPaymentDetails = useSessionPaymentDetails;
+	 }
+
 
 
 	public String toXMLString(String prefix, String name) {
@@ -525,6 +548,11 @@ public class DoExpressCheckoutPaymentRequestDetailsType{
 		if(skipBACreation != null) {
 			sb.append("<").append(preferredPrefix).append(":SkipBACreation>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.skipBACreation));
 			sb.append("</").append(preferredPrefix).append(":SkipBACreation>");
+		}
+
+		if(useSessionPaymentDetails != null) {
+			sb.append("<").append(preferredPrefix).append(":UseSessionPaymentDetails>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.useSessionPaymentDetails));
+			sb.append("</").append(preferredPrefix).append(":UseSessionPaymentDetails>");
 		}
 		if(coupledBuckets != null) {
 			for(int i=0; i < coupledBuckets.size(); i++) {
