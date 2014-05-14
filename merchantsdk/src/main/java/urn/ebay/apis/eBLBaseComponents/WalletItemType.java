@@ -1,15 +1,16 @@
 package urn.ebay.apis.eBLBaseComponents;
 
 /**
- * Identifies a wallet item of a given type. The format varies depending on the type.
- *
+ * 
  */
-public enum WalletItemType {
-	
-	MERCHANT_COUPON("MerchantCoupon"),
-	LOYALTY_CARD("LoyaltyCard"),
-	MANUFACTURER_COUPON("ManufacturerCoupon");
-	
+public enum  WalletItemType {
+
+	MERCHANTCOUPON("MERCHANT_COUPON"),
+
+	LOYALTYCARD("LOYALTY_CARD"),
+
+	MANUFACTURERCOUPON("MANUFACTURER_COUPON");
+
 	private String value;
 
 	private WalletItemType (String value) {
@@ -28,4 +29,5 @@ public enum WalletItemType {
 		}
 		throw new IllegalArgumentException(v);
 	}
+
 }

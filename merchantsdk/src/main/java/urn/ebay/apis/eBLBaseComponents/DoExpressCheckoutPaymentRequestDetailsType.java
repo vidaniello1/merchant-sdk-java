@@ -64,6 +64,14 @@ public class DoExpressCheckoutPaymentRequestDetailsType{
 	private String orderURL;
 
 	/**
+	 * Unique id for each API request to prevent duplicate payments
+	 * on merchant side. Passed directly back to merchant in
+	 * response. Optional Character length and limits: 38
+	 * single-byte characters maximum. 	 
+	 */ 
+	private String msgSubID;
+
+	/**
 	 * Information about the payment Required 	 
 	 */ 
 	private List<PaymentDetailsType> paymentDetails = new ArrayList<PaymentDetailsType>();
@@ -146,20 +154,27 @@ public class DoExpressCheckoutPaymentRequestDetailsType{
 	private Boolean skipBACreation;
 
 	/**
+	 * Merchant specified flag which indicates to use payment
+	 * details from session if available. Optional 	 
+	 */ 
+	private String useSessionPaymentDetails;
+
+	/**
 	 * Optional element that defines relationship between buckets 	 
 	 */ 
 	private List<CoupledBucketsType> coupledBuckets = new ArrayList<CoupledBucketsType>();
 
 	/**
-	 * Merchant specified flag which indicates whether to use the payment
-	 * details information provided in SetExpressCheckoutDetails or in
-	 * DoExpressCheckoutPayment. Possible values are true, false, 1, 0. If this
-	 * is set to true or 1, the payment details information would be used from
-	 * what was passed in SetExpressCheckoutDetails. Any change in the
-	 * paymentdetails passed in DoExpressCheckoutPayment will be ignored if this
-	 * field is set to true.
-	 */
-	private String useSessionPaymentDetails;
+	 * Optional element for the passing client id 	 
+	 */ 
+	private String clientID;
+
+	/**
+	 * Optional element for the passing product lines 	 
+	 */ 
+	private String productLine;
+
+	
 
 	/**
 	 * Default Constructor
@@ -221,6 +236,20 @@ public class DoExpressCheckoutPaymentRequestDetailsType{
 	 */
 	 public void setOrderURL(String orderURL) {
 	 	this.orderURL = orderURL;
+	 }
+	 
+	/**
+	 * Getter for msgSubID
+	 */
+	 public String getMsgSubID() {
+	 	return msgSubID;
+	 }
+	 
+	/**
+	 * Setter for msgSubID
+	 */
+	 public void setMsgSubID(String msgSubID) {
+	 	this.msgSubID = msgSubID;
 	 }
 	 
 	/**
@@ -434,20 +463,6 @@ public class DoExpressCheckoutPaymentRequestDetailsType{
 	 }
 	 
 	/**
-	 * Getter for coupledBuckets
-	 */
-	 public List<CoupledBucketsType> getCoupledBuckets() {
-	 	return coupledBuckets;
-	 }
-	 
-	/**
-	 * Setter for coupledBuckets
-	 */
-	 public void setCoupledBuckets(List<CoupledBucketsType> coupledBuckets) {
-	 	this.coupledBuckets = coupledBuckets;
-	 }
-
-	/**
 	 * Getter for useSessionPaymentDetails
 	 */
 	 public String getUseSessionPaymentDetails() {
@@ -460,7 +475,49 @@ public class DoExpressCheckoutPaymentRequestDetailsType{
 	 public void setUseSessionPaymentDetails(String useSessionPaymentDetails) {
 	 	this.useSessionPaymentDetails = useSessionPaymentDetails;
 	 }
-
+	 
+	/**
+	 * Getter for coupledBuckets
+	 */
+	 public List<CoupledBucketsType> getCoupledBuckets() {
+	 	return coupledBuckets;
+	 }
+	 
+	/**
+	 * Setter for coupledBuckets
+	 */
+	 public void setCoupledBuckets(List<CoupledBucketsType> coupledBuckets) {
+	 	this.coupledBuckets = coupledBuckets;
+	 }
+	 
+	/**
+	 * Getter for clientID
+	 */
+	 public String getClientID() {
+	 	return clientID;
+	 }
+	 
+	/**
+	 * Setter for clientID
+	 */
+	 public void setClientID(String clientID) {
+	 	this.clientID = clientID;
+	 }
+	 
+	/**
+	 * Getter for productLine
+	 */
+	 public String getProductLine() {
+	 	return productLine;
+	 }
+	 
+	/**
+	 * Setter for productLine
+	 */
+	 public void setProductLine(String productLine) {
+	 	this.productLine = productLine;
+	 }
+	 
 
 
 	public String toXMLString(String prefix, String name) {
@@ -488,6 +545,10 @@ public class DoExpressCheckoutPaymentRequestDetailsType{
 		if(orderURL != null) {
 			sb.append("<").append(preferredPrefix).append(":OrderURL>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.orderURL));
 			sb.append("</").append(preferredPrefix).append(":OrderURL>");
+		}
+		if(msgSubID != null) {
+			sb.append("<").append(preferredPrefix).append(":MsgSubID>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.msgSubID));
+			sb.append("</").append(preferredPrefix).append(":MsgSubID>");
 		}
 		if(paymentDetails != null) {
 			for(int i=0; i < paymentDetails.size(); i++) {
@@ -549,7 +610,6 @@ public class DoExpressCheckoutPaymentRequestDetailsType{
 			sb.append("<").append(preferredPrefix).append(":SkipBACreation>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.skipBACreation));
 			sb.append("</").append(preferredPrefix).append(":SkipBACreation>");
 		}
-
 		if(useSessionPaymentDetails != null) {
 			sb.append("<").append(preferredPrefix).append(":UseSessionPaymentDetails>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.useSessionPaymentDetails));
 			sb.append("</").append(preferredPrefix).append(":UseSessionPaymentDetails>");
@@ -558,6 +618,14 @@ public class DoExpressCheckoutPaymentRequestDetailsType{
 			for(int i=0; i < coupledBuckets.size(); i++) {
 				sb.append(coupledBuckets.get(i).toXMLString(preferredPrefix,"CoupledBuckets"));
 			}
+		}
+		if(clientID != null) {
+			sb.append("<").append(preferredPrefix).append(":ClientID>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.clientID));
+			sb.append("</").append(preferredPrefix).append(":ClientID>");
+		}
+		if(productLine != null) {
+			sb.append("<").append(preferredPrefix).append(":ProductLine>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.productLine));
+			sb.append("</").append(preferredPrefix).append(":ProductLine>");
 		}
 		if(name!=null){
 			if(prefix!=null){
