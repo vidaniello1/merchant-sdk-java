@@ -1,150 +1,160 @@
 package urn.ebay.apis.eBLBaseComponents;
-
-import java.math.BigDecimal;
-
+import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
+import urn.ebay.apis.eBLBaseComponents.RedeemedOfferType;
+import com.paypal.core.SDKUtil;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import com.paypal.core.SDKUtil;
-
-import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
+import org.w3c.dom.NamedNodeMap;
+import java.io.FileInputStream;
+import java.io.StringReader;
+import java.io.IOException;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
- * Describes discount information.
- *
+ * Describes discount information. 
  */
-public class DiscountInfoType {
-	
+public class DiscountInfoType{
+
 	private static final String nameSpace="urn:ebay:apis:eBLBaseComponents";
 	private static final String preferredPrefix="ebl";
-	
+
 	/**
-	 * (Optional)Item name. Character length and limits: 127 single-byte characters	
-	 */
+	 * (Optional)Item name. Character length and limits: 127
+	 * single-byte characters 	 
+	 */ 
 	private String name;
-	
+
 	/**
-	 * (Optional)Description of the discount. Character length and limits: 127 single-byte characters
-	 */
+	 * (Optional)Description of the discount. Character length and
+	 * limits: 127 single-byte characters 	 
+	 */ 
 	private String description;
-	
+
 	/**
-	 * (Optional)Amount discounted. The value includes an amount and a 3-character currency code.
-	 */
+	 * (Optional)Amount discounted. The value includes an amount
+	 * and a 3-character currency code. 	 
+	 */ 
 	private BasicAmountType amount;
-	
+
 	/**
-	 * (Optional)Offer type.
-	 */
+	 * (Optional)Offer type. 	 
+	 */ 
 	private RedeemedOfferType redeemedOfferType;
-	
+
 	/**
-	 * (Optional)Offer ID. Character length and limits: 64 single-byte characters.
-	 */
+	 * (Optional)Offer ID. Character length and limits: 64
+	 * single-byte characters. 	 
+	 */ 
 	private String redeemedOfferId;
-	
+
 	/**
-	 * (Optional)Loyalty points accrued.
-	 */
-	private BigDecimal pointsAccrued;
+	 * (Optional)Loyalty points accrued. 	 
+	 */ 
+	private Double pointsAccrued;
+
 	
+
 	/**
-	 * Default constructor
+	 * Default Constructor
 	 */
-	public DiscountInfoType() {
-	}
-	
+	public DiscountInfoType (){
+	}	
 
 	/**
 	 * Getter for name
 	 */
-	public String getName() {
-		return name;
-	}
+	 public String getName() {
+	 	return name;
+	 }
 	 
 	/**
 	 * Setter for name
 	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-	
+	 public void setName(String name) {
+	 	this.name = name;
+	 }
+	 
 	/**
 	 * Getter for description
 	 */
-	public String getDescription() {
-		return description;
-	}
+	 public String getDescription() {
+	 	return description;
+	 }
 	 
 	/**
 	 * Setter for description
 	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
+	 public void setDescription(String description) {
+	 	this.description = description;
+	 }
+	 
 	/**
 	 * Getter for amount
 	 */
-	public BasicAmountType getAmount() {
-		return amount;
-	}
+	 public BasicAmountType getAmount() {
+	 	return amount;
+	 }
 	 
 	/**
 	 * Setter for amount
 	 */
-	public void setAmount(BasicAmountType amount) {
-		this.amount = amount;
-	}
-
+	 public void setAmount(BasicAmountType amount) {
+	 	this.amount = amount;
+	 }
+	 
 	/**
 	 * Getter for redeemedOfferType
 	 */
-	public RedeemedOfferType getRedeemedOfferType() {
-		return redeemedOfferType;
-	}
+	 public RedeemedOfferType getRedeemedOfferType() {
+	 	return redeemedOfferType;
+	 }
 	 
 	/**
 	 * Setter for redeemedOfferType
 	 */
-	public void setRedeemedOfferType(RedeemedOfferType redeemedOfferType) {
-		this.redeemedOfferType = redeemedOfferType;
-	}
-	
+	 public void setRedeemedOfferType(RedeemedOfferType redeemedOfferType) {
+	 	this.redeemedOfferType = redeemedOfferType;
+	 }
+	 
 	/**
 	 * Getter for redeemedOfferId
 	 */
-	public String getRedeemedOfferId() {
-		return redeemedOfferId;
-	}
+	 public String getRedeemedOfferId() {
+	 	return redeemedOfferId;
+	 }
 	 
 	/**
 	 * Setter for redeemedOfferId
 	 */
-	public void setRedeemedOfferId(String redeemedOfferId) {
-		this.redeemedOfferId = redeemedOfferId;
-	}
-
+	 public void setRedeemedOfferId(String redeemedOfferId) {
+	 	this.redeemedOfferId = redeemedOfferId;
+	 }
+	 
 	/**
 	 * Getter for pointsAccrued
 	 */
-	public BigDecimal getPointsAccrued() {
-		return pointsAccrued;
-	}
+	 public Double getPointsAccrued() {
+	 	return pointsAccrued;
+	 }
 	 
 	/**
 	 * Setter for pointsAccrued
 	 */
-	public void setPointsAccrued(BigDecimal pointsAccrued) {
-		this.pointsAccrued = pointsAccrued;
-	}
-	
-	
+	 public void setPointsAccrued(Double pointsAccrued) {
+	 	this.pointsAccrued = pointsAccrued;
+	 }
+	 
+
+
 	public String toXMLString(String prefix, String name) {
 		StringBuilder sb = new StringBuilder();
 		if(name!=null){
@@ -155,13 +165,16 @@ public class DiscountInfoType {
 				sb.append("<").append(preferredPrefix).append(":").append(name).append(">");
 			}
 		}
+		if(name != null) {
+			sb.append("<").append(preferredPrefix).append(":Name>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.name));
+			sb.append("</").append(preferredPrefix).append(":Name>");
+		}
 		if(description != null) {
 			sb.append("<").append(preferredPrefix).append(":Description>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.description));
 			sb.append("</").append(preferredPrefix).append(":Description>");
 		}
 		if(amount != null) {
-			sb.append("<").append(preferredPrefix).append(":Amount>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.amount.getValue()));
-			sb.append("</").append(preferredPrefix).append(":Amount>");
+			sb.append(amount.toXMLString(preferredPrefix,"Amount"));
 		}
 		if(redeemedOfferType != null) {
 			sb.append("<").append(preferredPrefix).append(":RedeemedOfferType>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.redeemedOfferType.getValue()));
@@ -172,8 +185,16 @@ public class DiscountInfoType {
 			sb.append("</").append(preferredPrefix).append(":RedeemedOfferId>");
 		}
 		if(pointsAccrued != null) {
-			sb.append("<").append(preferredPrefix).append(":pointsAccrued>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.pointsAccrued.toString()));
-			sb.append("</").append(preferredPrefix).append(":pointsAccrued>");
+			sb.append("<").append(preferredPrefix).append(":PointsAccrued>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.pointsAccrued));
+			sb.append("</").append(preferredPrefix).append(":PointsAccrued>");
+		}
+		if(name!=null){
+			if(prefix!=null){
+				sb.append("</").append(prefix).append(":").append(name).append(">");
+			}
+			else{
+				sb.append("</").append(preferredPrefix).append(":").append(name).append(">");
+			}
 		}
 		return sb.toString();
 	}
@@ -206,21 +227,23 @@ public class DiscountInfoType {
 		}
 	
 		childNode = (Node) xpath.evaluate("Amount", node, XPathConstants.NODE);
-		if (childNode != null && !isWhitespaceNode(childNode)) {
-		    this.amount = new BasicAmountType(childNode);
+        if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.amount =  new BasicAmountType(childNode);
 		}
 		childNode = (Node) xpath.evaluate("RedeemedOfferType", node, XPathConstants.NODE);
-        if (childNode != null && !isWhitespaceNode(childNode)) {
-		    this.redeemedOfferType =  RedeemedOfferType.fromValue(childNode.getTextContent());
+		if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.redeemedOfferType = RedeemedOfferType.fromValue(childNode.getTextContent());
 		}
 		childNode = (Node) xpath.evaluate("RedeemedOfferId", node, XPathConstants.NODE);
 		if (childNode != null && !isWhitespaceNode(childNode)) {
 		    this.redeemedOfferId = childNode.getTextContent();
 		}
+	
 		childNode = (Node) xpath.evaluate("PointsAccrued", node, XPathConstants.NODE);
 		if (childNode != null && !isWhitespaceNode(childNode)) {
-		    this.pointsAccrued = new BigDecimal(childNode.getTextContent());
+			this.pointsAccrued = Double.valueOf(childNode.getTextContent());
 		}
+	
 	}
-
+ 
 }
