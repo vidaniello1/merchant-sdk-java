@@ -13,6 +13,7 @@ import urn.ebay.apis.eBLBaseComponents.PaymentActionCodeType;
 import urn.ebay.apis.eBLBaseComponents.OfferDetailsType;
 import urn.ebay.apis.eBLBaseComponents.RecurringFlagType;
 import urn.ebay.apis.eBLBaseComponents.PaymentReasonType;
+import urn.ebay.apis.eBLBaseComponents.DiscountInfoType;
 import com.paypal.core.SDKUtil;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -273,6 +274,18 @@ public class PaymentDetailsType{
 	 * Indicates the purpose of this payment like Refund 	 
 	 */ 
 	private PaymentReasonType paymentReason;
+
+	/**
+	 * For instance single use coupons should not be returned in
+	 * future CheckIn calls once they are redeemed. 	 
+	 */ 
+	private List<DiscountInfoType> redeemedOffers = new ArrayList<DiscountInfoType>();
+
+	/**
+	 * Total loyalty points for a given id accumulated by the
+	 * consumre so far. 	 
+	 */ 
+	private List<DiscountInfoType> cummulativePoints = new ArrayList<DiscountInfoType>();
 
 	
 
@@ -758,6 +771,34 @@ public class PaymentDetailsType{
 	 	this.paymentReason = paymentReason;
 	 }
 	 
+	/**
+	 * Getter for redeemedOffers
+	 */
+	 public List<DiscountInfoType> getRedeemedOffers() {
+	 	return redeemedOffers;
+	 }
+	 
+	/**
+	 * Setter for redeemedOffers
+	 */
+	 public void setRedeemedOffers(List<DiscountInfoType> redeemedOffers) {
+	 	this.redeemedOffers = redeemedOffers;
+	 }
+	 
+	/**
+	 * Getter for cummulativePoints
+	 */
+	 public List<DiscountInfoType> getCummulativePoints() {
+	 	return cummulativePoints;
+	 }
+	 
+	/**
+	 * Setter for cummulativePoints
+	 */
+	 public void setCummulativePoints(List<DiscountInfoType> cummulativePoints) {
+	 	this.cummulativePoints = cummulativePoints;
+	 }
+	 
 
 
 	public String toXMLString(String prefix, String name) {
@@ -894,6 +935,16 @@ public class PaymentDetailsType{
 		if(paymentReason != null) {
 			sb.append("<").append(preferredPrefix).append(":PaymentReason>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.paymentReason.getValue()));
 			sb.append("</").append(preferredPrefix).append(":PaymentReason>");
+		}
+		if(redeemedOffers != null) {
+			for(int i=0; i < redeemedOffers.size(); i++) {
+				sb.append(redeemedOffers.get(i).toXMLString(preferredPrefix,"RedeemedOffers"));
+			}
+		}
+		if(cummulativePoints != null) {
+			for(int i=0; i < cummulativePoints.size(); i++) {
+				sb.append(cummulativePoints.get(i).toXMLString(preferredPrefix,"CummulativePoints"));
+			}
 		}
 		if(name!=null){
 			if(prefix!=null){
@@ -1076,6 +1127,20 @@ public class PaymentDetailsType{
 		childNode = (Node) xpath.evaluate("PaymentReason", node, XPathConstants.NODE);
 		if (childNode != null && !isWhitespaceNode(childNode)) {
 		    this.paymentReason = PaymentReasonType.fromValue(childNode.getTextContent());
+		}
+        nodeList = (NodeList) xpath.evaluate("RedeemedOffers", node, XPathConstants.NODESET);
+		if (nodeList != null && nodeList.getLength() > 0) {
+			for(int i=0; i < nodeList.getLength(); i++) {
+				Node subNode = nodeList.item(i);
+				this.redeemedOffers.add(new DiscountInfoType(subNode));
+			}
+		}
+        nodeList = (NodeList) xpath.evaluate("CummulativePoints", node, XPathConstants.NODESET);
+		if (nodeList != null && nodeList.getLength() > 0) {
+			for(int i=0; i < nodeList.getLength(); i++) {
+				Node subNode = nodeList.item(i);
+				this.cummulativePoints.add(new DiscountInfoType(subNode));
+			}
 		}
 	}
  
