@@ -2,6 +2,7 @@ package urn.ebay.apis.eBLBaseComponents;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.AddressType;
 import urn.ebay.apis.eBLBaseComponents.PaymentCategoryType;
+import urn.ebay.apis.eBLBaseComponents.LocationType;
 import urn.ebay.apis.eBLBaseComponents.ShippingServiceCodeType;
 import java.util.List;
 import java.util.ArrayList;
@@ -161,6 +162,11 @@ public class PaymentDetailsType{
 	/**
 	 * 	 
 	 */ 
+	private LocationType locationType;
+
+	/**
+	 * 	 
+	 */ 
 	private ShippingServiceCodeType shippingMethod;
 
 	/**
@@ -274,6 +280,12 @@ public class PaymentDetailsType{
 	 * Indicates the purpose of this payment like Refund 	 
 	 */ 
 	private PaymentReasonType paymentReason;
+
+	/**
+	 * Location ID Specified by merchant Optional Character length
+	 * and limitations: 50 single-byte alphanumeric characters 	 
+	 */ 
+	private String locationID;
 
 	/**
 	 * For instance single use coupons should not be returned in
@@ -503,6 +515,20 @@ public class PaymentDetailsType{
 	 */
 	 public void setPaymentCategoryType(PaymentCategoryType paymentCategoryType) {
 	 	this.paymentCategoryType = paymentCategoryType;
+	 }
+	 
+	/**
+	 * Getter for locationType
+	 */
+	 public LocationType getLocationType() {
+	 	return locationType;
+	 }
+	 
+	/**
+	 * Setter for locationType
+	 */
+	 public void setLocationType(LocationType locationType) {
+	 	this.locationType = locationType;
 	 }
 	 
 	/**
@@ -772,6 +798,20 @@ public class PaymentDetailsType{
 	 }
 	 
 	/**
+	 * Getter for locationID
+	 */
+	 public String getLocationID() {
+	 	return locationID;
+	 }
+	 
+	/**
+	 * Setter for locationID
+	 */
+	 public void setLocationID(String locationID) {
+	 	this.locationID = locationID;
+	 }
+	 
+	/**
 	 * Getter for redeemedOffers
 	 */
 	 public List<DiscountInfoType> getRedeemedOffers() {
@@ -864,6 +904,10 @@ public class PaymentDetailsType{
 			sb.append("<").append(preferredPrefix).append(":PaymentCategoryType>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.paymentCategoryType.getValue()));
 			sb.append("</").append(preferredPrefix).append(":PaymentCategoryType>");
 		}
+		if(locationType != null) {
+			sb.append("<").append(preferredPrefix).append(":LocationType>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.locationType.getValue()));
+			sb.append("</").append(preferredPrefix).append(":LocationType>");
+		}
 		if(shippingMethod != null) {
 			sb.append("<").append(preferredPrefix).append(":ShippingMethod>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.shippingMethod.getValue()));
 			sb.append("</").append(preferredPrefix).append(":ShippingMethod>");
@@ -935,6 +979,10 @@ public class PaymentDetailsType{
 		if(paymentReason != null) {
 			sb.append("<").append(preferredPrefix).append(":PaymentReason>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.paymentReason.getValue()));
 			sb.append("</").append(preferredPrefix).append(":PaymentReason>");
+		}
+		if(locationID != null) {
+			sb.append("<").append(preferredPrefix).append(":LocationID>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.locationID));
+			sb.append("</").append(preferredPrefix).append(":LocationID>");
 		}
 		if(redeemedOffers != null) {
 			for(int i=0; i < redeemedOffers.size(); i++) {
@@ -1041,6 +1089,10 @@ public class PaymentDetailsType{
 		if (childNode != null && !isWhitespaceNode(childNode)) {
 		    this.paymentCategoryType = PaymentCategoryType.fromValue(childNode.getTextContent());
 		}
+		childNode = (Node) xpath.evaluate("LocationType", node, XPathConstants.NODE);
+		if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.locationType = LocationType.fromValue(childNode.getTextContent());
+		}
 		childNode = (Node) xpath.evaluate("ShippingMethod", node, XPathConstants.NODE);
 		if (childNode != null && !isWhitespaceNode(childNode)) {
 		    this.shippingMethod = ShippingServiceCodeType.fromValue(childNode.getTextContent());
@@ -1128,6 +1180,11 @@ public class PaymentDetailsType{
 		if (childNode != null && !isWhitespaceNode(childNode)) {
 		    this.paymentReason = PaymentReasonType.fromValue(childNode.getTextContent());
 		}
+		childNode = (Node) xpath.evaluate("LocationID", node, XPathConstants.NODE);
+		if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.locationID = childNode.getTextContent();
+		}
+	
         nodeList = (NodeList) xpath.evaluate("RedeemedOffers", node, XPathConstants.NODESET);
 		if (nodeList != null && nodeList.getLength() > 0) {
 			for(int i=0; i < nodeList.getLength(); i++) {

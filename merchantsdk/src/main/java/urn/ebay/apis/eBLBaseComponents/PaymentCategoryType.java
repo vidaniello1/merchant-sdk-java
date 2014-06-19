@@ -8,7 +8,11 @@ public enum  PaymentCategoryType {
 
 	INTERNATIONALSHIPPING("InternationalShipping"),
 
-	LOCALDELIVERY("LocalDelivery");
+	LOCALDELIVERY("LocalDelivery"),
+
+	BOPIS("BOPIS"),
+
+	PUDO("PUDO");
 
 	private String value;
 

@@ -341,6 +341,20 @@ public class PaymentInfoType{
 	 */ 
 	private String binEligibility;
 
+	/**
+	 * This information holds business name and other data
+	 * describing the transaction. This information is usually
+	 * displayed in the CC account holder's statement. 	 
+	 */ 
+	private String softDescriptor;
+
+	/**
+	 * CC Information about how consumer should contact the
+	 * merchant. This information is usually displayed in the CC
+	 * account holder's statement. 	 
+	 */ 
+	private String softDescriptorCity;
+
 	
 
 	/**
@@ -881,6 +895,34 @@ public class PaymentInfoType{
 	 	this.binEligibility = binEligibility;
 	 }
 	 
+	/**
+	 * Getter for softDescriptor
+	 */
+	 public String getSoftDescriptor() {
+	 	return softDescriptor;
+	 }
+	 
+	/**
+	 * Setter for softDescriptor
+	 */
+	 public void setSoftDescriptor(String softDescriptor) {
+	 	this.softDescriptor = softDescriptor;
+	 }
+	 
+	/**
+	 * Getter for softDescriptorCity
+	 */
+	 public String getSoftDescriptorCity() {
+	 	return softDescriptorCity;
+	 }
+	 
+	/**
+	 * Setter for softDescriptorCity
+	 */
+	 public void setSoftDescriptorCity(String softDescriptorCity) {
+	 	this.softDescriptorCity = softDescriptorCity;
+	 }
+	 
 
 
 
@@ -1071,6 +1113,16 @@ public class PaymentInfoType{
 		childNode = (Node) xpath.evaluate("BinEligibility", node, XPathConstants.NODE);
 		if (childNode != null && !isWhitespaceNode(childNode)) {
 		    this.binEligibility = childNode.getTextContent();
+		}
+	
+		childNode = (Node) xpath.evaluate("SoftDescriptor", node, XPathConstants.NODE);
+		if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.softDescriptor = childNode.getTextContent();
+		}
+	
+		childNode = (Node) xpath.evaluate("SoftDescriptorCity", node, XPathConstants.NODE);
+		if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.softDescriptorCity = childNode.getTextContent();
 		}
 	
 	}
