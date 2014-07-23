@@ -54,6 +54,7 @@ target/
 *.sln.docstates
 
 # Build results
+lib/
 [Dd]ebug/
 [Rr]elease/
 *_i.c

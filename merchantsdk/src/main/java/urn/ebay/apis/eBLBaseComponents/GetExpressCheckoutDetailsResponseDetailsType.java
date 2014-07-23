@@ -10,6 +10,7 @@ import urn.ebay.apis.eBLBaseComponents.IncentiveDetailsType;
 import urn.ebay.apis.eBLBaseComponents.PaymentRequestInfoType;
 import urn.ebay.apis.eBLBaseComponents.ExternalRememberMeStatusDetailsType;
 import urn.ebay.apis.eBLBaseComponents.RefreshTokenStatusDetailsType;
+import urn.ebay.apis.eBLBaseComponents.PaymentInfoType;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -180,6 +181,20 @@ public class GetExpressCheckoutDetailsResponseDetailsType{
 	 * current login bypass status. 	 
 	 */ 
 	private RefreshTokenStatusDetailsType refreshTokenStatusDetails;
+
+	/**
+	 * Information about the transaction 	 
+	 */ 
+	private List<PaymentInfoType> paymentInfo = new ArrayList<PaymentInfoType>();
+
+	/**
+	 * Indicate the tolerance a cart can be changed. Possible
+	 * values are NONE = cart cannot be changed (since financing
+	 * was used and country is DE). FLEXIBLE = cart can be changed
+	 * If this parameter does not exist, then assume cart can be
+	 * modified. 	 
+	 */ 
+	private String cartChangeTolerance;
 
 	
 
@@ -525,6 +540,34 @@ public class GetExpressCheckoutDetailsResponseDetailsType{
 	 	this.refreshTokenStatusDetails = refreshTokenStatusDetails;
 	 }
 	 
+	/**
+	 * Getter for paymentInfo
+	 */
+	 public List<PaymentInfoType> getPaymentInfo() {
+	 	return paymentInfo;
+	 }
+	 
+	/**
+	 * Setter for paymentInfo
+	 */
+	 public void setPaymentInfo(List<PaymentInfoType> paymentInfo) {
+	 	this.paymentInfo = paymentInfo;
+	 }
+	 
+	/**
+	 * Getter for cartChangeTolerance
+	 */
+	 public String getCartChangeTolerance() {
+	 	return cartChangeTolerance;
+	 }
+	 
+	/**
+	 * Setter for cartChangeTolerance
+	 */
+	 public void setCartChangeTolerance(String cartChangeTolerance) {
+	 	this.cartChangeTolerance = cartChangeTolerance;
+	 }
+	 
 
 
 
@@ -667,6 +710,18 @@ public class GetExpressCheckoutDetailsResponseDetailsType{
         if (childNode != null && !isWhitespaceNode(childNode)) {
 		    this.refreshTokenStatusDetails =  new RefreshTokenStatusDetailsType(childNode);
 		}
+        nodeList = (NodeList) xpath.evaluate("PaymentInfo", node, XPathConstants.NODESET);
+		if (nodeList != null && nodeList.getLength() > 0) {
+			for(int i=0; i < nodeList.getLength(); i++) {
+				Node subNode = nodeList.item(i);
+				this.paymentInfo.add(new PaymentInfoType(subNode));
+			}
+		}
+		childNode = (Node) xpath.evaluate("CartChangeTolerance", node, XPathConstants.NODE);
+		if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.cartChangeTolerance = childNode.getTextContent();
+		}
+	
 	}
  
 }
