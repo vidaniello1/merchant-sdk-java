@@ -117,6 +117,32 @@ public class PaymentInfoType{
 	private BasicAmountType feeAmount;
 
 	/**
+	 * Transaction financing fee associated with the payment. 	 
+	 */ 
+	private BasicAmountType financingFeeAmount;
+
+	/**
+	 * Total overall cost associated with this financing
+	 * transaction. 	 
+	 */ 
+	private BasicAmountType financingTotalCost;
+
+	/**
+	 * Monthly payment for this financing transaction. 	 
+	 */ 
+	private BasicAmountType financingMonthlyPayment;
+
+	/**
+	 * The length of this financing term, in months. 	 
+	 */ 
+	private String financingTerm;
+
+	/**
+	 * 	 
+	 */ 
+	private String isFinancing;
+
+	/**
 	 * Amount deposited into the account's primary balance after a
 	 * currency conversion from automatic conversion through your
 	 * Payment Receiving Preferences or manual conversion through
@@ -515,6 +541,76 @@ public class PaymentInfoType{
 	 */
 	 public void setFeeAmount(BasicAmountType feeAmount) {
 	 	this.feeAmount = feeAmount;
+	 }
+	 
+	/**
+	 * Getter for financingFeeAmount
+	 */
+	 public BasicAmountType getFinancingFeeAmount() {
+	 	return financingFeeAmount;
+	 }
+	 
+	/**
+	 * Setter for financingFeeAmount
+	 */
+	 public void setFinancingFeeAmount(BasicAmountType financingFeeAmount) {
+	 	this.financingFeeAmount = financingFeeAmount;
+	 }
+	 
+	/**
+	 * Getter for financingTotalCost
+	 */
+	 public BasicAmountType getFinancingTotalCost() {
+	 	return financingTotalCost;
+	 }
+	 
+	/**
+	 * Setter for financingTotalCost
+	 */
+	 public void setFinancingTotalCost(BasicAmountType financingTotalCost) {
+	 	this.financingTotalCost = financingTotalCost;
+	 }
+	 
+	/**
+	 * Getter for financingMonthlyPayment
+	 */
+	 public BasicAmountType getFinancingMonthlyPayment() {
+	 	return financingMonthlyPayment;
+	 }
+	 
+	/**
+	 * Setter for financingMonthlyPayment
+	 */
+	 public void setFinancingMonthlyPayment(BasicAmountType financingMonthlyPayment) {
+	 	this.financingMonthlyPayment = financingMonthlyPayment;
+	 }
+	 
+	/**
+	 * Getter for financingTerm
+	 */
+	 public String getFinancingTerm() {
+	 	return financingTerm;
+	 }
+	 
+	/**
+	 * Setter for financingTerm
+	 */
+	 public void setFinancingTerm(String financingTerm) {
+	 	this.financingTerm = financingTerm;
+	 }
+	 
+	/**
+	 * Getter for isFinancing
+	 */
+	 public String getIsFinancing() {
+	 	return isFinancing;
+	 }
+	 
+	/**
+	 * Setter for isFinancing
+	 */
+	 public void setIsFinancing(String isFinancing) {
+	 	this.isFinancing = isFinancing;
 	 }
 	 
 	/**
@@ -992,6 +1088,28 @@ public class PaymentInfoType{
         if (childNode != null && !isWhitespaceNode(childNode)) {
 		    this.feeAmount =  new BasicAmountType(childNode);
 		}
+		childNode = (Node) xpath.evaluate("FinancingFeeAmount", node, XPathConstants.NODE);
+        if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.financingFeeAmount =  new BasicAmountType(childNode);
+		}
+		childNode = (Node) xpath.evaluate("FinancingTotalCost", node, XPathConstants.NODE);
+        if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.financingTotalCost =  new BasicAmountType(childNode);
+		}
+		childNode = (Node) xpath.evaluate("FinancingMonthlyPayment", node, XPathConstants.NODE);
+        if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.financingMonthlyPayment =  new BasicAmountType(childNode);
+		}
+		childNode = (Node) xpath.evaluate("FinancingTerm", node, XPathConstants.NODE);
+		if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.financingTerm = childNode.getTextContent();
+		}
+	
+		childNode = (Node) xpath.evaluate("IsFinancing", node, XPathConstants.NODE);
+		if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.isFinancing = childNode.getTextContent();
+		}
+	
 		childNode = (Node) xpath.evaluate("SettleAmount", node, XPathConstants.NODE);
         if (childNode != null && !isWhitespaceNode(childNode)) {
 		    this.settleAmount =  new BasicAmountType(childNode);
