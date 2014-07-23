@@ -1,3 +1,9 @@
+Version 2.10.116 - July 23, 2014
+
+	- Updated stubs.
+	
+You can see source code of this release in github under https://github.com/paypal/merchant-sdk-java/tree/v2.10.116.
+--------------------------------------------------------------------------------------------------
 Version 2.9.115 - June 19, 2014
 
 	- Updated stubs.
