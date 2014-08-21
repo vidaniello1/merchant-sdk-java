@@ -11,6 +11,7 @@ import urn.ebay.apis.eBLBaseComponents.PaymentRequestInfoType;
 import urn.ebay.apis.eBLBaseComponents.ExternalRememberMeStatusDetailsType;
 import urn.ebay.apis.eBLBaseComponents.RefreshTokenStatusDetailsType;
 import urn.ebay.apis.eBLBaseComponents.PaymentInfoType;
+import urn.ebay.apis.eBLBaseComponents.InstrumentDetailsType;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -195,6 +196,11 @@ public class GetExpressCheckoutDetailsResponseDetailsType{
 	 * modified. 	 
 	 */ 
 	private String cartChangeTolerance;
+
+	/**
+	 * Type of the payment instrument. 	 
+	 */ 
+	private InstrumentDetailsType instrumentDetails;
 
 	
 
@@ -568,6 +574,20 @@ public class GetExpressCheckoutDetailsResponseDetailsType{
 	 	this.cartChangeTolerance = cartChangeTolerance;
 	 }
 	 
+	/**
+	 * Getter for instrumentDetails
+	 */
+	 public InstrumentDetailsType getInstrumentDetails() {
+	 	return instrumentDetails;
+	 }
+	 
+	/**
+	 * Setter for instrumentDetails
+	 */
+	 public void setInstrumentDetails(InstrumentDetailsType instrumentDetails) {
+	 	this.instrumentDetails = instrumentDetails;
+	 }
+	 
 
 
 
@@ -722,6 +742,10 @@ public class GetExpressCheckoutDetailsResponseDetailsType{
 		    this.cartChangeTolerance = childNode.getTextContent();
 		}
 	
+		childNode = (Node) xpath.evaluate("InstrumentDetails", node, XPathConstants.NODE);
+        if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.instrumentDetails =  new InstrumentDetailsType(childNode);
+		}
 	}
  
 }
