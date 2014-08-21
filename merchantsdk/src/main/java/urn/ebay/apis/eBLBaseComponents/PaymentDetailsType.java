@@ -15,6 +15,7 @@ import urn.ebay.apis.eBLBaseComponents.OfferDetailsType;
 import urn.ebay.apis.eBLBaseComponents.RecurringFlagType;
 import urn.ebay.apis.eBLBaseComponents.PaymentReasonType;
 import urn.ebay.apis.eBLBaseComponents.DiscountInfoType;
+import urn.ebay.apis.eBLBaseComponents.MerchantDataType;
 import com.paypal.core.SDKUtil;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -298,6 +299,12 @@ public class PaymentDetailsType{
 	 * consumre so far. 	 
 	 */ 
 	private List<DiscountInfoType> cummulativePoints = new ArrayList<DiscountInfoType>();
+
+	/**
+	 * Merchant Data that is passed through from Merchant to
+	 * Processor 	 
+	 */ 
+	private List<MerchantDataType> merchantData = new ArrayList<MerchantDataType>();
 
 	
 
@@ -839,6 +846,20 @@ public class PaymentDetailsType{
 	 	this.cummulativePoints = cummulativePoints;
 	 }
 	 
+	/**
+	 * Getter for merchantData
+	 */
+	 public List<MerchantDataType> getMerchantData() {
+	 	return merchantData;
+	 }
+	 
+	/**
+	 * Setter for merchantData
+	 */
+	 public void setMerchantData(List<MerchantDataType> merchantData) {
+	 	this.merchantData = merchantData;
+	 }
+	 
 
 
 	public String toXMLString(String prefix, String name) {
@@ -992,6 +1013,11 @@ public class PaymentDetailsType{
 		if(cummulativePoints != null) {
 			for(int i=0; i < cummulativePoints.size(); i++) {
 				sb.append(cummulativePoints.get(i).toXMLString(preferredPrefix,"CummulativePoints"));
+			}
+		}
+		if(merchantData != null) {
+			for(int i=0; i < merchantData.size(); i++) {
+				sb.append(merchantData.get(i).toXMLString(preferredPrefix,"MerchantData"));
 			}
 		}
 		if(name!=null){
@@ -1197,6 +1223,13 @@ public class PaymentDetailsType{
 			for(int i=0; i < nodeList.getLength(); i++) {
 				Node subNode = nodeList.item(i);
 				this.cummulativePoints.add(new DiscountInfoType(subNode));
+			}
+		}
+        nodeList = (NodeList) xpath.evaluate("MerchantData", node, XPathConstants.NODESET);
+		if (nodeList != null && nodeList.getLength() > 0) {
+			for(int i=0; i < nodeList.getLength(); i++) {
+				Node subNode = nodeList.item(i);
+				this.merchantData.add(new MerchantDataType(subNode));
 			}
 		}
 	}
