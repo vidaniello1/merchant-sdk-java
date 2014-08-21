@@ -123,7 +123,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService {
 
 
 	// Service Version
-	public static final String SERVICE_VERSION = "116.0";
+	public static final String SERVICE_VERSION = "117.0";
 
 	// Service Name
 	public static final String SERVICE_NAME = "PayPalAPIInterfaceService";
