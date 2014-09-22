@@ -1,5 +1,7 @@
 This repository contains java sdk and samples for Merchant API.
 
+#### This Classic SDK is not actively supported and will be deprecated in the future. For full support on new integrations, please use the [JAVA Rest SDK](https://github.com/paypal/rest-api-sdk-java)
+
 Prerequisites:
 ---------------
 *	Java jdk-1.5 or higher
