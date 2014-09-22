@@ -1,5 +1,7 @@
 This repository contains java sdk and samples for Merchant API.
 
+#### This Classic SDK is not actively supported and will be deprecated in the future. For full support on new integrations, please use the [JAVA Rest SDK](https://github.com/paypal/rest-api-sdk-java)
+
 Prerequisites:
 ---------------
 *	Java jdk-1.5 or higher
@@ -25,7 +27,7 @@ For Maven Users:
 
         mvn install:install-file -Dfile=commons-codec-1.3.jar -DgroupId=commons-codec -DartifactId=commons-codec -Dversion=1.3 -Dpackaging=jar
         mvn install:install-file -Dfile=paypal-core-1.0.jar -DgroupId=com.paypal.sdk -DartifactId=paypal-core -Dversion=1.0 -Dpackaging=jar
-		mvn install:install-file -Dfile=merchantsdk-2.8.114.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.8.114 -Dpackaging=jar	
+		mvn install:install-file -Dfile=merchantsdk-2.11.117.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.11.117 -Dpackaging=jar	
 
 For Non-Maven Users:
 --------------------
@@ -39,7 +41,35 @@ For Maven Users:
 
         mvn install:install-file -Dfile=commons-codec-1.3.jar -DgroupId=commons-codec -DartifactId=commons-codec -Dversion=1.3 -Dpackaging=jar
         mvn install:install-file -Dfile=paypal-core-1.0.jar -DgroupId=com.paypal.sdk -DartifactId=paypal-core -Dversion=1.0 -Dpackaging=jar
-		mvn install:install-file -Dfile=merchantsdk-2.8.114.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.8.114 -Dpackaging=jar	
+		mvn install:install-file -Dfile=merchantsdk-2.11.117.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.11.117 -Dpackaging=jar	
+
+For Non-Maven Users:
+--------------------
+*   Create a new application.
+
+*   Copy  all the jar files present inside 'lib' folder to your application.
+
+For Maven Users:
+----------------
+*   Install all the jar files present inside 'lib' folder manually to local repository. 
+
+        mvn install:install-file -Dfile=commons-codec-1.3.jar -DgroupId=commons-codec -DartifactId=commons-codec -Dversion=1.3 -Dpackaging=jar
+        mvn install:install-file -Dfile=paypal-core-1.0.jar -DgroupId=com.paypal.sdk -DartifactId=paypal-core -Dversion=1.0 -Dpackaging=jar
+		mvn install:install-file -Dfile=merchantsdk-2.11.117.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.11.117 -Dpackaging=jar	
+
+For Non-Maven Users:
+--------------------
+*   Create a new application.
+
+*   Copy  all the jar files present inside 'lib' folder to your application.
+
+For Maven Users:
+----------------
+*   Install all the jar files present inside 'lib' folder manually to local repository. 
+
+        mvn install:install-file -Dfile=commons-codec-1.3.jar -DgroupId=commons-codec -DartifactId=commons-codec -Dversion=1.3 -Dpackaging=jar
+        mvn install:install-file -Dfile=paypal-core-1.0.jar -DgroupId=com.paypal.sdk -DartifactId=paypal-core -Dversion=1.0 -Dpackaging=jar
+		mvn install:install-file -Dfile=merchantsdk-2.11.117.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.11.117 -Dpackaging=jar	
 
 *	Create a new maven application.
 
@@ -49,7 +79,7 @@ For Maven Users:
     <dependency>
         <groupId>com.paypal.sdk</groupId>
         <artifactId>merchantsdk</artifactId>
-        <version>2.8.114</version>
+        <version>2.11.117</version>
     </dependency>
     ```
 		
