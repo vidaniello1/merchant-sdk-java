@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.paypal.sdk</groupId>
 	<artifactId>merchant</artifactId>
-	<version>2.11.117</version>
+	<version>2.12.117</version>
 	<name>Merchant</name>
 	<packaging>pom</packaging>
 	<modules>
