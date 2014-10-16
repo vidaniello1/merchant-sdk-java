@@ -1,3 +1,9 @@
+Version 2.12.117 - October 16, 2014
+
+        - Bump up core version for SSL Poodle issue
+
+You can see source code of this release in github under https://github.com/paypal/merchant-sdk-java/tree/v2.12.117.
+--------------------------------------------------------------------------------------------------
 Version 2.11.117 - August 21, 2014
 
 	- Updated stubs.
