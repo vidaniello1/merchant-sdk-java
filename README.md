@@ -106,6 +106,7 @@ To make an API call:
 	new PayPalAPIInterfaceServiceService();
 	```
 *	For Dynamic configuration(configuration is tied to the lifetime of the service object)
+
 	```java
 	new PayPalAPIInterfaceServiceService(new File("/pathto/custom.properties"));
 			Or
