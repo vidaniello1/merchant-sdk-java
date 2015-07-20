@@ -182,6 +182,6 @@ For additional information on Merchant API, please refer to https://developer.pa
 
 Instant Payment Notification(IPN) 
 ---------------------------------
-* Please refer readme  at 'merchantsample/IPN-README.md'
+* Please refer readme  at [`merchantsample/IPN-README.md`](/merchantsample/IPN-README.md)
 
 
