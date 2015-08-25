@@ -71,6 +71,20 @@ For Maven Users:
         mvn install:install-file -Dfile=paypal-core-1.0.jar -DgroupId=com.paypal.sdk -DartifactId=paypal-core -Dversion=1.0 -Dpackaging=jar
 		mvn install:install-file -Dfile=merchantsdk-2.11.117.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.11.117 -Dpackaging=jar	
 
+For Non-Maven Users:
+--------------------
+*   Create a new application.
+
+*   Copy  all the jar files present inside 'lib' folder to your application.
+
+For Maven Users:
+----------------
+*   Install all the jar files present inside 'lib' folder manually to local repository. 
+
+        mvn install:install-file -Dfile=commons-codec-1.3.jar -DgroupId=commons-codec -DartifactId=commons-codec -Dversion=1.3 -Dpackaging=jar
+        mvn install:install-file -Dfile=paypal-core-1.0.jar -DgroupId=com.paypal.sdk -DartifactId=paypal-core -Dversion=1.0 -Dpackaging=jar
+		mvn install:install-file -Dfile=merchantsdk-2.13.117.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.13.117 -Dpackaging=jar	
+
 *	Create a new maven application.
 
 *	Add dependency to sdk in your application's pom.xml as below.
@@ -92,6 +106,7 @@ To make an API call:
 	new PayPalAPIInterfaceServiceService();
 	```
 *	For Dynamic configuration(configuration is tied to the lifetime of the service object)
+
 	```java
 	new PayPalAPIInterfaceServiceService(new File("/pathto/custom.properties"));
 			Or
@@ -167,6 +182,6 @@ For additional information on Merchant API, please refer to https://developer.pa
 
 Instant Payment Notification(IPN) 
 ---------------------------------
-* Please refer readme  at 'merchantsample/IPN-README.md'
+* Please refer readme  at [`merchantsample/IPN-README.md`](/merchantsample/IPN-README.md)
 
 

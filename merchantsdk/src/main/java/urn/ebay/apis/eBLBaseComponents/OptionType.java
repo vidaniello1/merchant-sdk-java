@@ -89,16 +89,16 @@ public class OptionType{
 		XPath xpath = factory.newXPath();
 		Node childNode = null;
 		NodeList nodeList = null;
-		childNode = (Node) xpath.evaluate("name", node, XPathConstants.NODE);
-		if (childNode != null && !isWhitespaceNode(childNode)) {
-		    this.name = childNode.getTextContent();
+		
+		childNode = (Node) xpath.evaluate("@name", node, XPathConstants.NODE);
+		if (childNode != null) {
+		    this.name = childNode.getNodeValue();
 		}
 	
-		childNode = (Node) xpath.evaluate("value", node, XPathConstants.NODE);
-		if (childNode != null && !isWhitespaceNode(childNode)) {
-		    this.value = childNode.getTextContent();
+		childNode = (Node) xpath.evaluate("@value", node, XPathConstants.NODE);
+		if (childNode != null) {
+		    this.value = childNode.getNodeValue();
 		}
-	
 	}
  
 }
