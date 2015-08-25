@@ -42,7 +42,11 @@ public enum  PaymentTransactionCodeType {
 
 	PROAPI("pro-api"),
 
-	CREDIT("credit");
+	CREDIT("credit"),
+	
+	REFUND("refund"),
+	
+	REVERSAL("reversal");
 
 	private String value;
 
