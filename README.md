@@ -26,64 +26,8 @@ For Maven Users:
 *   Install all the jar files present inside 'lib' folder manually to local repository. 
 
         mvn install:install-file -Dfile=commons-codec-1.3.jar -DgroupId=commons-codec -DartifactId=commons-codec -Dversion=1.3 -Dpackaging=jar
-        mvn install:install-file -Dfile=paypal-core-1.0.jar -DgroupId=com.paypal.sdk -DartifactId=paypal-core -Dversion=1.0 -Dpackaging=jar
-		mvn install:install-file -Dfile=merchantsdk-2.11.117.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.11.117 -Dpackaging=jar	
-
-For Non-Maven Users:
---------------------
-*   Create a new application.
-
-*   Copy  all the jar files present inside 'lib' folder to your application.
-
-For Maven Users:
-----------------
-*   Install all the jar files present inside 'lib' folder manually to local repository. 
-
-        mvn install:install-file -Dfile=commons-codec-1.3.jar -DgroupId=commons-codec -DartifactId=commons-codec -Dversion=1.3 -Dpackaging=jar
-        mvn install:install-file -Dfile=paypal-core-1.0.jar -DgroupId=com.paypal.sdk -DartifactId=paypal-core -Dversion=1.0 -Dpackaging=jar
-		mvn install:install-file -Dfile=merchantsdk-2.11.117.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.11.117 -Dpackaging=jar	
-
-For Non-Maven Users:
---------------------
-*   Create a new application.
-
-*   Copy  all the jar files present inside 'lib' folder to your application.
-
-For Maven Users:
-----------------
-*   Install all the jar files present inside 'lib' folder manually to local repository. 
-
-        mvn install:install-file -Dfile=commons-codec-1.3.jar -DgroupId=commons-codec -DartifactId=commons-codec -Dversion=1.3 -Dpackaging=jar
-        mvn install:install-file -Dfile=paypal-core-1.0.jar -DgroupId=com.paypal.sdk -DartifactId=paypal-core -Dversion=1.0 -Dpackaging=jar
-		mvn install:install-file -Dfile=merchantsdk-2.11.117.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.11.117 -Dpackaging=jar	
-
-For Non-Maven Users:
---------------------
-*   Create a new application.
-
-*   Copy  all the jar files present inside 'lib' folder to your application.
-
-For Maven Users:
-----------------
-*   Install all the jar files present inside 'lib' folder manually to local repository. 
-
-        mvn install:install-file -Dfile=commons-codec-1.3.jar -DgroupId=commons-codec -DartifactId=commons-codec -Dversion=1.3 -Dpackaging=jar
-        mvn install:install-file -Dfile=paypal-core-1.0.jar -DgroupId=com.paypal.sdk -DartifactId=paypal-core -Dversion=1.0 -Dpackaging=jar
-		mvn install:install-file -Dfile=merchantsdk-2.11.117.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.11.117 -Dpackaging=jar	
-
-For Non-Maven Users:
---------------------
-*   Create a new application.
-
-*   Copy  all the jar files present inside 'lib' folder to your application.
-
-For Maven Users:
-----------------
-*   Install all the jar files present inside 'lib' folder manually to local repository. 
-
-        mvn install:install-file -Dfile=commons-codec-1.3.jar -DgroupId=commons-codec -DartifactId=commons-codec -Dversion=1.3 -Dpackaging=jar
-        mvn install:install-file -Dfile=paypal-core-1.0.jar -DgroupId=com.paypal.sdk -DartifactId=paypal-core -Dversion=1.0 -Dpackaging=jar
-		mvn install:install-file -Dfile=merchantsdk-2.13.117.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.13.117 -Dpackaging=jar	
+        mvn install:install-file -Dfile=paypal-core-1.7.0.jar -DgroupId=com.paypal.sdk -DartifactId=paypal-core -Dversion=1.7.0 -Dpackaging=jar
+		mvn install:install-file -Dfile=merchantsdk-2.14.117.jar -DgroupId=com.paypal.sdk -DartifactId=merchantsdk -Dversion=2.14.117 -Dpackaging=jar	
 
 *	Create a new maven application.
 
@@ -93,7 +37,7 @@ For Maven Users:
     <dependency>
         <groupId>com.paypal.sdk</groupId>
         <artifactId>merchantsdk</artifactId>
-        <version>2.11.117</version>
+        <version>2.14.117</version>
     </dependency>
     ```
 		
@@ -183,5 +127,4 @@ For additional information on Merchant API, please refer to https://developer.pa
 Instant Payment Notification(IPN) 
 ---------------------------------
 * Please refer readme  at [`merchantsample/IPN-README.md`](/merchantsample/IPN-README.md)
-
 
