@@ -58,7 +58,7 @@ public class ParallelPaymentServlet extends HttpServlet {
 		// Configuration map containing signature credentials and other required
 		// configuration.
 		// For a full list of configuration parameters refer at
-		// (https://github.com/paypal/sdk-core-java/wiki/SDK-Configuration-Parameters)
+		// (https://github.com/paypal/sdk-core-java/blob/master/README.md)
 		Map<String, String> configurationMap = Configuration
 				.getAcctAndConfig();
 
