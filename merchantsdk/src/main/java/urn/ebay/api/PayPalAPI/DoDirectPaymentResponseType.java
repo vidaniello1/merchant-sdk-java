@@ -1,26 +1,13 @@
 package urn.ebay.api.PayPalAPI;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
-import urn.ebay.apis.eBLBaseComponents.PendingStatusCodeType;
-import urn.ebay.apis.eBLBaseComponents.PaymentStatusCodeType;
-import urn.ebay.apis.eBLBaseComponents.FMFDetailsType;
-import urn.ebay.apis.eBLBaseComponents.ThreeDSecureResponseType;
-import urn.ebay.apis.eBLBaseComponents.AbstractResponseType;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import urn.ebay.apis.eBLBaseComponents.*;
+
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.NamedNodeMap;
-import java.io.FileInputStream;
-import java.io.StringReader;
-import java.io.IOException;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * The amount of the payment as specified by you on
@@ -68,8 +55,7 @@ public class DoDirectPaymentResponseType extends AbstractResponseType {
 
 	/**
 	 * Transaction identification number. Character length and
-	 * limitations: 19 characters maximum.	  
-	 *@Required	 
+	 * limitations: 19 characters maximum.	 
 	 */ 
 	private String transactionID;
 

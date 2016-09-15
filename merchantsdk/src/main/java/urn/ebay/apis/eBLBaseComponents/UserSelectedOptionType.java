@@ -1,22 +1,13 @@
 package urn.ebay.apis.eBLBaseComponents;
-import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import com.paypal.core.SDKUtil;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
+
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.NamedNodeMap;
-import java.io.FileInputStream;
-import java.io.StringReader;
-import java.io.IOException;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * Information on user selected options 
@@ -50,6 +41,16 @@ public class UserSelectedOptionType{
 	 * 	 
 	 */ 
 	private String shippingOptionName;
+
+	/**
+	 * 	 
+	 */ 
+	private String scheduledShippingDate;
+
+	/**
+	 * 	 
+	 */ 
+	private String scheduledShippingPeriod;
 
 	
 
@@ -129,6 +130,34 @@ public class UserSelectedOptionType{
 	 	this.shippingOptionName = shippingOptionName;
 	 }
 	 
+	/**
+	 * Getter for scheduledShippingDate
+	 */
+	 public String getScheduledShippingDate() {
+	 	return scheduledShippingDate;
+	 }
+	 
+	/**
+	 * Setter for scheduledShippingDate
+	 */
+	 public void setScheduledShippingDate(String scheduledShippingDate) {
+	 	this.scheduledShippingDate = scheduledShippingDate;
+	 }
+	 
+	/**
+	 * Getter for scheduledShippingPeriod
+	 */
+	 public String getScheduledShippingPeriod() {
+	 	return scheduledShippingPeriod;
+	 }
+	 
+	/**
+	 * Setter for scheduledShippingPeriod
+	 */
+	 public void setScheduledShippingPeriod(String scheduledShippingPeriod) {
+	 	this.scheduledShippingPeriod = scheduledShippingPeriod;
+	 }
+	 
 
 
 	public String toXMLString(String prefix, String name) {
@@ -159,6 +188,14 @@ public class UserSelectedOptionType{
 		if(shippingOptionName != null) {
 			sb.append("<").append(preferredPrefix).append(":ShippingOptionName>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.shippingOptionName));
 			sb.append("</").append(preferredPrefix).append(":ShippingOptionName>");
+		}
+		if(scheduledShippingDate != null) {
+			sb.append("<").append(preferredPrefix).append(":ScheduledShippingDate>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.scheduledShippingDate));
+			sb.append("</").append(preferredPrefix).append(":ScheduledShippingDate>");
+		}
+		if(scheduledShippingPeriod != null) {
+			sb.append("<").append(preferredPrefix).append(":ScheduledShippingPeriod>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.scheduledShippingPeriod));
+			sb.append("</").append(preferredPrefix).append(":ScheduledShippingPeriod>");
 		}
 		if(name!=null){
 			if(prefix!=null){
@@ -210,6 +247,16 @@ public class UserSelectedOptionType{
 		childNode = (Node) xpath.evaluate("ShippingOptionName", node, XPathConstants.NODE);
 		if (childNode != null && !isWhitespaceNode(childNode)) {
 		    this.shippingOptionName = childNode.getTextContent();
+		}
+	
+		childNode = (Node) xpath.evaluate("ScheduledShippingDate", node, XPathConstants.NODE);
+		if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.scheduledShippingDate = childNode.getTextContent();
+		}
+	
+		childNode = (Node) xpath.evaluate("ScheduledShippingPeriod", node, XPathConstants.NODE);
+		if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.scheduledShippingPeriod = childNode.getTextContent();
 		}
 	
 	}

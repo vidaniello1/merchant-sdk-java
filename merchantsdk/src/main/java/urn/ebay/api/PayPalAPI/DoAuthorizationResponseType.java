@@ -1,23 +1,14 @@
 package urn.ebay.api.PayPalAPI;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
-import urn.ebay.apis.eBLBaseComponents.AuthorizationInfoType;
 import urn.ebay.apis.eBLBaseComponents.AbstractResponseType;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import urn.ebay.apis.eBLBaseComponents.AuthorizationInfoType;
+
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.NamedNodeMap;
-import java.io.FileInputStream;
-import java.io.StringReader;
-import java.io.IOException;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * An authorization identification number. Character length and
@@ -28,8 +19,7 @@ public class DoAuthorizationResponseType extends AbstractResponseType {
 
 	/**
 	 * An authorization identification number. Character length and
-	 * limits: 19 single-byte characters	  
-	 *@Required	 
+	 * limits: 19 single-byte characters	 
 	 */ 
 	private String transactionID;
 

@@ -1,5 +1,4 @@
 package urn.ebay.apis.eBLBaseComponents;
-import urn.ebay.apis.eBLBaseComponents.UserSelectedFundingSourceType;
 import com.paypal.core.SDKUtil;
 
 /**
@@ -23,10 +22,10 @@ public class FundingSourceDetailsType{
 
 	/**
 	 * Allowable values: ELV, CreditCard, ChinaUnionPay, BML,
-	 * Finance This element could be used to specify the preferred
-	 * funding option for a guest users. It has effect only if
-	 * LandingPage element is set to Billing. Otherwise it will be
-	 * ignored. 	 
+	 * Finance, Qiwi This element could be used to specify the
+	 * preferred funding option for a guest users. It has effect only
+	 * if LandingPage element is set to Billing. Otherwise it will
+	 * be ignored. 	 
 	 */ 
 	private UserSelectedFundingSourceType userSelectedFundingSource;
 
