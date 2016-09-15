@@ -23,7 +23,7 @@ public class FundingSourceDetailsType{
 	/**
 	 * Allowable values: ELV, CreditCard, ChinaUnionPay, BML,
 	 * Finance, Qiwi This element could be used to specify the
-	 * perered funding option for a guest users. It has effect only
+	 * preferred funding option for a guest users. It has effect only
 	 * if LandingPage element is set to Billing. Otherwise it will
 	 * be ignored. 	 
 	 */ 
