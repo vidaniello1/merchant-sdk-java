@@ -1,5 +1,4 @@
 package urn.ebay.apis.eBLBaseComponents;
-import urn.ebay.apis.eBLBaseComponents.IdentificationInfoType;
 import com.paypal.core.SDKUtil;
 
 /**
@@ -24,6 +23,11 @@ public class BuyerDetailType{
 	 * Max length is 36 Chars.	 
 	 */ 
 	private String riskSessionCorrelationID;
+
+	/**
+	 * Buyer's IP Address	 
+	 */ 
+	private String buyerIPAddress;
 
 	
 
@@ -61,6 +65,20 @@ public class BuyerDetailType{
 	 	this.riskSessionCorrelationID = riskSessionCorrelationID;
 	 }
 	 
+	/**
+	 * Getter for buyerIPAddress
+	 */
+	 public String getBuyerIPAddress() {
+	 	return buyerIPAddress;
+	 }
+	 
+	/**
+	 * Setter for buyerIPAddress
+	 */
+	 public void setBuyerIPAddress(String buyerIPAddress) {
+	 	this.buyerIPAddress = buyerIPAddress;
+	 }
+	 
 
 
 	public String toXMLString(String prefix, String name) {
@@ -79,6 +97,10 @@ public class BuyerDetailType{
 		if(riskSessionCorrelationID != null) {
 			sb.append("<").append(preferredPrefix).append(":RiskSessionCorrelationID>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.riskSessionCorrelationID));
 			sb.append("</").append(preferredPrefix).append(":RiskSessionCorrelationID>");
+		}
+		if(buyerIPAddress != null) {
+			sb.append("<").append(preferredPrefix).append(":BuyerIPAddress>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.buyerIPAddress));
+			sb.append("</").append(preferredPrefix).append(":BuyerIPAddress>");
 		}
 		if(name!=null){
 			if(prefix!=null){

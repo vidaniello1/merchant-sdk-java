@@ -1,9 +1,4 @@
 package urn.ebay.apis.eBLBaseComponents;
-import urn.ebay.apis.eBLBaseComponents.PaymentActionCodeType;
-import urn.ebay.apis.eBLBaseComponents.MerchantPullPaymentCodeType;
-import urn.ebay.apis.eBLBaseComponents.PaymentDetailsType;
-import urn.ebay.apis.eBLBaseComponents.ReferenceCreditCardDetailsType;
-import urn.ebay.apis.eBLBaseComponents.SenderDetailsType;
 import com.paypal.core.SDKUtil;
 
 /**
@@ -46,6 +41,12 @@ public class DoReferenceTransactionRequestDetailsType{
 	 * 	 
 	 */ 
 	private String iPAddress;
+
+	/**
+	 * Correlation id related to risk process done for the device.
+	 * Max length is 36 Chars. 	 
+	 */ 
+	private String riskSessionCorrelationID;
 
 	/**
 	 * 	 
@@ -181,6 +182,20 @@ public class DoReferenceTransactionRequestDetailsType{
 	 }
 	 
 	/**
+	 * Getter for riskSessionCorrelationID
+	 */
+	 public String getRiskSessionCorrelationID() {
+	 	return riskSessionCorrelationID;
+	 }
+	 
+	/**
+	 * Setter for riskSessionCorrelationID
+	 */
+	 public void setRiskSessionCorrelationID(String riskSessionCorrelationID) {
+	 	this.riskSessionCorrelationID = riskSessionCorrelationID;
+	 }
+	 
+	/**
 	 * Getter for merchantSessionId
 	 */
 	 public String getMerchantSessionId() {
@@ -297,6 +312,10 @@ public class DoReferenceTransactionRequestDetailsType{
 		if(iPAddress != null) {
 			sb.append("<").append(preferredPrefix).append(":IPAddress>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.iPAddress));
 			sb.append("</").append(preferredPrefix).append(":IPAddress>");
+		}
+		if(riskSessionCorrelationID != null) {
+			sb.append("<").append(preferredPrefix).append(":RiskSessionCorrelationID>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.riskSessionCorrelationID));
+			sb.append("</").append(preferredPrefix).append(":RiskSessionCorrelationID>");
 		}
 		if(merchantSessionId != null) {
 			sb.append("<").append(preferredPrefix).append(":MerchantSessionId>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.merchantSessionId));

@@ -1,13 +1,10 @@
 package urn.ebay.api.PayPalAPI;
-import urn.ebay.apis.eBLBaseComponents.RefundType;
-import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
-import urn.ebay.apis.eBLBaseComponents.RefundSourceCodeType;
-import urn.ebay.apis.eBLBaseComponents.MerchantStoreDetailsType;
-import java.util.List;
-import java.util.ArrayList;
-import urn.ebay.apis.eBLBaseComponents.InvoiceItemType;
-import urn.ebay.apis.eBLBaseComponents.AbstractRequestType;
 import com.paypal.core.SDKUtil;
+import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
+import urn.ebay.apis.eBLBaseComponents.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Unique identifier of the transaction you are refunding.
@@ -55,6 +52,16 @@ public class RefundTransactionRequestType extends AbstractRequestType {
 	private BasicAmountType amount;
 
 	/**
+	 * Shipping amount. Optional 	 
+	 */ 
+	private BasicAmountType shippingAmount;
+
+	/**
+	 * Tax amount. Optional 	 
+	 */ 
+	private BasicAmountType taxAmount;
+
+	/**
 	 * Custom memo about the refund. Optional Character length and
 	 * limitations: 255 single-byte alphanumeric characters	 
 	 */ 
@@ -94,6 +101,12 @@ public class RefundTransactionRequestType extends AbstractRequestType {
 	 * single-byte characters maximum. 	 
 	 */ 
 	private String msgSubID;
+
+	/**
+	 * This holds key-value pair which merchants wants to pass it
+	 * to the open wallet-PLCC processorOptional 	 
+	 */ 
+	private MerchantDataType merchantData;
 
 	
 
@@ -171,6 +184,34 @@ public class RefundTransactionRequestType extends AbstractRequestType {
 	 */
 	 public void setAmount(BasicAmountType amount) {
 	 	this.amount = amount;
+	 }
+	 
+	/**
+	 * Getter for shippingAmount
+	 */
+	 public BasicAmountType getShippingAmount() {
+	 	return shippingAmount;
+	 }
+	 
+	/**
+	 * Setter for shippingAmount
+	 */
+	 public void setShippingAmount(BasicAmountType shippingAmount) {
+	 	this.shippingAmount = shippingAmount;
+	 }
+	 
+	/**
+	 * Getter for taxAmount
+	 */
+	 public BasicAmountType getTaxAmount() {
+	 	return taxAmount;
+	 }
+	 
+	/**
+	 * Setter for taxAmount
+	 */
+	 public void setTaxAmount(BasicAmountType taxAmount) {
+	 	this.taxAmount = taxAmount;
 	 }
 	 
 	/**
@@ -271,6 +312,20 @@ public class RefundTransactionRequestType extends AbstractRequestType {
 	 	this.msgSubID = msgSubID;
 	 }
 	 
+	/**
+	 * Getter for merchantData
+	 */
+	 public MerchantDataType getMerchantData() {
+	 	return merchantData;
+	 }
+	 
+	/**
+	 * Setter for merchantData
+	 */
+	 public void setMerchantData(MerchantDataType merchantData) {
+	 	this.merchantData = merchantData;
+	 }
+	 
 
 
 	public String toXMLString(String prefix, String name) {
@@ -303,6 +358,12 @@ public class RefundTransactionRequestType extends AbstractRequestType {
 		if(amount != null) {
 			sb.append(amount.toXMLString(preferredPrefix,"Amount"));
 		}
+		if(shippingAmount != null) {
+			sb.append(shippingAmount.toXMLString(preferredPrefix,"ShippingAmount"));
+		}
+		if(taxAmount != null) {
+			sb.append(taxAmount.toXMLString(preferredPrefix,"TaxAmount"));
+		}
 		if(memo != null) {
 			sb.append("<").append(preferredPrefix).append(":Memo>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.memo));
 			sb.append("</").append(preferredPrefix).append(":Memo>");
@@ -330,6 +391,9 @@ public class RefundTransactionRequestType extends AbstractRequestType {
 		if(msgSubID != null) {
 			sb.append("<").append(preferredPrefix).append(":MsgSubID>").append(SDKUtil.escapeInvalidXmlCharsRegex(this.msgSubID));
 			sb.append("</").append(preferredPrefix).append(":MsgSubID>");
+		}
+		if(merchantData != null) {
+			sb.append(merchantData.toXMLString(null,"MerchantData"));
 		}
 		if(name!=null){
 			if(prefix!=null){

@@ -15,7 +15,9 @@ public enum  UserSelectedFundingSourceType {
 
 	BML("BML"),
 
-	FINANCE("Finance");
+	FINANCE("Finance"),
+
+	QIWI("QIWI");
 
 	private String value;
 

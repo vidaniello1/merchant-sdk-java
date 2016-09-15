@@ -1,20 +1,11 @@
 package urn.ebay.apis.eBLBaseComponents;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.NamedNodeMap;
-import java.io.FileInputStream;
-import java.io.StringReader;
-import java.io.IOException;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * OptionType PayPal item options for shopping cart. 
@@ -89,16 +80,16 @@ public class OptionType{
 		XPath xpath = factory.newXPath();
 		Node childNode = null;
 		NodeList nodeList = null;
-		
-		childNode = (Node) xpath.evaluate("@name", node, XPathConstants.NODE);
-		if (childNode != null) {
-		    this.name = childNode.getNodeValue();
+		childNode = (Node) xpath.evaluate("name", node, XPathConstants.NODE);
+		if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.name = childNode.getTextContent();
 		}
 	
-		childNode = (Node) xpath.evaluate("@value", node, XPathConstants.NODE);
-		if (childNode != null) {
-		    this.value = childNode.getNodeValue();
+		childNode = (Node) xpath.evaluate("value", node, XPathConstants.NODE);
+		if (childNode != null && !isWhitespaceNode(childNode)) {
+		    this.value = childNode.getTextContent();
 		}
+	
 	}
  
 }

@@ -1,129 +1,30 @@
 package urn.ebay.api.PayPalAPI;
-import java.io.*;
-import java.util.Map;
-import java.util.Properties;
-import com.paypal.core.BaseService;
-import com.paypal.exception.*;
-import com.paypal.core.credential.ICredential;
 import com.paypal.core.APICallPreHandler;
+import com.paypal.core.BaseService;
+import com.paypal.core.DefaultSOAPAPICallHandler;
+import com.paypal.core.credential.ICredential;
+import com.paypal.core.soap.MerchantAPICallPreHandler;
+import com.paypal.exception.*;
+import com.paypal.sdk.exceptions.OAuthException;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 import org.xml.sax.InputSource;
-import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 import urn.ebay.apis.eBLBaseComponents.AbstractRequestType;
+
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import com.paypal.core.DefaultSOAPAPICallHandler;
-import com.paypal.core.soap.MerchantAPICallPreHandler;
-import urn.ebay.api.PayPalAPI.RefundTransactionReq;
-import urn.ebay.api.PayPalAPI.RefundTransactionResponseType;
-import urn.ebay.api.PayPalAPI.InitiateRecoupReq;
-import urn.ebay.api.PayPalAPI.InitiateRecoupResponseType;
-import urn.ebay.api.PayPalAPI.CompleteRecoupReq;
-import urn.ebay.api.PayPalAPI.CompleteRecoupResponseType;
-import urn.ebay.api.PayPalAPI.CancelRecoupReq;
-import urn.ebay.api.PayPalAPI.CancelRecoupResponseType;
-import urn.ebay.api.PayPalAPI.GetTransactionDetailsReq;
-import urn.ebay.api.PayPalAPI.GetTransactionDetailsResponseType;
-import urn.ebay.api.PayPalAPI.BillUserReq;
-import urn.ebay.api.PayPalAPI.BillUserResponseType;
-import urn.ebay.api.PayPalAPI.TransactionSearchReq;
-import urn.ebay.api.PayPalAPI.TransactionSearchResponseType;
-import urn.ebay.api.PayPalAPI.MassPayReq;
-import urn.ebay.api.PayPalAPI.MassPayResponseType;
-import urn.ebay.api.PayPalAPI.BillAgreementUpdateReq;
-import urn.ebay.api.PayPalAPI.BAUpdateResponseType;
-import urn.ebay.api.PayPalAPI.AddressVerifyReq;
-import urn.ebay.api.PayPalAPI.AddressVerifyResponseType;
-import urn.ebay.api.PayPalAPI.EnterBoardingReq;
-import urn.ebay.api.PayPalAPI.EnterBoardingResponseType;
-import urn.ebay.api.PayPalAPI.GetBoardingDetailsReq;
-import urn.ebay.api.PayPalAPI.GetBoardingDetailsResponseType;
-import urn.ebay.api.PayPalAPI.CreateMobilePaymentReq;
-import urn.ebay.api.PayPalAPI.CreateMobilePaymentResponseType;
-import urn.ebay.api.PayPalAPI.GetMobileStatusReq;
-import urn.ebay.api.PayPalAPI.GetMobileStatusResponseType;
-import urn.ebay.api.PayPalAPI.SetMobileCheckoutReq;
-import urn.ebay.api.PayPalAPI.SetMobileCheckoutResponseType;
-import urn.ebay.api.PayPalAPI.DoMobileCheckoutPaymentReq;
-import urn.ebay.api.PayPalAPI.DoMobileCheckoutPaymentResponseType;
-import urn.ebay.api.PayPalAPI.GetBalanceReq;
-import urn.ebay.api.PayPalAPI.GetBalanceResponseType;
-import urn.ebay.api.PayPalAPI.GetPalDetailsReq;
-import urn.ebay.api.PayPalAPI.GetPalDetailsResponseType;
-import urn.ebay.api.PayPalAPI.DoExpressCheckoutPaymentReq;
-import urn.ebay.api.PayPalAPI.DoExpressCheckoutPaymentResponseType;
-import urn.ebay.api.PayPalAPI.DoUATPExpressCheckoutPaymentReq;
-import urn.ebay.api.PayPalAPI.DoUATPExpressCheckoutPaymentResponseType;
-import urn.ebay.api.PayPalAPI.SetAuthFlowParamReq;
-import urn.ebay.api.PayPalAPI.SetAuthFlowParamResponseType;
-import urn.ebay.api.PayPalAPI.GetAuthDetailsReq;
-import urn.ebay.api.PayPalAPI.GetAuthDetailsResponseType;
-import urn.ebay.api.PayPalAPI.SetAccessPermissionsReq;
-import urn.ebay.api.PayPalAPI.SetAccessPermissionsResponseType;
-import urn.ebay.api.PayPalAPI.UpdateAccessPermissionsReq;
-import urn.ebay.api.PayPalAPI.UpdateAccessPermissionsResponseType;
-import urn.ebay.api.PayPalAPI.GetAccessPermissionDetailsReq;
-import urn.ebay.api.PayPalAPI.GetAccessPermissionDetailsResponseType;
-import urn.ebay.api.PayPalAPI.GetIncentiveEvaluationReq;
-import urn.ebay.api.PayPalAPI.GetIncentiveEvaluationResponseType;
-import urn.ebay.api.PayPalAPI.SetExpressCheckoutReq;
-import urn.ebay.api.PayPalAPI.SetExpressCheckoutResponseType;
-import urn.ebay.api.PayPalAPI.ExecuteCheckoutOperationsReq;
-import urn.ebay.api.PayPalAPI.ExecuteCheckoutOperationsResponseType;
-import urn.ebay.api.PayPalAPI.GetExpressCheckoutDetailsReq;
-import urn.ebay.api.PayPalAPI.GetExpressCheckoutDetailsResponseType;
-import urn.ebay.api.PayPalAPI.DoDirectPaymentReq;
-import urn.ebay.api.PayPalAPI.DoDirectPaymentResponseType;
-import urn.ebay.api.PayPalAPI.ManagePendingTransactionStatusReq;
-import urn.ebay.api.PayPalAPI.ManagePendingTransactionStatusResponseType;
-import urn.ebay.api.PayPalAPI.DoCancelReq;
-import urn.ebay.api.PayPalAPI.DoCancelResponseType;
-import urn.ebay.api.PayPalAPI.DoCaptureReq;
-import urn.ebay.api.PayPalAPI.DoCaptureResponseType;
-import urn.ebay.api.PayPalAPI.DoReauthorizationReq;
-import urn.ebay.api.PayPalAPI.DoReauthorizationResponseType;
-import urn.ebay.api.PayPalAPI.DoVoidReq;
-import urn.ebay.api.PayPalAPI.DoVoidResponseType;
-import urn.ebay.api.PayPalAPI.DoAuthorizationReq;
-import urn.ebay.api.PayPalAPI.DoAuthorizationResponseType;
-import urn.ebay.api.PayPalAPI.UpdateAuthorizationReq;
-import urn.ebay.api.PayPalAPI.UpdateAuthorizationResponseType;
-import urn.ebay.api.PayPalAPI.SetCustomerBillingAgreementReq;
-import urn.ebay.api.PayPalAPI.SetCustomerBillingAgreementResponseType;
-import urn.ebay.api.PayPalAPI.GetBillingAgreementCustomerDetailsReq;
-import urn.ebay.api.PayPalAPI.GetBillingAgreementCustomerDetailsResponseType;
-import urn.ebay.api.PayPalAPI.CreateBillingAgreementReq;
-import urn.ebay.api.PayPalAPI.CreateBillingAgreementResponseType;
-import urn.ebay.api.PayPalAPI.DoReferenceTransactionReq;
-import urn.ebay.api.PayPalAPI.DoReferenceTransactionResponseType;
-import urn.ebay.api.PayPalAPI.DoNonReferencedCreditReq;
-import urn.ebay.api.PayPalAPI.DoNonReferencedCreditResponseType;
-import urn.ebay.api.PayPalAPI.DoUATPAuthorizationReq;
-import urn.ebay.api.PayPalAPI.DoUATPAuthorizationResponseType;
-import urn.ebay.api.PayPalAPI.CreateRecurringPaymentsProfileReq;
-import urn.ebay.api.PayPalAPI.CreateRecurringPaymentsProfileResponseType;
-import urn.ebay.api.PayPalAPI.GetRecurringPaymentsProfileDetailsReq;
-import urn.ebay.api.PayPalAPI.GetRecurringPaymentsProfileDetailsResponseType;
-import urn.ebay.api.PayPalAPI.ManageRecurringPaymentsProfileStatusReq;
-import urn.ebay.api.PayPalAPI.ManageRecurringPaymentsProfileStatusResponseType;
-import urn.ebay.api.PayPalAPI.BillOutstandingAmountReq;
-import urn.ebay.api.PayPalAPI.BillOutstandingAmountResponseType;
-import urn.ebay.api.PayPalAPI.UpdateRecurringPaymentsProfileReq;
-import urn.ebay.api.PayPalAPI.UpdateRecurringPaymentsProfileResponseType;
-import urn.ebay.api.PayPalAPI.ReverseTransactionReq;
-import urn.ebay.api.PayPalAPI.ReverseTransactionResponseType;
-import urn.ebay.api.PayPalAPI.ExternalRememberMeOptOutReq;
-import urn.ebay.api.PayPalAPI.ExternalRememberMeOptOutResponseType;
-import com.paypal.sdk.exceptions.OAuthException;
+import java.io.*;
+import java.util.Map;
+import java.util.Properties;
 
 public class PayPalAPIInterfaceServiceService extends BaseService {
 
 
 	// Service Version
-	public static final String SERVICE_VERSION = "117.0";
+	public static final String SERVICE_VERSION = "124.0";
 
 	// Service Name
 	public static final String SERVICE_NAME = "PayPalAPIInterfaceService";
@@ -132,7 +33,7 @@ public class PayPalAPIInterfaceServiceService extends BaseService {
 	private static final String SDK_NAME = "merchant-java-sdk";
 	
 	//SDK Version
-	private static final String SDK_VERSION = "2.11.117";
+	private static final String SDK_VERSION = "2.15.121";
 
 
 	/**
