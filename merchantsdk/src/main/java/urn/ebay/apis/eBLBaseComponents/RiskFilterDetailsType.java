@@ -6,21 +6,27 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
+
 import java.io.FileInputStream;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.io.IOException;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
  * Details of Risk Filter. 
  */
-public class RiskFilterDetailsType{
+public class RiskFilterDetailsType implements Serializable{
 
+
+	private static final long serialVersionUID = 4048222082584459625L;
 
 	/**
 	 * 	  

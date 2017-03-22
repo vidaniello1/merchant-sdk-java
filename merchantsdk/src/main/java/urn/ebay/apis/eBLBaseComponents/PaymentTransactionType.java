@@ -7,8 +7,10 @@ import urn.ebay.apis.eBLBaseComponents.OfferCouponInfoType;
 import urn.ebay.apis.eBLBaseComponents.AddressType;
 import urn.ebay.apis.eBLBaseComponents.UserSelectedOptionType;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
+
 import java.util.List;
 import java.util.ArrayList;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,13 +18,17 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
+
 import java.io.FileInputStream;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.io.IOException;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -30,8 +36,10 @@ import org.xml.sax.SAXException;
  * PaymentTransactionType Information about a PayPal payment
  * from the seller side 
  */
-public class PaymentTransactionType{
+public class PaymentTransactionType implements Serializable{
 
+
+	private static final long serialVersionUID = -6641823438848774522L;
 
 	/**
 	 * Information about the recipient of the payment 	 

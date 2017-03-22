@@ -26,6 +26,7 @@ import org.xml.sax.SAXException;
 public class TransactionSearchResponseType extends AbstractResponseType {
 
 
+	private static final long serialVersionUID = 7703110089902715068L;
 	/**
 	 * Results of a Transaction Search.	 
 	 */ 

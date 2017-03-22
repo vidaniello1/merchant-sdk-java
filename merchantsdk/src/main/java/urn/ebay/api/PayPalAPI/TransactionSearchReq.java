@@ -10,9 +10,6 @@ import com.paypal.core.SDKUtil;
  */
 public class TransactionSearchReq implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 626680341797417108L;
 	private static final String nameSpace="urn:ebay:api:PayPalAPI";
 	private static final String preferredPrefix="ns";

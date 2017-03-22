@@ -1,7 +1,10 @@
 package urn.ebay.apis.eBLBaseComponents;
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
+
 import urn.ebay.apis.eBLBaseComponents.DetailLevelCodeType;
+
 import com.paypal.core.SDKUtil;
 
 /**
@@ -9,8 +12,9 @@ import com.paypal.core.SDKUtil;
  * type of payload content with optional versioning information
  * and detail level requirements. 
  */
-public class AbstractRequestType{
+public class AbstractRequestType implements Serializable{
 
+	private static final long serialVersionUID = -1075773245457787772L;
 	private static final String nameSpace="urn:ebay:apis:eBLBaseComponents";
 	private static final String preferredPrefix="ebl";
 

@@ -1,12 +1,16 @@
 package urn.ebay.api.PayPalAPI;
+import java.io.Serializable;
+
 import urn.ebay.api.PayPalAPI.GetTransactionDetailsRequestType;
+
 import com.paypal.core.SDKUtil;
 
 /**
  * 
  */
-public class GetTransactionDetailsReq{
+public class GetTransactionDetailsReq implements Serializable{
 
+	private static final long serialVersionUID = 6500567082532049967L;
 	private static final String nameSpace="urn:ebay:api:PayPalAPI";
 	private static final String preferredPrefix="ns";
 

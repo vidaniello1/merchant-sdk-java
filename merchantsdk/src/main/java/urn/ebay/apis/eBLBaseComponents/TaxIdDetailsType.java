@@ -1,5 +1,6 @@
 package urn.ebay.apis.eBLBaseComponents;
 import com.paypal.core.SDKUtil;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -7,13 +8,17 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
+
 import java.io.FileInputStream;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.io.IOException;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -21,8 +26,9 @@ import org.xml.sax.SAXException;
  * Details about the payer's tax info passed in by the merchant
  * or partner. Optional. 
  */
-public class TaxIdDetailsType{
+public class TaxIdDetailsType implements Serializable{
 
+	private static final long serialVersionUID = 7824489005605863054L;
 	private static final String nameSpace="urn:ebay:apis:eBLBaseComponents";
 	private static final String preferredPrefix="ebl";
 

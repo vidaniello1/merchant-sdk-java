@@ -3,12 +3,16 @@ import urn.ebay.apis.eBLBaseComponents.PayPalUserStatusCodeType;
 import urn.ebay.apis.eBLBaseComponents.PersonNameType;
 import urn.ebay.apis.eBLBaseComponents.CountryCodeType;
 import urn.ebay.apis.eBLBaseComponents.AddressType;
+
 import java.util.List;
 import java.util.ArrayList;
+
 import urn.ebay.apis.eBLBaseComponents.WalletItemsType;
 import urn.ebay.apis.eBLBaseComponents.TaxIdDetailsType;
 import urn.ebay.apis.EnhancedDataTypes.EnhancedPayerInfoType;
+
 import com.paypal.core.SDKUtil;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,21 +20,26 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
+
 import java.io.FileInputStream;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.io.IOException;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
  * PayerInfoType Payer information 
  */
-public class PayerInfoType{
+public class PayerInfoType implements Serializable{
 
+	private static final long serialVersionUID = -2511582559489684358L;
 	private static final String nameSpace="urn:ebay:apis:eBLBaseComponents";
 	private static final String preferredPrefix="ebl";
 

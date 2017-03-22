@@ -6,21 +6,27 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
+
 import java.io.FileInputStream;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.io.IOException;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
  * InstrumentDetailsType Promotional Instrument Information. 
  */
-public class InstrumentDetailsType{
+public class InstrumentDetailsType implements Serializable{
 
+
+	private static final long serialVersionUID = 5004704823828197658L;
 
 	/**
 	 * This field holds the category of the instrument only when it

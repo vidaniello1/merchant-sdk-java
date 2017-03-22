@@ -1,11 +1,15 @@
 package urn.ebay.apis.eBLBaseComponents;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.UnitOfMeasure;
+
 import java.util.List;
 import java.util.ArrayList;
+
 import urn.ebay.apis.eBLBaseComponents.DiscountType;
 import urn.ebay.apis.eBLBaseComponents.AdditionalFeeType;
+
 import com.paypal.core.SDKUtil;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -13,21 +17,26 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
+
 import java.io.FileInputStream;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.io.IOException;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
  * Describes an individual item for an invoice. 
  */
-public class InvoiceItemType{
+public class InvoiceItemType implements Serializable{
 
+	private static final long serialVersionUID = -7399983104637601165L;
 	private static final String nameSpace="urn:ebay:apis:eBLBaseComponents";
 	private static final String preferredPrefix="ebl";
 

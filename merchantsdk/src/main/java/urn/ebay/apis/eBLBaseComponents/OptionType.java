@@ -1,4 +1,6 @@
 package urn.ebay.apis.eBLBaseComponents;
+import java.io.Serializable;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -10,8 +12,10 @@ import javax.xml.xpath.XPathFactory;
 /**
  * OptionType PayPal item options for shopping cart. 
  */
-public class OptionType{
+public class OptionType implements Serializable{
 
+
+	private static final long serialVersionUID = -72183524595380787L;
 
 	/**
 	 * 	  

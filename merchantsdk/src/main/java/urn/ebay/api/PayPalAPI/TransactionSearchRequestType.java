@@ -13,6 +13,7 @@ import com.paypal.core.SDKUtil;
  */
 public class TransactionSearchRequestType extends AbstractRequestType {
 
+	private static final long serialVersionUID = -2286572535396943900L;
 	private static final String nameSpace="urn:ebay:api:PayPalAPI";
 	private static final String preferredPrefix="ns";
 

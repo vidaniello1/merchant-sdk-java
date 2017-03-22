@@ -1,5 +1,6 @@
 package urn.ebay.apis.EnhancedDataTypes;
 import com.paypal.core.SDKUtil;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -7,21 +8,26 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
+
 import java.io.FileInputStream;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.io.IOException;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
  * 
  */
-public class EnhancedPayerInfoType{
+public class EnhancedPayerInfoType implements Serializable{
 
+	private static final long serialVersionUID = -6664486520982533149L;
 	private static final String nameSpace="urn:ebay:apis:EnhancedDataTypes";
 	private static final String preferredPrefix="ed";
 

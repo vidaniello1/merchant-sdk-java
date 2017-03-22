@@ -1,9 +1,11 @@
 package urn.ebay.apis.eBLBaseComponents;
 import java.util.List;
 import java.util.ArrayList;
+
 import urn.ebay.apis.eBLBaseComponents.PaymentItemType;
 import urn.ebay.apis.eBLBaseComponents.SubscriptionInfoType;
 import urn.ebay.apis.eBLBaseComponents.AuctionInfoType;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -11,21 +13,27 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
+
 import java.io.FileInputStream;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.io.IOException;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
  * PaymentItemInfoType Information about a PayPal item. 
  */
-public class PaymentItemInfoType{
+public class PaymentItemInfoType implements Serializable{
 
+
+	private static final long serialVersionUID = -3437880090763521349L;
 
 	/**
 	 * Invoice number you set in the original transaction.

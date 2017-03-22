@@ -1,7 +1,11 @@
 package urn.ebay.apis.eBLBaseComponents;
+import java.io.Serializable;
+
 import com.paypal.core.SDKUtil;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 
 import javax.xml.xpath.XPath;
@@ -12,8 +16,9 @@ import javax.xml.xpath.XPathFactory;
 /**
  * Information on user selected options 
  */
-public class UserSelectedOptionType{
+public class UserSelectedOptionType implements Serializable{
 
+	private static final long serialVersionUID = 871991773626123596L;
 	private static final String nameSpace="urn:ebay:apis:eBLBaseComponents";
 	private static final String preferredPrefix="ebl";
 
