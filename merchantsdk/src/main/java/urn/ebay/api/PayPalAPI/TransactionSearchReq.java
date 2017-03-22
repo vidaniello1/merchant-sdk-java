@@ -1,12 +1,19 @@
 package urn.ebay.api.PayPalAPI;
+import java.io.Serializable;
+
 import urn.ebay.api.PayPalAPI.TransactionSearchRequestType;
+
 import com.paypal.core.SDKUtil;
 
 /**
  * 
  */
-public class TransactionSearchReq{
+public class TransactionSearchReq implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 626680341797417108L;
 	private static final String nameSpace="urn:ebay:api:PayPalAPI";
 	private static final String preferredPrefix="ns";
 
